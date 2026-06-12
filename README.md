@@ -15,22 +15,39 @@ Everything is one file (`index.html`). No build step, no server, no accounts. St
 
 ## 🔧 One-time setup (grown-ups)
 
-The app talks directly to an AI service from the browser — you bring an API key. Tap the **⚙️ gear** (it's guarded by a multiplication question so little fingers stay out) and pick one:
+A browser (like Safari on the iPad) can't call Ollama Cloud directly — Ollama Cloud doesn't send the CORS headers a browser requires, so the request gets blocked. The fix is a **tiny free proxy** (a Cloudflare Worker) that sits in the middle: it holds your Ollama key safely on a server, adds the CORS header the iPad needs, and forwards the request. This is the **recommended** path — it also keeps your API key off the kid's device.
 
-### Option A — ChatGPT (OpenAI API)
-1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys) and create an API key.
-2. In the app settings choose **ChatGPT (OpenAI API)**, paste the key, keep the default model (`gpt-4o`) or pick another.
+### Step by step — Ollama Cloud via a free Cloudflare Worker
 
-> ⚠️ **Heads up:** the OpenAI *API* is billed separately from a ChatGPT Pro subscription — a Pro plan does not include API credits. The good news: a 6-page story costs only a fraction of a cent on `gpt-4o-mini`, and a few cents on `gpt-4o`. Putting $5 of credit on an API account will make a *lot* of storybooks.
+**A. Get an Ollama Cloud key**
+1. Sign up at [ollama.com](https://ollama.com).
+2. Create an API key at **ollama.com/settings/keys** and copy it.
 
-### Option B — Ollama Cloud
-1. Sign up at [ollama.com](https://ollama.com) and create an API key at **ollama.com/settings/keys**.
-2. In the app settings choose **Ollama Cloud**, paste the key. Default model is `gpt-oss:120b`.
+**B. Create the Worker** (free, ~5 minutes)
+1. Make a free account at [dash.cloudflare.com](https://dash.cloudflare.com).
+2. In the dashboard: **Workers & Pages → Create → Workers → Create Worker**. Give it a name (e.g. `allison-stories`) and click **Deploy**.
+3. Click **Edit code**. Delete the sample code, then paste the entire contents of [`worker.js`](./worker.js) from this repo. Click **Deploy** again.
+4. Add your key as a secret: **Settings → Variables and Secrets → Add**.
+   - Type **Secret**, name **`OLLAMA_API_KEY`**, value = the key from step A. Save/Deploy.
+5. *(Recommended)* Lock it to your app so nobody else can use your Worker:
+   - Add another variable (type **Text**), name **`ALLOWED_ORIGIN`**, value = your app's address, e.g. `https://danielleag30.github.io` (no trailing slash, no path). Save/Deploy.
+6. Copy your Worker URL — it looks like `https://allison-stories.<your-name>.workers.dev`.
 
-### Option C — Custom
-Any OpenAI-compatible `/v1/chat/completions` endpoint works: LM Studio, a home server running Ollama (start it with `OLLAMA_ORIGINS='*'` so the browser may call it), or your own proxy.
+**C. Point the app at the Worker**
+1. Open the app, tap **⚙️** (answer the multiplication question).
+2. Provider: **Ollama Cloud — via Worker proxy (recommended)**.
+3. **API base URL** = your Worker URL from step B6.
+4. Leave **API key** blank (the Worker holds it). Pick a model (default `gpt-oss:120b`). **Save**.
 
-The key is stored **only in the browser's localStorage on that device** and is sent only to the API you configured.
+That's it — Allison can now make stories.
+
+### Other options (in the ⚙️ menu)
+
+- **ChatGPT (OpenAI API, direct):** create a key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys), choose this option, paste the key. ⚠️ The OpenAI *API* is billed separately from a ChatGPT Pro subscription — Pro does **not** include API credits. (A 6-page story is a fraction of a cent on `gpt-4o-mini`; $5 of credit makes a *lot* of stories.) This calls the API straight from the browser and may be blocked by CORS depending on OpenAI's current rules — if stories won't load, put a Worker in front of it the same way (point `OLLAMA_URL` in `worker.js` at OpenAI instead).
+- **Ollama Cloud (direct):** calls Ollama Cloud straight from the iPad. Usually blocked by the browser — use the Worker option instead.
+- **Custom:** any OpenAI-compatible `/chat/completions` endpoint (a proxy, LM Studio, or a home Ollama started with `OLLAMA_ORIGINS='*'`).
+
+Any key you enter is stored **only in the browser's localStorage on that device** and is sent only to the URL you configured. With the Worker option there's no key on the device at all.
 
 ## 📱 Getting it on her iPad
 
