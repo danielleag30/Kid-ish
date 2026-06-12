@@ -395,18 +395,19 @@
 
     <label for="providerSel">Where do stories come from?</label>
     <select id="providerSel">
-      <option value="openai">ChatGPT (OpenAI API)</option>
-      <option value="ollama">Ollama Cloud</option>
+      <option value="ollama_proxy">Ollama Cloud — via Worker proxy (recommended)</option>
+      <option value="openai">ChatGPT (OpenAI API, direct)</option>
+      <option value="ollama_direct">Ollama Cloud (direct, may be blocked)</option>
       <option value="custom">Custom (any OpenAI-compatible URL)</option>
     </select>
     <div class="hint" id="providerHint"></div>
 
-    <label for="baseUrlInput">API base URL</label>
-    <input id="baseUrlInput" type="url" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label for="baseUrlInput">API base URL (or your Worker URL)</label>
+    <input id="baseUrlInput" type="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://….workers.dev">
 
-    <label for="apiKeyInput">API key</label>
+    <label for="apiKeyInput">API key <span id="keyOptional" class="hint" style="display:none;">(not needed with the Worker)</span></label>
     <input id="apiKeyInput" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="sk-…">
-    <div class="hint">Stored only on this device (localStorage). Never sent anywhere except the API above.</div>
+    <div class="hint">Stored only on this device (localStorage). Never sent anywhere except the URL above.</div>
 
     <label for="modelInput">Model</label>
     <input id="modelInput" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" list="modelList">
@@ -433,23 +434,33 @@
 
 /* ---------------- provider presets ---------------- */
 const PROVIDERS = {
+  ollama_proxy: {
+    baseUrl: "",
+    model: "gpt-oss:120b",
+    models: ["gpt-oss:120b", "gpt-oss:20b", "deepseek-v3.1:671b", "qwen3-coder:480b", "kimi-k2:1t"],
+    needsKey: false,
+    hint: "RECOMMENDED. Paste your Cloudflare Worker URL (ends in .workers.dev). The Worker holds your Ollama key safely and lets the iPad talk to Ollama Cloud. No key needed here — see README.",
+  },
   openai: {
     baseUrl: "https://api.openai.com/v1",
     model: "gpt-4o",
     models: ["gpt-4o", "gpt-4o-mini", "gpt-4.1", "gpt-4.1-mini", "gpt-5", "gpt-5-mini"],
-    hint: "Uses the OpenAI API (platform.openai.com). Note: API usage is billed separately from a ChatGPT Pro subscription — create an API key at platform.openai.com/api-keys.",
+    needsKey: true,
+    hint: "Uses the OpenAI API directly. Note: API usage is billed separately from a ChatGPT Pro subscription — create a key at platform.openai.com/api-keys. (May be blocked by the browser's CORS rules — if stories won't load, use a proxy.)",
   },
-  ollama: {
+  ollama_direct: {
     baseUrl: "https://ollama.com/v1",
     model: "gpt-oss:120b",
     models: ["gpt-oss:120b", "gpt-oss:20b", "deepseek-v3.1:671b", "qwen3-coder:480b", "kimi-k2:1t"],
-    hint: "Uses Ollama Cloud's OpenAI-compatible API. Create a key at ollama.com/settings/keys.",
+    needsKey: true,
+    hint: "Calls Ollama Cloud straight from the iPad. Often blocked by the browser's CORS rules — prefer the Worker option above. Key from ollama.com/settings/keys.",
   },
   custom: {
     baseUrl: "",
     model: "",
     models: [],
-    hint: "Any OpenAI-compatible /chat/completions endpoint (LM Studio, a local Ollama with OLLAMA_ORIGINS set, a proxy, …).",
+    needsKey: false,
+    hint: "Any OpenAI-compatible /chat/completions endpoint (a proxy, LM Studio, a local Ollama with OLLAMA_ORIGINS set, …). Key is optional.",
   },
 };
 
@@ -630,7 +641,13 @@ let abortCtrl = null;
 let currentStory = null;
 let currentPage = 0;
 
-function parseStoryText(buf) {
+function cleanModelOutput(buf) {
+  // Some models wrap output in markdown fences despite instructions — strip them.
+  return buf.replace(/```[a-zA-Z]*\n?/g, "");
+}
+
+function parseStoryText(rawBuf) {
+  const buf = cleanModelOutput(rawBuf);
   // Returns {title, pages:[{text, svg}], complete}
   const out = { title: "", pages: [], complete: /@@END@@/.test(buf) };
   const tm = buf.match(/@@TITLE@@\s*([\s\S]*?)\s*(?=@@PAGE@@|@@END@@|$)/);
@@ -648,7 +665,7 @@ function parseStoryText(buf) {
 
 async function generateStory(idea) {
   const s = loadSettings();
-  if (!s.apiKey || !s.baseUrl || !s.model) {
+  if (!s.baseUrl || !s.model) {
     alert("A grown-up needs to set up the story engine first! Tap the ⚙️ in the corner.");
     return;
   }
@@ -673,12 +690,14 @@ async function generateStory(idea) {
   let buf = "";
   let shownPages = 0;
   try {
-    const resp = await fetch(s.baseUrl.replace(/\/+$/, "") + "/chat/completions", {
+    // The Worker proxy already ends at /chat/completions; raw API base URLs don't.
+    const base = s.baseUrl.replace(/\/+$/, "");
+    const url = /\/chat\/completions$/.test(base) ? base : base + "/chat/completions";
+    const headers = { "Content-Type": "application/json" };
+    if (s.apiKey) headers["Authorization"] = "Bearer " + s.apiKey;
+    const resp = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + s.apiKey,
-      },
+      headers,
       body: JSON.stringify(body),
       signal: abortCtrl.signal,
     });
@@ -739,6 +758,9 @@ async function generateStory(idea) {
     return;
   }
 
+  // If the model forgot the final @@END@@ marker, the last page would be
+  // dropped by the parser's lookahead — patch it in before the final parse.
+  if (!/@@END@@/.test(buf)) buf += "\n@@END@@";
   const story = parseStoryText(buf);
   if (!story.pages.length) {
     $("loadingMsg").classList.remove("dots");
@@ -864,6 +886,7 @@ function applyProviderPreset(name, keepValues) {
   const p = PROVIDERS[name];
   $("providerHint").textContent = p.hint;
   $("modelList").innerHTML = p.models.map(m => `<option value="${m}">`).join("");
+  $("keyOptional").style.display = p.needsKey ? "none" : "inline";
   if (!keepValues) {
     $("baseUrlInput").value = p.baseUrl;
     $("modelInput").value = p.model;
@@ -873,7 +896,7 @@ $("providerSel").addEventListener("change", () => applyProviderPreset($("provide
 
 function openSettings() {
   const s = loadSettings();
-  const provider = s.provider || "openai";
+  const provider = s.provider || "ollama_proxy";
   $("providerSel").value = provider;
   applyProviderPreset(provider, true);
   $("baseUrlInput").value = s.baseUrl ?? PROVIDERS[provider].baseUrl;
@@ -892,9 +915,12 @@ $("saveSettingsBtn").addEventListener("click", () => {
     model: $("modelInput").value.trim(),
     pages: $("pagesInput").value,
   };
-  if (!s.baseUrl || !s.apiKey || !s.model) {
+  const needsKey = (PROVIDERS[s.provider] || {}).needsKey;
+  if (!s.baseUrl || !s.model || (needsKey && !s.apiKey)) {
     const msg = $("settingsMsg");
-    msg.textContent = "Please fill in the base URL, API key, and model.";
+    msg.textContent = needsKey
+      ? "Please fill in the base URL, API key, and model."
+      : "Please fill in the Worker URL and model.";
     msg.style.display = "block";
     return;
   }
