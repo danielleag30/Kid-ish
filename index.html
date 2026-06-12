@@ -641,7 +641,13 @@ let abortCtrl = null;
 let currentStory = null;
 let currentPage = 0;
 
-function parseStoryText(buf) {
+function cleanModelOutput(buf) {
+  // Some models wrap output in markdown fences despite instructions — strip them.
+  return buf.replace(/```[a-zA-Z]*\n?/g, "");
+}
+
+function parseStoryText(rawBuf) {
+  const buf = cleanModelOutput(rawBuf);
   // Returns {title, pages:[{text, svg}], complete}
   const out = { title: "", pages: [], complete: /@@END@@/.test(buf) };
   const tm = buf.match(/@@TITLE@@\s*([\s\S]*?)\s*(?=@@PAGE@@|@@END@@|$)/);
@@ -752,6 +758,9 @@ async function generateStory(idea) {
     return;
   }
 
+  // If the model forgot the final @@END@@ marker, the last page would be
+  // dropped by the parser's lookahead — patch it in before the final parse.
+  if (!/@@END@@/.test(buf)) buf += "\n@@END@@";
   const story = parseStoryText(buf);
   if (!story.pages.length) {
     $("loadingMsg").classList.remove("dots");

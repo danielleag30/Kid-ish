@@ -33,6 +33,13 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: cors });
     }
+    if (request.method === "GET") {
+      // Friendly health check: open the Worker URL in a browser to verify it's live.
+      return new Response("Allison's story proxy is running ✨", {
+        status: 200,
+        headers: { ...cors, "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
     if (request.method !== "POST") {
       return new Response("Only POST is allowed", { status: 405, headers: cors });
     }
@@ -56,7 +63,10 @@ export default {
     // Pass the (possibly streaming) response back, with CORS added.
     const headers = new Headers(upstream.headers);
     for (const [k, v] of Object.entries(cors)) headers.set(k, v);
-    headers.delete("content-encoding"); // let the edge re-encode cleanly
+    // Let the edge re-encode the (streaming) body cleanly — a stale length or
+    // encoding header from upstream can truncate the stream.
+    headers.delete("content-encoding");
+    headers.delete("content-length");
     return new Response(upstream.body, { status: upstream.status, headers });
   },
 };
