@@ -2,935 +2,414 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Allison's Stories">
-<title>Allison's Storybook Maker</title>
+<title>Kid-ish — Fun stuff for kids</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
   :root {
-    --pink: #ff7eb6;
+    --pink:   #ff7eb6;
     --purple: #9b6dff;
     --yellow: #ffd166;
-    --teal: #4ecdc4;
-    --cream: #fff8ef;
-    --ink: #4a3b5c;
-    --shadow: 0 8px 0 rgba(74, 59, 92, 0.15);
+    --teal:   #4ecdc4;
+    --blue:   #74b9ff;
+    --orange: #fd9a3a;
+    --ink:    #3d2b5e;
+    --bg:     #f8f4ff;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overscroll-behavior: none; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", "Segoe Print", sans-serif;
-    background: linear-gradient(160deg, #c9b6ff 0%, #ffd6ec 45%, #fff3c9 100%);
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
     color: var(--ink);
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  .screen {
-    display: none;
+
+  /* ── CONFETTI CANVAS ─────────────────────────── */
+  #confetti {
     position: fixed;
     inset: 0;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: max(env(safe-area-inset-top), 16px) 16px max(env(safe-area-inset-bottom), 16px);
+    pointer-events: none;
+    z-index: 0;
   }
-  .screen.active { display: flex; }
 
-  /* ============ HOME ============ */
-  #home h1 {
-    margin-top: 24px;
-    font-size: clamp(28px, 5vw, 44px);
-    text-align: center;
-    color: #6b4fa0;
-    text-shadow: 2px 2px 0 #fff;
-  }
-  #home .subtitle {
-    font-size: clamp(16px, 2.6vw, 22px);
-    margin-top: 8px;
-    text-align: center;
-    color: #8a6fb8;
-  }
-  .ask-box {
-    width: min(680px, 100%);
-    margin-top: 28px;
-    background: #fff;
-    border-radius: 28px;
-    box-shadow: var(--shadow);
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  #ideaInput {
-    width: 100%;
-    min-height: 84px;
-    border: 3px dashed var(--purple);
-    border-radius: 18px;
-    padding: 14px;
-    font-family: inherit;
-    font-size: clamp(18px, 2.6vw, 24px);
-    color: var(--ink);
-    resize: none;
-    outline: none;
-    -webkit-user-select: text;
-    user-select: text;
-  }
-  #ideaInput:focus { border-style: solid; background: #fdfaff; }
-  .ask-row { display: flex; gap: 12px; }
-  .big-btn {
-    border: none;
-    border-radius: 22px;
-    padding: 16px 22px;
-    font-family: inherit;
-    font-size: clamp(18px, 2.8vw, 26px);
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: transform 0.08s;
-  }
-  .big-btn:active { transform: translateY(4px) scale(0.98); box-shadow: 0 2px 0 rgba(74,59,92,0.15); }
-  #makeBtn { flex: 1; background: linear-gradient(135deg, var(--pink), var(--purple)); }
-  #micBtn {
-    width: 76px;
-    background: var(--teal);
-    font-size: 30px;
-    flex: none;
-  }
-  #micBtn.listening { background: #ff5d5d; animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.1);} }
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  .chip {
-    background: #fff;
-    border: 3px solid var(--yellow);
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-family: inherit;
-    font-size: clamp(14px, 2.2vw, 19px);
-    color: var(--ink);
-    cursor: pointer;
-    box-shadow: 0 4px 0 rgba(74,59,92,0.12);
-  }
-  .chip:active { transform: translateY(3px); box-shadow: none; }
-
-  #shelf {
-    width: min(900px, 100%);
-    margin-top: 34px;
-    padding-bottom: 24px;
-  }
-  #shelf h2 { font-size: clamp(20px, 3vw, 28px); color: #6b4fa0; margin-bottom: 14px; text-align: center; }
-  .shelf-row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
-  .book-cover {
-    width: 168px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    cursor: pointer;
-    border: none;
-    padding: 0;
-    font-family: inherit;
+  /* ── HEADER ──────────────────────────────────── */
+  .header {
     position: relative;
-  }
-  .book-cover:active { transform: scale(0.96); }
-  .book-cover .thumb { width: 100%; height: 120px; background: #efe6ff; }
-  .book-cover .thumb svg { width: 100%; height: 100%; display: block; }
-  .book-cover .label {
-    padding: 8px 10px 12px;
-    font-size: 15px;
-    color: var(--ink);
-    line-height: 1.25;
-    min-height: 52px;
-  }
-  .book-del {
-    position: absolute;
-    top: 6px; right: 6px;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.9);
-    color: #c44;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  #gearBtn {
-    position: fixed;
-    top: max(env(safe-area-inset-top), 12px);
-    right: 14px;
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.75);
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 5;
-  }
-
-  /* ============ LOADING ============ */
-  #loading { justify-content: center; text-align: center; }
-  .wand { font-size: 90px; animation: wiggle 1.2s ease-in-out infinite; }
-  @keyframes wiggle { 0%,100% { transform: rotate(-12deg);} 50% { transform: rotate(16deg) translateY(-10px);} }
-  #loadingMsg { font-size: clamp(22px, 3.4vw, 32px); margin-top: 18px; color: #6b4fa0; min-height: 1.4em; }
-  #loadingSub { font-size: clamp(15px, 2.4vw, 20px); margin-top: 10px; color: #8a6fb8; }
-  .dots::after { content: ""; animation: dots 1.4s steps(4) infinite; }
-  @keyframes dots { 0% { content: "";} 25% { content: ".";} 50% { content: "..";} 75% { content: "...";} }
-  #cancelBtn { margin-top: 30px; background: #b8a6d9; }
-  #peek {
-    margin-top: 26px;
-    width: min(420px, 86vw);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    background: #fff;
-    display: none;
-  }
-  #peek svg { width: 100%; height: auto; display: block; }
-
-  /* ============ BOOK ============ */
-  #book { padding: 0; background: var(--cream); }
-  .book-top {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: max(env(safe-area-inset-top), 10px) 14px 6px;
-  }
-  .book-top h2 {
-    font-size: clamp(17px, 2.8vw, 26px);
-    color: #6b4fa0;
+    z-index: 1;
     text-align: center;
-    flex: 1;
-    padding: 0 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    padding: 52px 20px 28px;
+    background: linear-gradient(160deg, #c9b6ff 0%, #ffd6ec 50%, #fff3c9 100%);
   }
-  .round-btn {
-    width: 52px; height: 52px;
-    flex: none;
-    border-radius: 50%;
-    border: none;
-    background: #fff;
-    box-shadow: 0 4px 0 rgba(74,59,92,0.15);
-    font-size: 24px;
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    letter-spacing: 2px;
+    line-height: 1;
+    background: linear-gradient(135deg, #7b3fe4, #e4439c, #ff9b00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.08));
+  }
+
+  .header .tagline {
+    margin-top: 10px;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-weight: 700;
+    color: #8a6fb8;
+    letter-spacing: 0.5px;
+  }
+
+  .header .wave {
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 40px;
+    overflow: hidden;
+  }
+  .header .wave svg { display: block; width: 100%; height: 100%; }
+
+  /* ── GRID ────────────────────────────────────── */
+  .grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+    max-width: 1000px;
+    margin: 52px auto 60px;
+    padding: 0 24px;
+  }
+
+  /* ── PROJECT CARD ────────────────────────────── */
+  .card {
+    display: block;
+    text-decoration: none;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.1), 0 12px 30px rgba(0,0,0,0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
     cursor: pointer;
-  }
-  .round-btn:active { transform: translateY(3px); box-shadow: none; }
-  .page-area {
-    flex: 1;
-    width: min(820px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4px 16px 10px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .illustration {
-    width: 100%;
-    max-height: 52vh;
+    color: inherit;
     background: #fff;
-    border-radius: 24px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 14px 0 rgba(0,0,0,0.1), 0 20px 40px rgba(0,0,0,0.12);
+  }
+
+  .card:active {
+    transform: translateY(-2px) scale(0.99);
+  }
+
+  .card-banner {
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
   }
-  .illustration svg { width: 100%; height: auto; max-height: 52vh; display: block; }
-  .page-text {
-    margin-top: 16px;
-    font-size: clamp(20px, 3.2vw, 30px);
-    line-height: 1.5;
-    text-align: center;
-    color: var(--ink);
-    -webkit-user-select: text;
-    user-select: text;
+
+  .card-banner .banner-icon {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    animation: float 3s ease-in-out infinite;
   }
-  .book-bottom {
-    width: min(820px, 100%);
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  .card-banner .banner-icon:nth-child(2) { animation-delay: 0.4s; }
+  .card-banner .banner-icon:nth-child(3) { animation-delay: 0.8s; }
+
+  .card-body {
+    padding: 22px 24px 26px;
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.7rem;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #6a5480;
+    margin-bottom: 18px;
+  }
+
+  .card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .card:hover .card-btn {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ── CARD: ALLISON'S STORYBOOK ───────────────── */
+  .card-storybook .card-banner {
+    background: linear-gradient(135deg, #c9b6ff 0%, #ffd6ec 60%, #fff3c9 100%);
+  }
+  .card-storybook .card-tag {
+    background: #fce9f5;
+    color: #c44f9a;
+  }
+  .card-storybook .card-title { color: #6b3fa0; }
+  .card-storybook .card-btn   { background: linear-gradient(135deg, var(--pink), var(--purple)); }
+
+  /* ── CARD: STAR WARS ─────────────────────────── */
+  .card-starwars .card-banner {
+    background: radial-gradient(ellipse at 60% 40%, #1a1a3e 0%, #000010 100%);
+  }
+  .card-starwars .card-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 55% 30%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 78% 35%, rgba(255,232,31,0.8) 0%, transparent 100%);
+  }
+  .card-starwars .card-tag {
+    background: rgba(255,232,31,0.15);
+    color: #b8930a;
+  }
+  .card-starwars .card-title { color: #1a1a3e; }
+  .card-starwars .card-btn {
+    background: linear-gradient(135deg, #1a1a3e, #4a3080);
+    border: 1px solid rgba(255,232,31,0.4);
+  }
+
+  /* ── COMING SOON CARD ────────────────────────── */
+  .card-soon {
+    border: 3px dashed #d4c7f0;
+    box-shadow: none;
+    background: #faf8ff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 8px 16px max(env(safe-area-inset-bottom), 14px);
-  }
-  .nav-btn {
-    width: 84px; height: 64px;
-    border: none;
-    border-radius: 20px;
-    background: var(--purple);
-    color: #fff;
-    font-size: 32px;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-  }
-  .nav-btn:disabled { opacity: 0.25; }
-  .nav-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
-  #readBtn {
-    flex: 1;
-    height: 64px;
-    border: none;
-    border-radius: 20px;
-    background: var(--teal);
-    color: #fff;
-    font-family: inherit;
-    font-size: clamp(18px, 2.8vw, 24px);
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-  }
-  #readBtn:active { transform: translateY(4px); box-shadow: none; }
-  #pageNum { font-size: 16px; color: #8a6fb8; text-align: center; padding-bottom: 4px; }
-
-  /* ============ SETTINGS / GATE ============ */
-  .panel {
-    width: min(560px, 100%);
-    background: #fff;
-    border-radius: 24px;
-    box-shadow: var(--shadow);
-    padding: 24px;
-    margin-top: 30px;
-    display: flex;
+    justify-content: center;
     flex-direction: column;
-    gap: 14px;
+    min-height: 320px;
+    cursor: default;
+    text-decoration: none;
   }
-  .panel h2 { color: #6b4fa0; }
-  .panel label { font-size: 17px; font-weight: bold; }
-  .panel input, .panel select {
-    width: 100%;
-    padding: 12px;
-    font-size: 17px;
-    font-family: inherit;
-    border: 2px solid #d8c9f5;
-    border-radius: 12px;
-    outline: none;
-    -webkit-user-select: text;
-    user-select: text;
-    background: #fff;
-    color: var(--ink);
+  .card-soon:hover {
+    transform: none;
+    box-shadow: none;
   }
-  .panel .hint { font-size: 14px; color: #8a6fb8; font-weight: normal; line-height: 1.4; }
-  .panel-btns { display: flex; gap: 12px; margin-top: 8px; }
-  .panel-btns .big-btn { flex: 1; font-size: 19px; }
-  #saveSettingsBtn { background: var(--teal); }
-  .gray-btn { background: #b8a6d9; }
-  #gateAnswer { font-size: 24px; text-align: center; }
-  .err { color: #d23f5e; font-size: 15px; display: none; }
+  .card-soon .soon-emoji { font-size: 3rem; margin-bottom: 12px; }
+  .card-soon .soon-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: #c5b8e0;
+  }
+  .card-soon .soon-sub {
+    font-size: 0.85rem;
+    color: #c5b8e0;
+    margin-top: 6px;
+  }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px;
+    font-size: 0.8rem;
+    color: #b8a8d4;
+    font-weight: 600;
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 480px) {
+    .grid { gap: 20px; padding: 0 16px; margin-top: 40px; }
+    .card-banner { height: 150px; font-size: 4rem; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ================= HOME ================= -->
-<div id="home" class="screen active">
-  <button id="gearBtn" title="Grown-ups">⚙️</button>
-  <h1>🌈 Hi Allison! 🦄</h1>
-  <div class="subtitle">What story shall we make today?</div>
+<canvas id="confetti"></canvas>
 
-  <div class="ask-box">
-    <textarea id="ideaInput" placeholder="Tell me your story idea… like 'a dragon who is scared of marshmallows'"></textarea>
-    <div class="ask-row">
-      <button id="micBtn" class="big-btn" title="Talk to me!">🎤</button>
-      <button id="makeBtn" class="big-btn">✨ Make my story! ✨</button>
+<!-- Header -->
+<div class="header">
+  <h1>Kid-ish</h1>
+  <div class="tagline">✨ Fun stuff made just for you ✨</div>
+  <div class="wave">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C200,40 400,0 600,20 C800,40 1000,0 1200,20 L1200,40 L0,40 Z" fill="#f8f4ff"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Project Grid -->
+<div class="grid">
+
+  <!-- Allison's Storybook -->
+  <a href="/allison-storybook" class="card card-storybook">
+    <div class="card-banner">
+      <span class="banner-icon">🌈</span>
+      <span class="banner-icon">🦄</span>
+      <span class="banner-icon">✨</span>
     </div>
-    <div class="chips" id="chips"></div>
-  </div>
-
-  <div id="shelf">
-    <h2>📚 My Storybooks</h2>
-    <div class="shelf-row" id="shelfRow"></div>
-  </div>
-</div>
-
-<!-- ================= LOADING ================= -->
-<div id="loading" class="screen">
-  <div class="wand">🪄</div>
-  <div id="loadingMsg" class="dots">Thinking up your story</div>
-  <div id="loadingSub"></div>
-  <div id="peek"></div>
-  <button id="cancelBtn" class="big-btn">Never mind</button>
-</div>
-
-<!-- ================= BOOK ================= -->
-<div id="book" class="screen">
-  <div class="book-top">
-    <button id="homeBtn" class="round-btn" title="Home">🏠</button>
-    <h2 id="bookTitle"></h2>
-    <button id="newStoryBtn" class="round-btn" title="New story">✨</button>
-  </div>
-  <div class="page-area">
-    <div class="illustration" id="illustration"></div>
-    <div class="page-text" id="pageText"></div>
-  </div>
-  <div id="pageNum"></div>
-  <div class="book-bottom">
-    <button id="prevBtn" class="nav-btn">⬅️</button>
-    <button id="readBtn">🔊 Read to me!</button>
-    <button id="nextBtn" class="nav-btn">➡️</button>
-  </div>
-</div>
-
-<!-- ================= GROWN-UP GATE ================= -->
-<div id="gate" class="screen">
-  <div class="panel">
-    <h2>🔒 Grown-ups only</h2>
-    <label id="gateQuestion">What is 6 × 7?</label>
-    <input id="gateAnswer" type="number" inputmode="numeric" placeholder="?">
-    <div class="err" id="gateErr">Hmm, not quite — try again!</div>
-    <div class="panel-btns">
-      <button id="gateGoBtn" class="big-btn" style="background: var(--teal);">Enter</button>
-      <button id="gateBackBtn" class="big-btn gray-btn">Back</button>
+    <div class="card-body">
+      <div class="card-tag">📖 Story Maker</div>
+      <div class="card-title">Allison's Storybook</div>
+      <div class="card-desc">
+        Tell me a story idea — by talking or typing — and I'll write you a magical picture book with illustrations on every page!
+      </div>
+      <div class="card-btn">Let's make a story! ✨</div>
     </div>
-  </div>
-</div>
+  </a>
 
-<!-- ================= SETTINGS ================= -->
-<div id="settings" class="screen">
-  <div class="panel">
-    <h2>⚙️ Story Engine (for grown-ups)</h2>
-
-    <label for="providerSel">Where do stories come from?</label>
-    <select id="providerSel">
-      <option value="ollama_proxy">Ollama Cloud — via Worker proxy (recommended)</option>
-      <option value="openai">ChatGPT (OpenAI API, direct)</option>
-      <option value="ollama_direct">Ollama Cloud (direct, may be blocked)</option>
-      <option value="custom">Custom (any OpenAI-compatible URL)</option>
-    </select>
-    <div class="hint" id="providerHint"></div>
-
-    <label for="baseUrlInput">API base URL (or your Worker URL)</label>
-    <input id="baseUrlInput" type="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://….workers.dev">
-
-    <label for="apiKeyInput">API key <span id="keyOptional" class="hint" style="display:none;">(not needed with the Worker)</span></label>
-    <input id="apiKeyInput" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="sk-…">
-    <div class="hint">Stored only on this device (localStorage). Never sent anywhere except the URL above.</div>
-
-    <label for="modelInput">Model</label>
-    <input id="modelInput" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" list="modelList">
-    <datalist id="modelList"></datalist>
-
-    <label for="pagesInput">Pages per story</label>
-    <select id="pagesInput">
-      <option value="5">5 pages</option>
-      <option value="6" selected>6 pages</option>
-      <option value="8">8 pages</option>
-      <option value="10">10 pages</option>
-    </select>
-
-    <div class="err" id="settingsMsg"></div>
-    <div class="panel-btns">
-      <button id="saveSettingsBtn" class="big-btn">Save</button>
-      <button id="settingsBackBtn" class="big-btn gray-btn">Back</button>
+  <!-- Star Wars Flowchart -->
+  <a href="/star-wars-flowchart" class="card card-starwars">
+    <div class="card-banner">
+      <span class="banner-icon" style="font-size:4rem; animation-delay:0s;">⭐</span>
+      <span class="banner-icon" style="font-size:2.5rem; animation-delay:0.5s;">🚀</span>
+      <span class="banner-icon" style="font-size:3.5rem; animation-delay:1s;">⚔️</span>
     </div>
+    <div class="card-body">
+      <div class="card-tag">🌌 Star Wars</div>
+      <div class="card-title">Galaxy Flowchart</div>
+      <div class="card-desc">
+        Every Star Wars movie and show, connected in order — from the High Republic all the way to the Sequel Trilogy!
+      </div>
+      <div class="card-btn">Explore the galaxy →</div>
+    </div>
+  </a>
+
+  <!-- Coming Soon -->
+  <div class="card card-soon">
+    <div class="soon-emoji">🎮</div>
+    <div class="soon-text">More coming soon!</div>
+    <div class="soon-sub">New adventures are on the way…</div>
   </div>
+
 </div>
+
+<!-- Footer -->
+<div class="footer">Made with 💜 for curious kids everywhere</div>
 
 <script>
-"use strict";
+// ── FLOATING CONFETTI ──────────────────────────────
+(function () {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  const COLORS = ['#ff7eb6','#9b6dff','#ffd166','#4ecdc4','#74b9ff','#fd9a3a'];
+  const SHAPES = ['circle','rect','triangle'];
+  let pieces = [];
 
-/* ---------------- provider presets ---------------- */
-const PROVIDERS = {
-  ollama_proxy: {
-    baseUrl: "",
-    model: "gpt-oss:120b",
-    models: ["gpt-oss:120b", "gpt-oss:20b", "deepseek-v3.1:671b", "qwen3-coder:480b", "kimi-k2:1t"],
-    needsKey: false,
-    hint: "RECOMMENDED. Paste your Cloudflare Worker URL (ends in .workers.dev). The Worker holds your Ollama key safely and lets the iPad talk to Ollama Cloud. No key needed here — see README.",
-  },
-  openai: {
-    baseUrl: "https://api.openai.com/v1",
-    model: "gpt-4o",
-    models: ["gpt-4o", "gpt-4o-mini", "gpt-4.1", "gpt-4.1-mini", "gpt-5", "gpt-5-mini"],
-    needsKey: true,
-    hint: "Uses the OpenAI API directly. Note: API usage is billed separately from a ChatGPT Pro subscription — create a key at platform.openai.com/api-keys. (May be blocked by the browser's CORS rules — if stories won't load, use a proxy.)",
-  },
-  ollama_direct: {
-    baseUrl: "https://ollama.com/v1",
-    model: "gpt-oss:120b",
-    models: ["gpt-oss:120b", "gpt-oss:20b", "deepseek-v3.1:671b", "qwen3-coder:480b", "kimi-k2:1t"],
-    needsKey: true,
-    hint: "Calls Ollama Cloud straight from the iPad. Often blocked by the browser's CORS rules — prefer the Worker option above. Key from ollama.com/settings/keys.",
-  },
-  custom: {
-    baseUrl: "",
-    model: "",
-    models: [],
-    needsKey: false,
-    hint: "Any OpenAI-compatible /chat/completions endpoint (a proxy, LM Studio, a local Ollama with OLLAMA_ORIGINS set, …). Key is optional.",
-  },
-};
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
 
-const SETTINGS_KEY = "allison_settings_v1";
-const LIBRARY_KEY = "allison_library_v1";
-
-function loadSettings() {
-  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }
-  catch { return {}; }
-}
-function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
-
-function loadLibrary() {
-  try { return JSON.parse(localStorage.getItem(LIBRARY_KEY)) || []; }
-  catch { return []; }
-}
-function saveLibrary(lib) {
-  try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); }
-  catch {
-    // storage full — drop oldest stories until it fits
-    while (lib.length > 1) {
-      lib.shift();
-      try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); return; } catch {}
+  function init() {
+    pieces = [];
+    const count = Math.floor(window.innerWidth / 14);
+    for (let i = 0; i < count; i++) {
+      pieces.push({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height,
+        r:     Math.random() * 7 + 4,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+        vx:    (Math.random() - 0.5) * 0.4,
+        vy:    Math.random() * 0.5 + 0.2,
+        angle: Math.random() * Math.PI * 2,
+        va:    (Math.random() - 0.5) * 0.04,
+        alpha: Math.random() * 0.5 + 0.2,
+      });
     }
   }
-}
 
-/* ---------------- screens ---------------- */
-const screens = ["home", "loading", "book", "gate", "settings"];
-function show(name) {
-  for (const s of screens) document.getElementById(s).classList.toggle("active", s === name);
-  window.scrollTo(0, 0);
-}
-const $ = (id) => document.getElementById(id);
-
-/* ---------------- story idea chips ---------------- */
-const IDEAS = [
-  "🦄 A unicorn who loves pancakes",
-  "🐉 A tiny dragon's first day of school",
-  "🚀 Allison flies to a candy planet",
-  "🐶 A puppy detective solves a mystery",
-  "🧜‍♀️ A mermaid who collects seashell music",
-  "🦖 A dinosaur who wants to learn ballet",
-];
-const chipsEl = $("chips");
-for (const idea of IDEAS) {
-  const b = document.createElement("button");
-  b.className = "chip";
-  b.textContent = idea;
-  b.addEventListener("click", () => {
-    $("ideaInput").value = idea.replace(/^\S+\s/, "");
-  });
-  chipsEl.appendChild(b);
-}
-
-/* ---------------- speech: input ---------------- */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognizer = null;
-if (SR) {
-  recognizer = new SR();
-  recognizer.lang = "en-US";
-  recognizer.interimResults = true;
-  recognizer.continuous = false;
-  recognizer.onresult = (e) => {
-    let text = "";
-    for (const res of e.results) text += res[0].transcript;
-    $("ideaInput").value = text;
-  };
-  recognizer.onend = () => $("micBtn").classList.remove("listening");
-  recognizer.onerror = () => $("micBtn").classList.remove("listening");
-} else {
-  $("micBtn").style.display = "none";
-}
-$("micBtn").addEventListener("click", () => {
-  if (!recognizer) return;
-  if ($("micBtn").classList.contains("listening")) {
-    recognizer.stop();
-    return;
-  }
-  $("ideaInput").value = "";
-  $("micBtn").classList.add("listening");
-  try { recognizer.start(); } catch { $("micBtn").classList.remove("listening"); }
-});
-
-/* ---------------- speech: read aloud ---------------- */
-let speaking = false;
-function stopReading() {
-  speaking = false;
-  window.speechSynthesis.cancel();
-  $("readBtn").textContent = "🔊 Read to me!";
-}
-function readAloud(text) {
-  stopReading();
-  if (!("speechSynthesis" in window) || !text) return;
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.92;
-  u.pitch = 1.1;
-  const voices = window.speechSynthesis.getVoices();
-  const nice = voices.find(v => /Samantha|female|Karen|Moira|Google US English/i.test(v.name)) ||
-               voices.find(v => v.lang.startsWith("en"));
-  if (nice) u.voice = nice;
-  u.onend = () => { speaking = false; $("readBtn").textContent = "🔊 Read to me!"; };
-  speaking = true;
-  $("readBtn").textContent = "⏹ Stop";
-  window.speechSynthesis.speak(u);
-}
-$("readBtn").addEventListener("click", () => {
-  if (speaking) stopReading();
-  else readAloud(currentStory?.pages[currentPage]?.text || "");
-});
-
-/* ---------------- SVG sanitizing ---------------- */
-const BANNED_TAGS = new Set(["script", "foreignobject", "iframe", "object", "embed", "audio", "video", "animate", "set", "animatetransform", "animatemotion"]);
-function sanitizeSvg(svgText) {
-  try {
-    const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
-    const root = doc.documentElement;
-    if (!root || root.nodeName.toLowerCase() !== "svg") return null;
-    const walk = (node) => {
-      const kids = Array.from(node.children || []);
-      for (const child of kids) {
-        if (BANNED_TAGS.has(child.nodeName.toLowerCase())) { child.remove(); continue; }
-        for (const attr of Array.from(child.attributes || [])) {
-          const n = attr.name.toLowerCase();
-          const v = attr.value || "";
-          if (n.startsWith("on")) child.removeAttribute(attr.name);
-          else if ((n === "href" || n === "xlink:href") && !v.startsWith("#")) child.removeAttribute(attr.name);
-          else if (n === "style" && /url\s*\(/i.test(v) && !/url\s*\(\s*['"]?#/i.test(v)) child.removeAttribute(attr.name);
-        }
-        walk(child);
-      }
-    };
-    for (const attr of Array.from(root.attributes)) {
-      if (attr.name.toLowerCase().startsWith("on")) root.removeAttribute(attr.name);
-    }
-    walk(root);
-    if (!root.getAttribute("viewBox")) root.setAttribute("viewBox", "0 0 800 600");
-    root.removeAttribute("width");
-    root.removeAttribute("height");
-    root.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    return new XMLSerializer().serializeToString(root);
-  } catch { return null; }
-}
-const FALLBACK_SVG = `<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="600" fill="#e8defc"/><circle cx="400" cy="260" r="110" fill="#ffd166"/><path d="M250 430 q150 -120 300 0" stroke="#9b6dff" stroke-width="18" fill="none" stroke-linecap="round"/><text x="400" y="540" font-size="44" text-anchor="middle" fill="#6b4fa0" font-family="sans-serif">✨ imagine this part! ✨</text></svg>`;
-
-/* ---------------- story generation ---------------- */
-function buildSystemPrompt(pageCount) {
-  return `You are a magical storybook maker for Allison, a seven-year-old girl. You write warm, funny, gentle picture-book stories and you ILLUSTRATE every page yourself with hand-crafted SVG art.
-
-RULES FOR THE STORY:
-- Exactly ${pageCount} pages. Each page is 2-4 short sentences a 7-year-old can follow.
-- Sweet, silly, adventurous. Nothing scary, sad endings, violence, or grown-up topics.
-- If the idea mentions Allison, make her the brave hero.
-- Vocabulary for age 7; one or two fun new words are okay.
-
-RULES FOR THE ART (one SVG per page):
-- A single complete <svg> element with viewBox="0 0 800 600" and xmlns="http://www.w3.org/2000/svg".
-- Colorful flat children's-picture-book style: bold shapes, friendly faces with simple eyes and smiles, a sky/ground or scene background that fills the whole canvas.
-- Build characters from circles, ellipses, rounded rects and simple paths. Keep each SVG under 120 elements. No <script>, no <image>, no external references, no animation tags.
-- Keep characters looking consistent from page to page (same colors and shapes).
-
-OUTPUT FORMAT — follow it EXACTLY, no markdown, no commentary:
-@@TITLE@@
-(the story title)
-@@PAGE@@
-(text of page 1)
-@@ART@@
-(svg of page 1)
-@@PAGE@@
-(text of page 2)
-@@ART@@
-(svg of page 2)
-... and so on for all ${pageCount} pages, then finally:
-@@END@@`;
-}
-
-let abortCtrl = null;
-let currentStory = null;
-let currentPage = 0;
-
-function cleanModelOutput(buf) {
-  // Some models wrap output in markdown fences despite instructions — strip them.
-  return buf.replace(/```[a-zA-Z]*\n?/g, "");
-}
-
-function parseStoryText(rawBuf) {
-  const buf = cleanModelOutput(rawBuf);
-  // Returns {title, pages:[{text, svg}], complete}
-  const out = { title: "", pages: [], complete: /@@END@@/.test(buf) };
-  const tm = buf.match(/@@TITLE@@\s*([\s\S]*?)\s*(?=@@PAGE@@|@@END@@|$)/);
-  if (tm) out.title = tm[1].trim().replace(/^["']|["']$/g, "");
-  const pageRe = /@@PAGE@@\s*([\s\S]*?)\s*@@ART@@\s*([\s\S]*?)\s*(?=@@PAGE@@|@@END@@)/g;
-  let m;
-  while ((m = pageRe.exec(buf)) !== null) {
-    const text = m[1].trim();
-    const rawSvg = (m[2].match(/<svg[\s\S]*<\/svg>/i) || [null])[0];
-    const svg = rawSvg ? sanitizeSvg(rawSvg) : null;
-    out.pages.push({ text, svg: svg || FALLBACK_SVG });
-  }
-  return out;
-}
-
-async function generateStory(idea) {
-  const s = loadSettings();
-  if (!s.baseUrl || !s.model) {
-    alert("A grown-up needs to set up the story engine first! Tap the ⚙️ in the corner.");
-    return;
-  }
-  show("loading");
-  $("loadingMsg").textContent = "Thinking up your story";
-  $("loadingMsg").classList.add("dots");
-  $("loadingSub").textContent = "";
-  $("peek").style.display = "none";
-  $("peek").innerHTML = "";
-
-  abortCtrl = new AbortController();
-  const pageCount = parseInt(s.pages || "6", 10);
-  const body = {
-    model: s.model,
-    stream: true,
-    messages: [
-      { role: "system", content: buildSystemPrompt(pageCount) },
-      { role: "user", content: `Please make a storybook about: ${idea}` },
-    ],
-  };
-
-  let buf = "";
-  let shownPages = 0;
-  try {
-    // The Worker proxy already ends at /chat/completions; raw API base URLs don't.
-    const base = s.baseUrl.replace(/\/+$/, "");
-    const url = /\/chat\/completions$/.test(base) ? base : base + "/chat/completions";
-    const headers = { "Content-Type": "application/json" };
-    if (s.apiKey) headers["Authorization"] = "Bearer " + s.apiKey;
-    const resp = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-      signal: abortCtrl.signal,
-    });
-    if (!resp.ok) {
-      const errText = await resp.text().catch(() => "");
-      throw new Error(`API error ${resp.status}: ${errText.slice(0, 300)}`);
-    }
-
-    const ct = resp.headers.get("content-type") || "";
-    if (resp.body && ct.includes("text/event-stream")) {
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let sse = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        sse += decoder.decode(value, { stream: true });
-        const lines = sse.split("\n");
-        sse = lines.pop();
-        for (const line of lines) {
-          const t = line.trim();
-          if (!t.startsWith("data:")) continue;
-          const payload = t.slice(5).trim();
-          if (payload === "[DONE]") continue;
-          try {
-            const j = JSON.parse(payload);
-            buf += j.choices?.[0]?.delta?.content || "";
-          } catch {}
-        }
-        // live progress
-        const partial = parseStoryText(buf);
-        if (partial.title && shownPages === 0) {
-          $("loadingMsg").classList.remove("dots");
-          $("loadingMsg").textContent = `“${partial.title}”`;
-        }
-        if (partial.pages.length > shownPages) {
-          shownPages = partial.pages.length;
-          $("loadingSub").textContent = `Drawing page ${shownPages} of ${pageCount}… 🖍️`;
-          const last = partial.pages[shownPages - 1];
-          if (last.svg) {
-            $("peek").innerHTML = last.svg;
-            $("peek").style.display = "block";
-          }
-        }
-      }
+  function drawPiece(p) {
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle   = p.color;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    if (p.shape === 'circle') {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (p.shape === 'rect') {
+      ctx.fillRect(-p.r, -p.r * 0.5, p.r * 2, p.r);
     } else {
-      // non-streaming response (some providers ignore stream:true)
-      const j = await resp.json();
-      buf = j.choices?.[0]?.message?.content || "";
+      ctx.beginPath();
+      ctx.moveTo(0, -p.r);
+      ctx.lineTo(p.r, p.r);
+      ctx.lineTo(-p.r, p.r);
+      ctx.closePath();
+      ctx.fill();
     }
-  } catch (err) {
-    if (err.name === "AbortError") { show("home"); return; }
-    console.error(err);
-    $("loadingMsg").classList.remove("dots");
-    $("loadingMsg").textContent = "Uh oh! The story machine hiccuped. 🙈";
-    $("loadingSub").textContent = "Ask a grown-up to peek at the settings, then try again!";
-    setTimeout(() => show("home"), 4500);
-    return;
+    ctx.restore();
   }
 
-  // If the model forgot the final @@END@@ marker, the last page would be
-  // dropped by the parser's lookahead — patch it in before the final parse.
-  if (!/@@END@@/.test(buf)) buf += "\n@@END@@";
-  const story = parseStoryText(buf);
-  if (!story.pages.length) {
-    $("loadingMsg").classList.remove("dots");
-    $("loadingMsg").textContent = "Hmm, the story got lost in the clouds. ☁️";
-    $("loadingSub").textContent = "Let's try once more!";
-    setTimeout(() => show("home"), 4000);
-    return;
-  }
-  if (!story.title) story.title = idea.slice(0, 60);
-
-  const record = {
-    id: Date.now(),
-    title: story.title,
-    idea,
-    pages: story.pages,
-    created: new Date().toISOString(),
-  };
-  const lib = loadLibrary();
-  lib.push(record);
-  saveLibrary(lib);
-  renderShelf();
-  openStory(record);
-}
-
-$("makeBtn").addEventListener("click", () => {
-  const idea = $("ideaInput").value.trim();
-  if (!idea) {
-    $("ideaInput").placeholder = "First tell me your idea! 💭";
-    $("ideaInput").focus();
-    return;
-  }
-  generateStory(idea);
-});
-$("cancelBtn").addEventListener("click", () => { if (abortCtrl) abortCtrl.abort(); });
-
-/* ---------------- book viewer ---------------- */
-function openStory(story) {
-  currentStory = story;
-  currentPage = 0;
-  $("bookTitle").textContent = story.title;
-  renderPage();
-  show("book");
-}
-function renderPage() {
-  stopReading();
-  const p = currentStory.pages[currentPage];
-  $("illustration").innerHTML = p.svg || FALLBACK_SVG;
-  $("pageText").textContent = p.text;
-  $("pageNum").textContent = `Page ${currentPage + 1} of ${currentStory.pages.length}`;
-  $("prevBtn").disabled = currentPage === 0;
-  $("nextBtn").disabled = currentPage === currentStory.pages.length - 1;
-}
-$("prevBtn").addEventListener("click", () => { if (currentPage > 0) { currentPage--; renderPage(); } });
-$("nextBtn").addEventListener("click", () => { if (currentPage < currentStory.pages.length - 1) { currentPage++; renderPage(); } });
-$("homeBtn").addEventListener("click", () => { stopReading(); show("home"); });
-$("newStoryBtn").addEventListener("click", () => { stopReading(); $("ideaInput").value = ""; show("home"); $("ideaInput").focus(); });
-
-// swipe to turn pages
-let touchX = null;
-$("book").addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-$("book").addEventListener("touchend", (e) => {
-  if (touchX === null) return;
-  const dx = e.changedTouches[0].clientX - touchX;
-  touchX = null;
-  if (Math.abs(dx) < 60) return;
-  if (dx < 0 && currentPage < currentStory.pages.length - 1) { currentPage++; renderPage(); }
-  else if (dx > 0 && currentPage > 0) { currentPage--; renderPage(); }
-}, { passive: true });
-
-/* ---------------- bookshelf ---------------- */
-function renderShelf() {
-  const lib = loadLibrary().slice().reverse();
-  const row = $("shelfRow");
-  row.innerHTML = "";
-  if (!lib.length) {
-    row.innerHTML = `<div style="color:#8a6fb8; font-size:17px;">No storybooks yet — make your first one! 🎈</div>`;
-    return;
-  }
-  for (const story of lib) {
-    const card = document.createElement("button");
-    card.className = "book-cover";
-    const thumb = document.createElement("div");
-    thumb.className = "thumb";
-    thumb.innerHTML = story.pages[0]?.svg || FALLBACK_SVG;
-    const label = document.createElement("div");
-    label.className = "label";
-    label.textContent = story.title;
-    const del = document.createElement("button");
-    del.className = "book-del";
-    del.textContent = "✕";
-    del.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (!confirm(`Put away "${story.title}" forever?`)) return;
-      saveLibrary(loadLibrary().filter(s => s.id !== story.id));
-      renderShelf();
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.x     += p.vx;
+      p.y     += p.vy;
+      p.angle += p.va;
+      if (p.y > canvas.height + 20) { p.y = -20; p.x = Math.random() * canvas.width; }
+      if (p.x < -20) p.x = canvas.width + 20;
+      if (p.x > canvas.width + 20) p.x = -20;
+      drawPiece(p);
     });
-    card.appendChild(thumb);
-    card.appendChild(label);
-    card.appendChild(del);
-    card.addEventListener("click", () => openStory(story));
-    row.appendChild(card);
+    requestAnimationFrame(tick);
   }
-}
 
-/* ---------------- grown-up gate + settings ---------------- */
-let gateAns = 0;
-$("gearBtn").addEventListener("click", () => {
-  const a = 3 + Math.floor(Math.random() * 6);
-  const b = 4 + Math.floor(Math.random() * 6);
-  gateAns = a * b;
-  $("gateQuestion").textContent = `What is ${a} × ${b}?`;
-  $("gateAnswer").value = "";
-  $("gateErr").style.display = "none";
-  show("gate");
-});
-$("gateBackBtn").addEventListener("click", () => show("home"));
-$("gateGoBtn").addEventListener("click", () => {
-  if (parseInt($("gateAnswer").value, 10) === gateAns) openSettings();
-  else $("gateErr").style.display = "block";
-});
-
-function applyProviderPreset(name, keepValues) {
-  const p = PROVIDERS[name];
-  $("providerHint").textContent = p.hint;
-  $("modelList").innerHTML = p.models.map(m => `<option value="${m}">`).join("");
-  $("keyOptional").style.display = p.needsKey ? "none" : "inline";
-  if (!keepValues) {
-    $("baseUrlInput").value = p.baseUrl;
-    $("modelInput").value = p.model;
-  }
-}
-$("providerSel").addEventListener("change", () => applyProviderPreset($("providerSel").value, false));
-
-function openSettings() {
-  const s = loadSettings();
-  const provider = s.provider || "ollama_proxy";
-  $("providerSel").value = provider;
-  applyProviderPreset(provider, true);
-  $("baseUrlInput").value = s.baseUrl ?? PROVIDERS[provider].baseUrl;
-  $("apiKeyInput").value = s.apiKey || "";
-  $("modelInput").value = s.model ?? PROVIDERS[provider].model;
-  $("pagesInput").value = s.pages || "6";
-  $("settingsMsg").style.display = "none";
-  show("settings");
-}
-$("settingsBackBtn").addEventListener("click", () => show("home"));
-$("saveSettingsBtn").addEventListener("click", () => {
-  const s = {
-    provider: $("providerSel").value,
-    baseUrl: $("baseUrlInput").value.trim(),
-    apiKey: $("apiKeyInput").value.trim(),
-    model: $("modelInput").value.trim(),
-    pages: $("pagesInput").value,
-  };
-  const needsKey = (PROVIDERS[s.provider] || {}).needsKey;
-  if (!s.baseUrl || !s.model || (needsKey && !s.apiKey)) {
-    const msg = $("settingsMsg");
-    msg.textContent = needsKey
-      ? "Please fill in the base URL, API key, and model."
-      : "Please fill in the Worker URL and model.";
-    msg.style.display = "block";
-    return;
-  }
-  saveSettings(s);
-  show("home");
-});
-
-/* ---------------- init ---------------- */
-renderShelf();
-if ("speechSynthesis" in window) window.speechSynthesis.getVoices(); // warm voice list
+  resize();
+  init();
+  tick();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
 </script>
+
 </body>
 </html>
