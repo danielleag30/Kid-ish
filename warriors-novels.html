@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Warriors — Novels Character Chart</title>
+<style>
+:root {
+  --bg:       #07110a;
+  --bg2:      #0d1f10;
+  --bg3:      #122714;
+  --card:     #152918;
+  --card2:    #1c3320;
+  --border:   #2a4a2e;
+  --moon:     #d8e8d0;
+  --silver:   #9ab89e;
+  --mist:     #607860;
+  --gold:     #d4af37;
+  --amber:    #c87941;
+  --text:     #cce0cc;
+  --text-dim: #7a9e7a;
+
+  /* Clan accent colours */
+  --thunder:  #e8891a;
+  --shadow:   #9b6dcc;
+  --wind:     #c8b060;
+  --river:    #4a9ad9;
+  --starclan: #a8c8f0;
+  --skyclan:  #4ab87a;
+  --other:    #8a9e8a;
+
+  --radius:   18px;
+  --shadow-card: 0 6px 24px rgba(0,0,0,0.6);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  /* Starfield background */
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(168,200,240,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(74,184,122,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(13,31,16,0.9) 0%, transparent 100%);
+}
+
+/* ── Stars pseudo-layer ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(200,230,200,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 34% 5%,  rgba(200,230,200,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 22%, rgba(200,230,200,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 8%,  rgba(200,230,200,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 89% 15%, rgba(200,230,200,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5%  38%, rgba(200,230,200,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 42%, rgba(200,230,200,0.4) 0%, transparent 100%),
+    radial-gradient(2px 2px at 48% 3%,  rgba(168,200,240,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 23% 55%, rgba(200,230,200,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 67% 60%, rgba(200,230,200,0.3) 0%, transparent 100%);
+  z-index: 0;
+}
+
+/* ── Layout ── */
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: max(env(safe-area-inset-top),16px) 16px max(env(safe-area-inset-bottom),24px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.site-header {
+  text-align: center;
+  padding: 24px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.site-header .nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.nav-link {
+  display: inline-block;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  color: var(--silver);
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 7px 18px;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-link:hover { background: var(--border); color: var(--moon); }
+.nav-link.active { background: var(--gold); color: #0a1a0a; font-weight: bold; border-color: var(--gold); }
+.site-header h1 {
+  font-size: clamp(26px, 4.5vw, 44px);
+  color: var(--moon);
+  text-shadow: 0 0 24px rgba(212,175,55,0.4), 0 2px 0 rgba(0,0,0,0.8);
+  letter-spacing: 0.04em;
+}
+.site-header .tagline {
+  font-size: clamp(13px, 2vw, 17px);
+  color: var(--mist);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ── Filter bar ── */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.arc-select {
+  flex: 1;
+  min-width: 180px;
+  max-width: 340px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  color: var(--moon);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ab89e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+/* ── Clan tabs ── */
+.clan-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.clan-tab {
+  border: none;
+  background: var(--card2);
+  border: 1.5px solid var(--border);
+  color: var(--silver);
+  font-family: inherit;
+  font-size: clamp(13px, 2.2vw, 16px);
+  padding: 9px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.clan-tab:active { transform: translateY(2px); }
+.clan-tab[data-clan="thunder"].active { background: var(--thunder); border-color: var(--thunder); color: #0a0a0a; }
+.clan-tab[data-clan="shadow"].active  { background: var(--shadow);  border-color: var(--shadow);  color: #fff; }
+.clan-tab[data-clan="wind"].active    { background: var(--wind);    border-color: var(--wind);    color: #0a0a0a; }
+.clan-tab[data-clan="river"].active   { background: var(--river);   border-color: var(--river);   color: #fff; }
+.clan-tab[data-clan="starclan"].active { background: var(--starclan); border-color: var(--starclan); color: #0a0a0a; }
+.clan-tab[data-clan="skyclan"].active { background: var(--skyclan); border-color: var(--skyclan); color: #0a0a0a; }
+.clan-tab[data-clan="other"].active   { background: var(--other);   border-color: var(--other);   color: #0a0a0a; }
+.clan-tab[data-clan="all"].active     { background: var(--gold);    border-color: var(--gold);    color: #0a0a0a; }
+
+/* ── Character grid ── */
+#char-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+#no-results {
+  display: none;
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--mist);
+  font-style: italic;
+  padding: 40px 0;
+  font-size: 18px;
+}
+
+/* ── Character card ── */
+.char-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s;
+}
+.char-card:active { transform: scale(0.985); }
+.clan-bar {
+  height: 5px;
+  width: 100%;
+}
+.char-card[data-clan="thunder"] .clan-bar { background: var(--thunder); }
+.char-card[data-clan="shadow"]  .clan-bar { background: var(--shadow); }
+.char-card[data-clan="wind"]    .clan-bar { background: var(--wind); }
+.char-card[data-clan="river"]   .clan-bar { background: var(--river); }
+.char-card[data-clan="starclan"] .clan-bar { background: linear-gradient(90deg, var(--starclan), var(--silver)); }
+.char-card[data-clan="skyclan"] .clan-bar { background: var(--skyclan); }
+.char-card[data-clan="other"]   .clan-bar { background: var(--other); }
+
+.card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+.card-header { display: flex; align-items: flex-start; gap: 10px; }
+.clan-badge {
+  flex: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+}
+.char-names { flex: 1; }
+.char-name {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--moon);
+  font-weight: bold;
+  line-height: 1.2;
+}
+.char-former {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  font-style: italic;
+}
+.char-rank {
+  display: inline-block;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  color: var(--silver);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.card-section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.card-desc {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.card-role {
+  font-size: 14px;
+  color: var(--silver);
+  line-height: 1.5;
+  font-style: italic;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Relationships */
+.rel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rel-item {
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  gap: 6px;
+}
+.rel-key {
+  color: var(--text-dim);
+  min-width: 80px;
+  flex: none;
+  font-style: italic;
+}
+.rel-val { -webkit-user-select: text; user-select: text; }
+
+/* Arc tags */
+.arc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.arc-tag {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--mist);
+  letter-spacing: 0.03em;
+}
+
+/* Q&A section */
+.qa-section { margin-top: 4px; }
+.qa-toggle {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--silver);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.qa-toggle:hover { background: var(--card2); }
+.qa-toggle .chevron { margin-left: auto; transition: transform 0.2s; font-style: normal; }
+.qa-toggle.open .chevron { transform: rotate(180deg); }
+.qa-items {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0 0;
+}
+.qa-items.open { display: flex; }
+.qa-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.qa-question {
+  font-size: 13px;
+  color: var(--moon);
+  line-height: 1.45;
+  margin-bottom: 6px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.qa-reveal-btn {
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  width: 100%;
+  text-align: left;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.qa-reveal-btn:hover { color: var(--silver); border-color: var(--silver); }
+.qa-answer {
+  display: none;
+  font-size: 13px;
+  color: var(--gold);
+  line-height: 1.45;
+  margin-top: 4px;
+  padding: 6px 8px;
+  background: rgba(212,175,55,0.07);
+  border-radius: 6px;
+  border-left: 2px solid var(--gold);
+  -webkit-user-select: text;
+  user-select: text;
+}
+.qa-answer.shown { display: block; }
+
+/* ── Arc storylines ── */
+#storylines { margin-bottom: 40px; }
+.section-heading {
+  font-size: clamp(18px, 3vw, 26px);
+  color: var(--moon);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+  letter-spacing: 0.03em;
+}
+.arc-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.arc-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--moon);
+  font-family: inherit;
+  font-size: clamp(15px, 2.2vw, 18px);
+  font-weight: bold;
+  padding: 16px 20px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.arc-toggle:hover { background: var(--card2); }
+.arc-toggle .arc-chev { margin-left: auto; color: var(--text-dim); transition: transform 0.2s; }
+.arc-toggle.open .arc-chev { transform: rotate(180deg); }
+.arc-content {
+  display: none;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.arc-content.open { display: block; }
+.arc-books {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+.arc-book-tag {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: var(--silver);
+}
+.arc-summary {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 16px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.parent-qs-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.parent-q-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.parent-q-text {
+  font-size: 14px;
+  color: var(--moon);
+  margin-bottom: 8px;
+  line-height: 1.4;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.parent-a-btn {
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.parent-a-btn:hover { color: var(--silver); border-color: var(--silver); }
+.parent-a-text {
+  display: none;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.5;
+  padding: 6px 8px;
+  background: rgba(200,121,65,0.07);
+  border-left: 2px solid var(--amber);
+  border-radius: 4px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.parent-a-text.shown { display: block; }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--mist);
+  font-size: 13px;
+  padding: 20px 0 10px;
+  border-top: 1px solid var(--border);
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── Header ── -->
+<header class="site-header">
+  <nav class="nav-links">
+    <a class="nav-link" href="/">🏠 Home</a>
+    <a class="nav-link active" href="/warriors-novels">🐱 Warriors Novels</a>
+    <a class="nav-link" href="/warriors-gn">📖 Graphic Novels</a>
+  </nav>
+  <h1>Warriors — Novels</h1>
+  <div class="tagline">Character chart &amp; arc guide · Novels, Super Editions &amp; Novellas</div>
+</header>
+
+<!-- ── Filters ── -->
+<div class="filter-bar">
+  <div class="filter-row">
+    <span class="filter-label">Arc</span>
+    <select class="arc-select" id="arcFilter">
+      <option value="all">All arcs</option>
+      <option value="prophecies-begin">The Prophecies Begin</option>
+      <option value="new-prophecy">The New Prophecy</option>
+      <option value="power-of-three">Power of Three</option>
+      <option value="omen-of-stars">Omen of the Stars</option>
+      <option value="dawn-of-clans">Dawn of the Clans (Prequel)</option>
+      <option value="vision-of-shadows">A Vision of Shadows</option>
+      <option value="broken-code">The Broken Code</option>
+    </select>
+  </div>
+  <div class="clan-tabs" id="clanTabs">
+    <button class="clan-tab active" data-clan="all">🌲 All Clans</button>
+    <button class="clan-tab" data-clan="thunder">🔥 ThunderClan</button>
+    <button class="clan-tab" data-clan="shadow">🌑 ShadowClan</button>
+    <button class="clan-tab" data-clan="wind">💨 WindClan</button>
+    <button class="clan-tab" data-clan="river">🌊 RiverClan</button>
+    <button class="clan-tab" data-clan="starclan">⭐ StarClan</button>
+    <button class="clan-tab" data-clan="skyclan">🍃 SkyClan</button>
+    <button class="clan-tab" data-clan="other">🏚 Loners &amp; Rogues</button>
+  </div>
+</div>
+
+<!-- ── Character Grid ── -->
+<div id="char-grid">
+  <div id="no-results">No cats found for this filter combination. 🐾</div>
+</div>
+
+<!-- ── Arc Storylines ── -->
+<section id="storylines">
+  <h2 class="section-heading">📜 Arc Storylines &amp; Parent Discussion Guide</h2>
+  <div id="arc-blocks"></div>
+</section>
+
+<footer>Warriors series by Erin Hunter · Character chart for readers ages 8–12 · 🐾 May StarClan light your path</footer>
+</div><!-- /app -->
+
+<script>
+"use strict";
+
+/* ═══════════════════════════════════════════════
+   CHARACTER DATA
+═══════════════════════════════════════════════ */
+const CLAN_EMOJI = {
+  thunder: "🔥", shadow: "🌑", wind: "💨",
+  river: "🌊", starclan: "⭐", skyclan: "🍃", other: "🏚"
+};
+
+const ARC_NAMES = {
+  "prophecies-begin": "Prophecies Begin",
+  "new-prophecy": "New Prophecy",
+  "power-of-three": "Power of Three",
+  "omen-of-stars": "Omen of Stars",
+  "dawn-of-clans": "Dawn of the Clans",
+  "vision-of-shadows": "Vision of Shadows",
+  "broken-code": "Broken Code",
+};
+
+const CHARACTERS = [
+  /* ─────── THUNDERCLAN ─────── */
+  {
+    name: "Firestar",
+    formerNames: ["Rusty", "Firepaw", "Fireheart"],
+    clan: "thunder",
+    rank: "Leader",
+    description: "Flame-coloured ginger tom with bright green eyes. Born a kittypet (house cat). Unusually courageous and fair-minded.",
+    relationships: { mate: "Sandstorm", kits: "Squirrelflight, Leafpool", bestFriend: "Graystripe", mentor: "Bluestar (via Lionheart)" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars"],
+    role: "The main hero of the first arc and heart of the whole series. A kittypet who earns his place in ThunderClan and rises to become its leader, fulfilling the prophecy 'fire alone can save the Clan.'",
+    questions: [
+      { q: "What was Firestar's name before he joined the Clan?", a: "Rusty — he was a kittypet (house cat) who lived with Twolegs (humans)." },
+      { q: "Who was Firestar's best friend in ThunderClan?", a: "Graystripe, a long-haired gray tom who became his first real Clanmate and closest companion." },
+      { q: "What prophecy was spoken about Firestar?", a: "'Fire alone can save the Clan' — StarClan chose him because his courage and loyalty burned as bright as flame." }
+    ]
+  },
+  {
+    name: "Bluestar",
+    formerNames: ["Bluepaw","Bluefur"],
+    clan: "thunder",
+    rank: "Leader",
+    description: "Blue-gray she-cat with silver-tipped fur, a silver muzzle, and piercing ice-blue eyes. Wise and dignified, but haunted by sacrifice.",
+    relationships: { "secret mate": "Oakheart (RiverClan)", kits: "Mistystar, Stonefur, Mosskit (given to RiverClan)", apprentice: "Firestar" },
+    arcs: ["prophecies-begin"],
+    role: "ThunderClan's leader when Firestar arrives. She recognises his potential and sponsors him despite objections. Gives up her own kits to become deputy and protect the Clan. Her faith in StarClan is shattered by betrayal but restored before her death.",
+    questions: [
+      { q: "What heartbreaking sacrifice did Bluestar make when she was young?", a: "She gave her kits to RiverClan to raise, so she could become ThunderClan's deputy and stop a power-hungry rival from leading the Clan." },
+      { q: "How did Bluestar die?", a: "She led a pack of dogs away from ThunderClan's camp and drowned in the river — giving her last life to save her Clanmates." },
+      { q: "Why did Bluestar stop trusting StarClan near the end of her life?", a: "After Tigerclaw — her own trusted deputy — betrayed her, she felt she had been given signs she misread, and lost faith in StarClan's guidance." }
+    ]
+  },
+  {
+    name: "Graystripe",
+    formerNames: ["Graypaw"],
+    clan: "thunder",
+    rank: "Warrior · Deputy",
+    description: "Long-haired dark gray tom with a darker gray stripe down his back and amber eyes. Warm, funny, and fiercely loyal.",
+    relationships: { bestFriend: "Firestar", "first mate (deceased)": "Silverstream (RiverClan)", "second mate": "Millie", kits: "Feathertail, Stormfur; Briarlight, Blossomfall, Bumblestripe" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars"],
+    role: "Firestar's loyal best friend from his first day in ThunderClan. Falls in love with a RiverClan warrior, causing a Clan loyalty crisis. Captured by Twolegs, spends time in captivity, and returns just in time to help guide the Clans to the lake.",
+    questions: [
+      { q: "Why did Graystripe get in trouble for falling in love with Silverstream?", a: "She was from RiverClan — a rival Clan — and the warrior code forbids taking mates from other Clans." },
+      { q: "What happened to Graystripe during The New Prophecy arc?", a: "He was captured by Twolegs (humans) and taken away. He eventually escaped and found ThunderClan at the lake." }
+    ]
+  },
+  {
+    name: "Sandstorm",
+    formerNames: ["Sandpaw"],
+    clan: "thunder",
+    rank: "Warrior",
+    description: "Pale ginger she-cat with green eyes. Quick-tongued and competitive, but deeply loyal and one of the Clan's finest hunters.",
+    relationships: { mate: "Firestar", kits: "Squirrelflight, Leafpool", mentor: "Whitestorm" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars"],
+    role: "Started out teasing Firestar for being a kittypet. Grew to admire, then love him. His devoted mate and the mother of his daughters. Accompany him on Firestar's Quest to rebuild SkyClan.",
+    questions: [
+      { q: "How did Sandstorm treat Firestar when he first arrived?", a: "She teased and looked down on him because he was a kittypet, not a Clan-born cat — she thought he didn't belong." },
+      { q: "What changed Sandstorm's mind about Firestar?", a: "She saw again and again how brave, fair, and loyal he was — eventually she fell in love with him because of exactly those qualities." }
+    ]
+  },
+  {
+    name: "Tigerclaw / Tigerstar",
+    formerNames: ["Tigerpaw"],
+    clan: "thunder",
+    rank: "Warrior → (Exiled) → ShadowClan Leader",
+    description: "Huge dark brown tabby tom with amber eyes and unusually long front claws. Powerfully built and deeply intimidating.",
+    relationships: { "first mate": "Goldenflower", "second mate": "Sasha", kits: "Bramblestar, Tawnypelt, Hawkfrost, Mothwing" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars"],
+    role: "The primary villain of the first arc and a shadow over the whole series. ThunderClan's deputy who killed to clear his path to power. Exiled, he seized control of ShadowClan and tried to take over all four Clans. His spirit trains cats in the Dark Forest after death.",
+    questions: [
+      { q: "What was Tigerclaw's main flaw that made him a villain?", a: "His ambition was so extreme he was willing to hurt or kill his own Clanmates — he put power above loyalty, honour, and the warrior code." },
+      { q: "Who finally defeated Tigerstar, and how?", a: "Scourge, the leader of the rogue group BloodClan, killed Tigerstar by taking all nine of his lives at once with claws reinforced with dogs' teeth." }
+    ]
+  },
+  {
+    name: "Spottedleaf",
+    formerNames: ["Spottedpaw"],
+    clan: "thunder",
+    rank: "Medicine Cat (deceased)",
+    description: "Small tortoiseshell she-cat with a dappled coat of white, brown, and ginger, dark green eyes, and a distinctive spotted nose.",
+    relationships: { closeTo: "Firestar, Sandstorm", mentor: "Featherwhisker" },
+    arcs: ["prophecies-begin","omen-of-stars"],
+    role: "ThunderClan's beloved medicine cat killed early by Clawface of ShadowClan. After death she guides Firestar through StarClan dreams. Her spirit eventually fades in Omen of the Stars after protecting Sandstorm.",
+    questions: [
+      { q: "Why couldn't Spottedleaf and Firestar be together even if she were alive?", a: "Medicine cats are forbidden by the warrior code from taking mates or having kits — their dedication must be entirely to healing the Clan." },
+      { q: "How does Spottedleaf help Firestar even after she dies?", a: "She appears to him in StarClan dreams, brings him warnings and comfort, and delivers StarClan's messages." }
+    ]
+  },
+  {
+    name: "Yellowfang",
+    formerNames: ["Yellowpaw","Yellowfang (ShadowClan)"],
+    clan: "thunder",
+    rank: "Medicine Cat (from ShadowClan)",
+    description: "Dark gray she-cat with a wide, flat face, orange eyes, and a grumpy expression that hides a warm heart.",
+    relationships: { "secret son": "Brokenstar", mentor: "Sagewhisker", closeTo: "Firestar, Bluestar" },
+    arcs: ["prophecies-begin"],
+    role: "A ShadowClan medicine cat driven out by Brokenstar — her own secret son. Found starving by Firestar and eventually welcomed into ThunderClan. Gave her life in a fire to save kits. Has the rare gift of feeling others' pain as her own.",
+    questions: [
+      { q: "What was Yellowfang's terrible secret?", a: "Brokenstar — the cruel leader who exiled her — was her own secret son, whom she had been forbidden to acknowledge because medicine cats can't have kits." },
+      { q: "What special ability did Yellowfang have?", a: "She could feel the physical pain of other cats in her own body — a rare and exhausting medicine cat gift." }
+    ]
+  },
+  {
+    name: "Squirrelflight",
+    formerNames: ["Squirrelpaw"],
+    clan: "thunder",
+    rank: "Warrior · Deputy · Leader",
+    description: "Dark ginger she-cat with brilliant green eyes and a bushy tail like her father's. Spirited, quick-witted, stubborn, and fiercely protective.",
+    relationships: { mate: "Bramblestar", father: "Firestar", mother: "Sandstorm", sister: "Leafpool", "raised kits": "Jayfeather, Lionblaze, Hollyleaf (not her biological kits)" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars","broken-code"],
+    role: "Firestar's daughter. One of the New Prophecy journeyers. Made a heartbreaking choice to raise her sister's secret kits as her own, keeping a lie for moons to protect Leafpool. Later becomes ThunderClan's deputy and eventually its leader.",
+    questions: [
+      { q: "Why did Squirrelflight say Jayfeather, Lionblaze, and Hollyleaf were her kits when they weren't?", a: "She was covering for her sister Leafpool — medicine cats aren't allowed to have kits. Squirrelflight loved them and wanted to protect Leafpool's secret." },
+      { q: "What makes Squirrelflight a good leader even though she can be impulsive?", a: "She is utterly loyal, brave, and always willing to put herself in danger for others — and she's honest even when the truth hurts." }
+    ]
+  },
+  {
+    name: "Bramblestar",
+    formerNames: ["Bramblepaw","Brambleclaw"],
+    clan: "thunder",
+    rank: "Warrior · Deputy · Leader",
+    description: "Dark brown tabby tom with amber eyes. Muscular and striking — the image of his father Tigerstar, but not his nature.",
+    relationships: { mate: "Squirrelflight", father: "Tigerstar", mother: "Goldenflower", sister: "Tawnypelt (ShadowClan)" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars","broken-code"],
+    role: "Tigerstar's son who fights every day against his father's dark legacy. Chosen to journey to the sun-drown-place. Earns the role of ThunderClan leader through courage and integrity. In the Broken Code arc, an imposter spirit takes over his body.",
+    questions: [
+      { q: "How was Bramblestar different from his father Tigerstar even though they looked alike?", a: "Tigerstar craved power above everything; Bramblestar chose loyalty and honour — he was tempted but always chose his Clan over personal ambition." },
+      { q: "What great journey did Bramblestar (then Brambleclaw) complete in The New Prophecy?", a: "He travelled all the way to the sun-drown-place (the sea) with five other cats to receive StarClan's message that the Clans must find a new home." }
+    ]
+  },
+  {
+    name: "Leafpool",
+    formerNames: ["Leafpaw"],
+    clan: "thunder",
+    rank: "Medicine Cat · Warrior · Medicine Cat",
+    description: "Light brown tabby she-cat with amber eyes and a gentle, thoughtful manner. Deeply spiritual and dedicated.",
+    relationships: { "secret mate": "Crowfeather (WindClan)", kits: "Jayfeather, Lionblaze, Hollyleaf", father: "Firestar", mother: "Sandstorm", sister: "Squirrelflight" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars"],
+    role: "Firestar's younger daughter and ThunderClan's medicine cat. Fell in love with WindClan warrior Crowfeather against all rules. Her secret kits were raised by Squirrelflight. When exposed, she lost her medicine cat status. She eventually returns to healing.",
+    questions: [
+      { q: "What two rules did Leafpool break?", a: "She fell in love with a warrior from another Clan (Crowfeather), and she had kits — medicine cats are forbidden to do either." },
+      { q: "How did the secret about Leafpool's kits come out?", a: "Her daughter Hollyleaf, shattered by learning the truth, announced it at a Gathering in front of all the Clans." }
+    ]
+  },
+  {
+    name: "Jayfeather",
+    formerNames: ["Jaypaw"],
+    clan: "thunder",
+    rank: "Medicine Cat",
+    description: "Slender gray tabby tom with sightless blue eyes. Born blind but extraordinarily perceptive — sarcastic, sharp, and deeply connected to StarClan.",
+    relationships: { "biological mother": "Leafpool", "raised by": "Squirrelflight & Bramblestar", "biological father": "Crowfeather (WindClan)", siblings: "Lionblaze, Hollyleaf", "ancient bond": "Half Moon" },
+    arcs: ["power-of-three","omen-of-stars","broken-code"],
+    role: "One of the Three in the prophecy. Blind medicine cat who can enter other cats' dreams and sense their emotions. Discovers the ancient history of the Tribe of Rushing Water. Has a poignant connection to Half Moon, an ancient cat he knew in a past life.",
+    questions: [
+      { q: "How does Jayfeather 'see' the world if he is blind?", a: "He uses exceptional hearing, smell, and touch — plus a magical ability to sense what other cats are feeling and to walk inside their dreams." },
+      { q: "What is Jayfeather's special power among the Three?", a: "He can enter other cats' dreams and read their emotions and thoughts — he is also more closely connected to StarClan and ancient magic than any other living cat." }
+    ]
+  },
+  {
+    name: "Lionblaze",
+    formerNames: ["Lionpaw"],
+    clan: "thunder",
+    rank: "Warrior · Deputy",
+    description: "Golden tabby tom with amber eyes. Broad-shouldered, powerfully built. Looks and fights like a lion.",
+    relationships: { "biological mother": "Leafpool", "raised by": "Squirrelflight & Bramblestar", "biological father": "Crowfeather (WindClan)", siblings: "Jayfeather, Hollyleaf", mate: "Cinderheart" },
+    arcs: ["power-of-three","omen-of-stars"],
+    role: "One of the Three. His power is that he cannot be injured in battle. Trains in the Dark Forest for a time without understanding their true evil. Chooses his Clan when the Great Battle comes.",
+    questions: [
+      { q: "What was Lionblaze's special power?", a: "He could not be wounded in battle — no enemy's claws or teeth could injure him." },
+      { q: "Why was it dangerous that Lionblaze trained in the Dark Forest?", a: "He was being recruited by evil spirits — cats like Tigerstar's ghost — who were building an army to destroy the living Clans." }
+    ]
+  },
+  {
+    name: "Dovewing",
+    formerNames: ["Dovepaw"],
+    clan: "thunder",
+    rank: "Warrior",
+    description: "Pale gray she-cat with eyes that started blue and shifted to green. Gentle and compassionate, but conflicted by her enormous burden.",
+    relationships: { parents: "Birchfall & Whitewing", sister: "Ivypool", mate: "Tigerheart/Tigerstar (ShadowClan)" },
+    arcs: ["omen-of-stars","vision-of-shadows"],
+    role: "The true third of the Three (replacing Hollyleaf, who was not born of the right parentage). Her power is hyper-sharp senses — she can hear, see, and smell things from many miles away. Struggles with her gift's weight and falls in love across Clan lines.",
+    questions: [
+      { q: "What was Dovewing's special power?", a: "Super-sharp senses — she could hear sounds from many miles away, see as if standing right next to distant things, and smell things no ordinary cat could detect." },
+      { q: "Why did Dovewing's power feel overwhelming sometimes?", a: "She could never shut it off — she heard suffering, danger, and the world's pain constantly, and couldn't escape it the way normal cats can escape unpleasant things." }
+    ]
+  },
+  {
+    name: "Ivypool",
+    formerNames: ["Ivypaw"],
+    clan: "thunder",
+    rank: "Warrior",
+    description: "Silver-and-white tabby she-cat with dark blue eyes. Fiercer and more competitive than she first appears.",
+    relationships: { sister: "Dovewing", mate: "Fernsong", kits: "Bristlefrost, Thriftear, Flipclaw" },
+    arcs: ["omen-of-stars","vision-of-shadows"],
+    role: "Dovewing's overlooked sister who felt jealous of the attention given to the Three. Was recruited by Dark Forest cats to train with them. Became a brave double agent, secretly reporting their plans to Jayfeather and Lionblaze. An unsung hero of the Great Battle.",
+    questions: [
+      { q: "Why did Ivypool begin training in the Dark Forest?", a: "She was jealous of Dovewing's special powers and felt left out and unimportant — the Dark Forest cats flattered her and made her feel special." },
+      { q: "How did Ivypool help the Clans while secretly training with the Dark Forest?", a: "She spied on the Dark Forest warriors and reported everything to Jayfeather, giving the Clans the intelligence they needed to prepare for the Great Battle." }
+    ]
+  },
+  {
+    name: "Hollyleaf",
+    formerNames: ["Hollypaw"],
+    clan: "thunder",
+    rank: "Warrior",
+    description: "Black she-cat with green eyes. Intense, rule-focused, and deeply earnest — she believes in the warrior code above all else.",
+    relationships: { "biological mother": "Leafpool", "raised by": "Squirrelflight & Bramblestar", "biological father": "Crowfeather (WindClan)", siblings: "Jayfeather, Lionblaze" },
+    arcs: ["power-of-three","omen-of-stars"],
+    role: "Third kit of Leafpool and Crowfeather. Believed to be one of the Three but later revealed not to be. The discovery that she was born of broken rules destroyed her sense of self. She vanished into the tunnels, then returned to fight in the Great Battle.",
+    questions: [
+      { q: "Why was Hollyleaf so devastated to learn the truth about her parents?", a: "She believed the warrior code was everything — so discovering she was born from a medicine cat who broke two of its most important rules shattered her whole identity." },
+      { q: "What did Hollyleaf do after she revealed Leafpool's secret at the Gathering?", a: "She fled into the tunnels beneath ThunderClan's territory and was assumed dead — but she survived and returned later to help in the Great Battle." }
+    ]
+  },
+  {
+    name: "Cloudtail",
+    formerNames: ["Cloudkit","Cloudpaw"],
+    clan: "thunder",
+    rank: "Warrior",
+    description: "Long-haired white tom with blue eyes. Stubborn, outspoken, and protective of those he loves.",
+    relationships: { "biological mother": "Princess (kittypet)", uncle: "Firestar", mate: "Brightheart", kits: "Whitewing, others" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars"],
+    role: "Firestar's nephew, brought into ThunderClan as a kit from his sister Princess. Became an apprentice who refused to believe in StarClan — a controversial stance. Devoted mate to Brightheart after she was disfigured in a dog attack.",
+    questions: [
+      { q: "What unusual belief set Cloudtail apart from other Clan cats?", a: "He didn't believe in StarClan — while most cats saw this as disrespectful, Cloudtail was simply honest about what he felt was true." },
+      { q: "How did Cloudtail show loyalty to Brightheart after she was hurt?", a: "After she was badly disfigured by the dog pack, he loved her completely anyway and stayed by her side, helping her rebuild confidence as a warrior." }
+    ]
+  },
+  {
+    name: "Alderheart",
+    formerNames: ["Alderkit","Alderpaw"],
+    clan: "thunder",
+    rank: "Medicine Cat",
+    description: "Dark ginger tom with amber eyes. Thoughtful, anxious, and extraordinarily compassionate. Bramblestar's son.",
+    relationships: { father: "Bramblestar", mother: "Squirrelflight", sister: "Sparkpelt", closeTo: "Needletail, Violetshine, Twigbranch" },
+    arcs: ["vision-of-shadows","broken-code"],
+    role: "The central POV character of A Vision of Shadows. Chosen as medicine cat apprentice despite doubting his path. Leads the quest to find and restore SkyClan. His compassion and stubbornness drive the entire arc forward.",
+    questions: [
+      { q: "What quest did Alderheart lead in A Vision of Shadows?", a: "He and other cats searched for the lost fifth Clan — SkyClan — to bring them back to the lake, fulfilling StarClan's command to 'embrace what you find in the shadows.'" },
+      { q: "Why does Alderheart sometimes doubt himself?", a: "He worries he misunderstands StarClan's signs, and he cares so deeply about getting things right that fear of failure follows him everywhere." }
+    ]
+  },
+
+  /* ─────── SHADOWCLAN ─────── */
+  {
+    name: "Brokenstar",
+    formerNames: ["Brokenkit","Brokenpaw","Brokentail"],
+    clan: "shadow",
+    rank: "Leader (villain)",
+    description: "Dark brown matted tabby tom with a bent tail and blazing orange eyes. Cruel, domineering, and pitiless.",
+    relationships: { "secret biological mother": "Yellowfang", "foster mother": "Lizardstripe", father: "Raggedstar" },
+    arcs: ["prophecies-begin"],
+    role: "The first great villain. ShadowClan's brutal leader who made kits into warriors before they were old enough, attacked the other Clans, and exiled their elders. Driven out, blinded, taken in by ThunderClan, and ultimately killed by Yellowfang — his own secret mother.",
+    questions: [
+      { q: "What horrible things did Brokenstar do to ShadowClan kits?", a: "He forced kits to become apprentices far too young, and trained them as warriors even earlier — many were injured or killed." },
+      { q: "Who killed Brokenstar, and why was it tragic?", a: "Yellowfang poisoned him — and the tragedy is she was his secret biological mother, forced to kill her own son to stop him causing more harm." }
+    ]
+  },
+  {
+    name: "Tawnypelt",
+    formerNames: ["Tawnypaw"],
+    clan: "shadow",
+    rank: "Warrior · Elder",
+    description: "Tortoiseshell she-cat with green eyes and a determined, no-nonsense manner.",
+    relationships: { father: "Tigerstar", mother: "Goldenflower", brother: "Bramblestar (ThunderClan)", mate: "Rowanclaw/Rowanstar", kits: "Flametail, Dawnpelt, Tigerheart/Tigerstar" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars","vision-of-shadows"],
+    role: "Left ThunderClan for ShadowClan because she was tired of being mistrusted for her father's crimes. One of the six cats who made the New Prophecy journey. A loyal, honourable ShadowClan warrior and mother.",
+    questions: [
+      { q: "Why did Tawnypelt leave ThunderClan even though Brambleclaw stayed?", a: "ThunderClan cats kept treating her with suspicion because her father was Tigerstar. ShadowClan gave her a fresh start where she wasn't judged for what her father had done." },
+      { q: "What did Tawnypelt and her brother Bramblestar have in common?", a: "Both worked their whole lives to prove they were nothing like their father — choosing honour and loyalty over power and ambition." }
+    ]
+  },
+  {
+    name: "Rowanstar",
+    formerNames: ["Rowanclaw"],
+    clan: "shadow",
+    rank: "Warrior · Leader",
+    description: "Ginger tom with amber eyes. Steadfast but struggles with leadership as ShadowClan faces its greatest crises.",
+    relationships: { mate: "Tawnypelt", kits: "Flametail, Dawnpelt, Tigerheart/Tigerstar", father: "Clawface" },
+    arcs: ["vision-of-shadows"],
+    role: "Tawnypelt's mate and ShadowClan's leader during the Vision of Shadows arc. His Clan is torn apart by the rogue group the Kin, and he struggles to hold it together. Gives up his remaining lives when the Clan loses hope.",
+    questions: [
+      { q: "What was Rowanstar's biggest challenge as a leader?", a: "Keeping ShadowClan together when Darktail and the Kin invaded — many ShadowClan cats chose to follow Darktail instead, leaving Rowanstar with almost no Clan to lead." }
+    ]
+  },
+
+  /* ─────── WINDCLAN ─────── */
+  {
+    name: "Tallstar",
+    clan: "wind",
+    rank: "Leader",
+    description: "Black-and-white tom with an extraordinarily long, thin tail and amber eyes. Dignified, measured, and deeply fair.",
+    relationships: { closeTo: "Firestar, Deadfoot", deputyFirst: "Deadfoot", deputyLast: "Onewhisker (changed on deathbed)" },
+    arcs: ["prophecies-begin","new-prophecy"],
+    role: "WindClan's long-serving, wise leader. Forms a deep friendship with Firestar. In his final moments changes his deputy from the aggressive Mudclaw to the peace-loving Onewhisker — a choice that shapes WindClan's future.",
+    questions: [
+      { q: "What does Tallstar's extraordinarily long tail suggest about WindClan cats?", a: "WindClan cats live on open moorland and are built for speed — long limbs, lean bodies, and long tails help with balance while running flat out." },
+      { q: "Why was Tallstar's last-breath decision so important for all the Clans?", a: "By choosing Onewhisker over Mudclaw, he ensured WindClan would have a peace-seeking leader rather than an aggressive one, helping keep the new lake territory stable." }
+    ]
+  },
+  {
+    name: "Crowfeather",
+    formerNames: ["Crowpaw"],
+    clan: "wind",
+    rank: "Warrior",
+    description: "Dark smoky gray — almost black — tom with blue eyes and a guarded, often gruff manner that hides deep feeling.",
+    relationships: { "first love (deceased)": "Feathertail (RiverClan)", "forbidden mate": "Leafpool (ThunderClan)", mate: "Nightcloud", kits: "Jayfeather, Lionblaze, Hollyleaf (with Leafpool); Breezepelt (with Nightcloud)" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars"],
+    role: "A WindClan warrior chosen for the sun-drown journey. His first love, RiverClan's Feathertail, died saving his life. Later fell into a forbidden love with ThunderClan's medicine cat Leafpool. Carries grief and guilt his whole life.",
+    questions: [
+      { q: "Crowfeather had two forbidden loves. How were the situations different?", a: "Feathertail was from a rival Clan, which was against the warrior code; Leafpool was a medicine cat, which added the extra problem that medicine cats can't have relationships or kits at all." },
+      { q: "Why does Breezepelt resent his father Crowfeather?", a: "Crowfeather was cold and emotionally distant with Breezepelt, showed him little love, and Breezepelt later discovered Crowfeather had secret half-siblings in ThunderClan — making him feel like a second-class son." }
+    ]
+  },
+  {
+    name: "Onestar",
+    formerNames: ["Onewhisker"],
+    clan: "wind",
+    rank: "Warrior · Leader",
+    description: "Small brown tabby tom with amber eyes. Started as Firestar's friend; became distant and prickly as leader.",
+    relationships: { closeTo: "Firestar (before leadership)", secretKit: "Darktail (hidden from the Clans)" },
+    arcs: ["new-prophecy","power-of-three","omen-of-stars","vision-of-shadows"],
+    role: "Became leader through Tallstar's dying wish. Changed drastically once in power — became suspicious and aggressive, pushing Firestar away. His darkest secret: Darktail, the rogue villain of Vision of Shadows, was his son whom he had abandoned.",
+    questions: [
+      { q: "Why did Onestar push Firestar away after becoming leader?", a: "He felt he needed to prove WindClan's independence — always leaning on ThunderClan's help made him look weak, so he overcorrected by refusing all friendship with Firestar." },
+      { q: "What was Onestar's secret that connected him to the Vision of Shadows villain?", a: "Darktail — the leader of the Kin who terrorised all the Clans — was Onestar's secret son, abandoned as a kit. Darktail's rage at being left was what drove his evil." }
+    ]
+  },
+
+  /* ─────── RIVERCLAN ─────── */
+  {
+    name: "Crookedstar",
+    formerNames: ["Stormkit","Crookedkit","Crookedpaw","Crookedjaw"],
+    clan: "river",
+    rank: "Leader",
+    description: "Huge pale brown tabby tom with a badly twisted jaw (broken in a fall as a kit) and amber eyes.",
+    relationships: { mate: "Willowbreeze", kits: "Silverstream, Willowkit, Minnowkit", brother: "Oakheart" },
+    arcs: ["prophecies-begin"],
+    role: "RiverClan's leader. As a kit he made a desperate vow to Mapleshade, a Dark Forest cat, in exchange for greatness — and then watched everyone he loved die as the price. His full story is told in the Super Edition Crookedstar's Promise.",
+    questions: [
+      { q: "How did Crookedstar get his twisted jaw?", a: "He fell from a stepping stone onto rocks beside the river as a tiny kit, breaking his jaw — it healed in a permanent crooked shape." },
+      { q: "What was the terrible cost of the 'promise' Crookedstar made?", a: "Mapleshade promised him greatness but secretly arranged for everyone he loved — his mate, his kits, his brother — to be taken from him as payment." }
+    ]
+  },
+  {
+    name: "Mistystar",
+    formerNames: ["Mistykit","Mistypaw","Mistyfoot"],
+    clan: "river",
+    rank: "Warrior · Deputy · Leader",
+    description: "Blue-gray she-cat with blue eyes. Calm, authoritative, and enduring — one of the longest-lived leaders in Clan history.",
+    relationships: { "biological mother": "Bluestar (ThunderClan, secret)", father: "Oakheart (RiverClan)", brother: "Stonefur (deceased)", sister: "Mosskit (died as kit)" },
+    arcs: ["prophecies-begin","new-prophecy","power-of-three","omen-of-stars","vision-of-shadows"],
+    role: "Bluestar's secret daughter, raised in RiverClan without knowing her origins. Learns the truth about her mother. Becomes one of the most respected and long-serving leaders in all the Clans.",
+    questions: [
+      { q: "How were Mistystar and Bluestar secretly connected?", a: "Bluestar was Mistystar's biological mother — but gave her kits to RiverClan to raise so she could become ThunderClan's deputy and protect her Clan." },
+      { q: "Why is Mistystar remarkable compared to most Clan leaders?", a: "She appears across many arcs spanning huge amounts of time — she is one of the few leaders whose long, steady rule gives the lake territory stability generation after generation." }
+    ]
+  },
+  {
+    name: "Feathertail",
+    formerNames: ["Featherkit","Featherpaw"],
+    clan: "river",
+    rank: "Warrior (deceased)",
+    description: "Silver tabby she-cat with blue eyes. Gentle, brave, and deeply loved by Crowpaw.",
+    relationships: { father: "Graystripe (ThunderClan)", mother: "Silverstream (deceased)", brother: "Stormfur", mate: "Crowpaw (WindClan)" },
+    arcs: ["new-prophecy"],
+    role: "Graystripe's daughter by Silverstream. Chosen for the New Prophecy journey. Died heroically, dropping a stalactite onto the mountain lion Sharptooth to save the Tribe of Rushing Water — and Crowpaw. Her death deeply shapes Crowfeather's character.",
+    questions: [
+      { q: "How did Feathertail die, and why was it heroic?", a: "She dislodged a stalactite from the cave ceiling to crush Sharptooth, the mountain lion terrorising the Tribe — she fell with it and died saving Crowpaw and the Tribe cats." },
+      { q: "Why was Feathertail special to two different groups of cats?", a: "She was loved by the journeying Clan cats she travelled with, and by the Tribe of Rushing Water — the Tribe had a prophecy that 'silver cat' would save them, and she fulfilled it." }
+    ]
+  },
+
+  /* ─────── STARCLAN ─────── */
+  {
+    name: "Rock",
+    clan: "starclan",
+    rank: "Ancient Spirit",
+    description: "Hairless pale cat with sightless, empty eyes. Impossibly old — older than the Clans themselves. Speaks in riddles.",
+    relationships: { closeTo: "Jayfeather" },
+    arcs: ["power-of-three","omen-of-stars"],
+    role: "An ancient spirit connected to the dawn of Clan history. He guides Jayfeather toward understanding the Three's prophecy and the ancient past. Carries secrets that predate even StarClan.",
+    questions: [
+      { q: "What makes Rock mysterious compared to regular StarClan cats?", a: "He is older than StarClan itself — he existed before the Clans formed, and he knows things that even StarClan doesn't fully understand." }
+    ]
+  },
+
+  /* ─────── SKYCLAN ─────── */
+  {
+    name: "Leafstar",
+    formerNames: ["Leaf"],
+    clan: "skyclan",
+    rank: "Leader",
+    description: "Brown-and-cream tabby she-cat with amber eyes. Determined, adaptable, and firm in her belief in SkyClan's place among the Clans.",
+    relationships: { mate: "Billystorm (daylight warrior)", kits: "Firekit, Harrykit, Stormheart" },
+    arcs: ["vision-of-shadows"],
+    role: "SkyClan's leader, first rebuilt by Firestar in his Super Edition quest and then established fully. Leads her Clan through the violent upheaval of Darktail's Kin and the long journey to join the other Clans at the lake.",
+    questions: [
+      { q: "What makes SkyClan different from the other four Clans?", a: "SkyClan were driven from the original forest territory long ago — they have had to rebuild from nearly nothing, and some of their warriors are 'daylight warriors' who live with Twolegs at night." },
+      { q: "Why was bringing SkyClan to the lake so important to StarClan?", a: "The prophecy said there should be five Clans at the lake — without SkyClan, the balance StarClan intended for the territory was incomplete." }
+    ]
+  },
+
+  /* ─────── LONERS & ROGUES ─────── */
+  {
+    name: "Ravenpaw",
+    formerNames: ["Ravenpaw"],
+    clan: "other",
+    rank: "Loner (former ThunderClan apprentice)",
+    description: "Sleek black tom with a white-tipped tail and anxious green eyes. Quiet, observant, and braver than he looks.",
+    relationships: { bestFriend: "Barley", "former mentor": "Tigerclaw (tried to kill him)", closeTo: "Firestar, Graystripe" },
+    arcs: ["prophecies-begin"],
+    role: "Firepaw's Clanmate who witnessed Tigerclaw murder a ThunderClan deputy. Tigerclaw planned to silence Ravenpaw permanently. Firestar helped him escape to a farm to live as a loner. His later life is told in the Ravenpaw's Path graphic novels.",
+    questions: [
+      { q: "Why did Ravenpaw have to leave ThunderClan?", a: "He saw Tigerclaw kill the deputy Redtail, and Tigerclaw was planning to kill Ravenpaw to keep the secret. Firestar helped him escape to safety rather than be murdered in his own Clan." },
+      { q: "What kind of life did Ravenpaw build after leaving?", a: "He lived on a farm with his best friend Barley, becoming a loner — no Clan rules, no hierarchy, just a peaceful life helping other cats who needed it." }
+    ]
+  },
+  {
+    name: "Scourge",
+    formerNames: ["Tiny"],
+    clan: "other",
+    rank: "BloodClan Leader",
+    description: "Tiny black tom with one white paw. Wears a collar of dog and cat teeth. Cold, calculating, and without empathy.",
+    relationships: { "biological siblings": "Firestar, Princess (unrecognised by him)" },
+    arcs: ["prophecies-begin"],
+    role: "Leader of BloodClan, a vicious rogue gang from Twolegplace. Was actually Firestar's lost younger brother from his kittypet days, though neither recognises the other until it is too late. Kills Tigerstar by removing all nine lives at once, then is killed by Firestar.",
+    questions: [
+      { q: "What secret connection did Scourge and Firestar share?", a: "They were biological brothers — both born to the same kittypet mother. Scourge was bullied as a kit partly because of Firestar's siblings, which set him on his dark path." },
+      { q: "Why was Scourge able to take all of Tigerstar's nine lives at once?", a: "His single claw strike — reinforced with teeth and claws from dogs and cats sewn into his collar — was so deadly that it bypassed the protection of Tigerstar's remaining lives all in one blow." }
+    ]
+  },
+  {
+    name: "Barley",
+    clan: "other",
+    rank: "Loner",
+    description: "Black-and-white tom with brown eyes. Quiet, steady, and deeply loyal to Ravenpaw.",
+    relationships: { bestFriend: "Ravenpaw" },
+    arcs: ["prophecies-begin"],
+    role: "A barn-cat loner who offers Ravenpaw a safe home and companionship. Provides ThunderClan with information about rogues and Twolegs. His quiet, consistent friendship with Ravenpaw is one of the warmest relationships in the series.",
+    questions: [
+      { q: "How did Barley show kindness when Ravenpaw needed it most?", a: "He took Ravenpaw in with no questions asked, gave him a safe home on the farm, and was a loyal companion for the rest of Ravenpaw's life." }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   ARC DATA
+═══════════════════════════════════════════════ */
+const ARCS = [
+  {
+    id: "prophecies-begin",
+    name: "The Prophecies Begin",
+    emoji: "🔥",
+    books: ["Into the Wild","Fire and Ice","Forest of Secrets","Rising Storm","A Dangerous Path","The Darkest Hour"],
+    summary: "A young house cat named Rusty leaves his comfortable kittypet life to join ThunderClan, becoming Firepaw. He earns his place through courage and loyalty, rising to warrior (Fireheart) and eventually leader (Firestar). Along the way he uncovers a traitor in his own Clan, survives a devastating dog attack, and leads all four Clans against the ruthless BloodClan. A StarClan prophecy — 'fire alone can save the Clan' — follows him from his first day to his greatest test.",
+    parentQuestions: [
+      { q: "What does it mean that Rusty chooses the wild over a safe house-cat life — and what does that say about him?", a: "He craves adventure, purpose, and belonging over comfort. It shows courage and curiosity — he'd rather risk something hard and real than stay safe and bored." },
+      { q: "The warrior code has many strict rules. Can you think of a rule that might seem unfair at first but actually makes sense for the Clans?", a: "For example: 'Don't take mates from other Clans.' It might seem harsh, but split loyalties can put a warrior in impossible situations — who do you protect when your mate's Clan and your Clan are at war?" },
+      { q: "Firestar often helps Clans other than his own. Is that right or wrong? What does it say about the warrior code?", a: "The code says protect your Clan first — but Firestar believes in a bigger idea of justice. His challenge to the code is part of what makes him a great leader, and the books ask us to think about when rules should bend." }
+    ]
+  },
+  {
+    id: "new-prophecy",
+    name: "The New Prophecy",
+    emoji: "🌊",
+    books: ["Midnight","Moonrise","Dawn","Starlight","Twilight","Sunset"],
+    summary: "A new generation steps into the spotlight. Six young cats — two from each Clan — are called by StarClan to journey to the sea and receive a message from a wise old badger named Midnight: their home forest is being destroyed by Twolegs (humans with machines). The four Clans must unite to travel far and find a new home by a lake. New friendships form, forbidden loves bloom, and the Clans rebuild their society from scratch.",
+    parentQuestions: [
+      { q: "The Clans have to cooperate on their journey even though they usually compete. When is cooperation more important than competition?", a: "When survival is at stake, or when a goal is too big for any one group alone. The Clans' journey shows that old rivalries can be set aside when the need is great enough." },
+      { q: "What does the destruction of the forest by 'Twolegs with machines' represent from a real-world perspective?", a: "It's a metaphor for habitat destruction — animals lose their homes to human construction all the time. The cats' experience gives readers a way to understand what that loss feels like." },
+      { q: "Brambleclaw and Squirrelpaw argue constantly but still depend on each other. What does their relationship say about how people who clash can still work well together?", a: "Their friction comes partly from similarity — both are headstrong and stubborn. But those same qualities make them each very good at what they do. Conflict can be productive when both sides genuinely care about the outcome." }
+    ]
+  },
+  {
+    id: "power-of-three",
+    name: "Power of Three",
+    emoji: "⚡",
+    books: ["The Sight","Dark River","Outcast","Eclipse","Long Shadows","Sunrise"],
+    summary: "Firestar's grandchildren — blind Jayfeather, golden Lionblaze, and earnest Hollyleaf — grow up believing a great destiny awaits them. A prophecy says three cats 'kin of your kin' will hold the power of the stars. Each has a mysterious gift. But the darkest secret of all is who they really are — and when the truth about their parents explodes at a Gathering, it shakes ThunderClan and all four Clans to the core.",
+    parentQuestions: [
+      { q: "Hollyleaf's entire identity crumbled when she learned she was born from broken rules. Have you ever had a belief about yourself or the world shattered? How do you recover from that?", a: "This is a powerful discussion point — identity, belonging, and how we define ourselves. Hollyleaf shows that extreme rigidity (making rules everything) can be as dangerous as breaking them. Recovery requires finding new grounding." },
+      { q: "Squirrelflight lied to protect Leafpool. Was that the right thing to do? When is protecting someone with a lie okay — if ever?", a: "No easy answer — the lie protected Leafpool and the kits initially but caused enormous harm when exposed. Good discussion: does the intention behind a lie change its morality? What about long-term consequences?" },
+      { q: "Should Jayfeather, Lionblaze, and Hollyleaf be judged for who their parents are? What does the series say about that?", a: "Absolutely not — and the books make this clear. Bramblestar (Tigerstar's son) and the Three themselves prove that heritage doesn't determine character. Your choices define you." }
+    ]
+  },
+  {
+    id: "omen-of-stars",
+    name: "Omen of the Stars",
+    emoji: "🌑",
+    books: ["The Fourth Apprentice","Fading Echoes","Night Whispers","Sign of the Moon","The Forgotten Warrior","The Last Hope"],
+    summary: "The Dark Forest — where evil cats go after death — is growing stronger. Tigerstar's spirit and other dark warriors are secretly recruiting and training living cats for a massive invasion of the real world. The Three (Jayfeather, Lionblaze, and the newly revealed Dovewing) must prepare the Clans for a Great Battle against an army of the dead. The battle will determine whether the living world or the darkness wins.",
+    parentQuestions: [
+      { q: "The Dark Forest recruits cats by flattering them and making them feel special. What does this say about how real-world manipulation works?", a: "Bad actors often target insecurity — they offer belonging and validation to people (or cats) who feel overlooked. Recognising this pattern is an important real-world skill." },
+      { q: "Ivypool started on the wrong side but became a spy for good. What does her story say about the possibility of redemption and courage?", a: "It shows that early bad choices don't define you — what matters is what you do next. Ivypool risked everything to make it right, which took far more courage than never having been tempted in the first place." },
+      { q: "The Great Battle required all four Clans to fight together as one. What real events does this remind you of?", a: "Historical examples of former rivals uniting against a common threat — WWI/WWII alliances, for instance. The books show that old enemies can become allies when something bigger than their rivalry is at stake." }
+    ]
+  },
+  {
+    id: "dawn-of-clans",
+    name: "Dawn of the Clans (Prequel)",
+    emoji: "🌅",
+    books: ["The Sun Trail","Thunder Rising","The First Battle","The Blazing Star","A Forest Divided","Path of Stars"],
+    summary: "Set long before Firestar's time, this prequel arc tells how the Clans were born. A group of mountain cats follows a vision to a new forest. As they settle in and multiply, groups form around different cats' personalities and skills — some love water, some open moors, some deep forest shadow. Rivalries flare. Rules are argued over. The founding leaders — Thunder, Wind, River, Shadow, and Sky — each lead their group toward becoming the Clans we know.",
+    parentQuestions: [
+      { q: "The warrior code didn't exist at the start — it grew from hard lessons. What does that tell us about where rules come from in real societies?", a: "Laws and codes develop in response to experience — when something goes badly wrong, communities create rules to prevent it happening again. The Dawn of the Clans arc shows rule-making as an evolving, imperfect process." },
+      { q: "Thunder and Shadow are very different leaders. What qualities make someone a good leader — and what qualities can make even a capable cat a bad one?", a: "Good leaders: fair, empathetic, able to listen, willing to admit mistakes. Bad leaders: let ego or grudges drive decisions, refuse input, use fear rather than respect." },
+      { q: "This arc is a prequel — knowing how things turn out, how does reading the origin story change your feelings about the main series?", a: "It adds depth — seeing how hard the Clans worked to establish their territory and code makes the stakes in the main series feel higher. We understand what's being protected." }
+    ]
+  },
+  {
+    id: "vision-of-shadows",
+    name: "A Vision of Shadows",
+    emoji: "🌿",
+    books: ["The Apprentice's Quest","Thunder and Shadow","Shattered Sky","Darkest Night","River of Fire","The Raging Storm"],
+    summary: "A confused vision haunts young medicine cat apprentice Alderheart: 'Embrace what you find in the shadows, or the Clans will be destroyed.' He and other cats embark on a quest to find the lost fifth Clan — SkyClan — driven out of the forest territory long ago and now living far away. Meanwhile, a brutal group of rogues called the Kin seizes SkyClan's territory, led by Darktail — whose secret connection to a current Clan leader changes everything.",
+    parentQuestions: [
+      { q: "SkyClan was driven out because there wasn't enough territory for five Clans. When is it wrong to exclude someone to solve a resource problem?", a: "Exclusion is usually the wrong answer — it just moves the problem or creates new resentment. SkyClan's exile bred the conditions for Darktail's rage. The 'solution' created a bigger crisis decades later." },
+      { q: "Darktail's violence came from being abandoned as a kit by his father Onestar. Does a painful past excuse harmful behaviour?", a: "No — explanation is not the same as justification. Understanding why someone is the way they are can build empathy, but it doesn't make their harmful choices acceptable. Darktail chose cruelty; many others with painful pasts do not." },
+      { q: "Alderheart doubts himself throughout this arc. How can someone move forward when they're not sure of their path?", a: "By doing the next right thing, even imperfectly. Alderheart keeps going despite uncertainty. That's a realistic model — waiting for certainty before acting means waiting forever." }
+    ]
+  },
+  {
+    id: "broken-code",
+    name: "The Broken Code",
+    emoji: "❄️",
+    books: ["Lost Stars","The Silent Thaw","Veil of Shadows","Darkness Within","The Place of No Stars","A Light in the Mist"],
+    summary: "StarClan has gone silent — cats can no longer communicate with their ancestors. Something dark has taken over Bramblestar's body, using his position as ThunderClan's leader to enforce new, harsher codes and turn Clan cats against each other. Squirrelflight, Bristlefrost, Shadowsight, and Rootspring must uncover what has possessed the Clans' most trusted leader and find a way to restore StarClan's connection before the darkness wins.",
+    parentQuestions: [
+      { q: "The imposter uses Bramblestar's authority to demand absolute obedience. Why is 'just following orders' dangerous without questioning?", a: "Authority can be misused, and people in power can be replaced by others who look the same but act very differently. This arc is a sharp reminder that loyalty should be to values, not just to whoever holds a title." },
+      { q: "Bristlefrost sacrifices herself at the end. What makes a sacrifice heroic rather than just sad?", a: "Heroic sacrifice is chosen freely, done with full awareness, and saves or protects others. Bristlefrost knew what she was giving up and did it anyway — that combination of choice and cost is what makes it heroic." }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   RENDER CHARACTERS
+═══════════════════════════════════════════════ */
+let activeClan = "all";
+let activeArc  = "all";
+
+function renderCharacters() {
+  const grid = document.getElementById("char-grid");
+  const noRes = document.getElementById("no-results");
+
+  // filter
+  const filtered = CHARACTERS.filter(c => {
+    const clanOk = activeClan === "all" || c.clan === activeClan;
+    const arcOk  = activeArc  === "all" || c.arcs.includes(activeArc);
+    return clanOk && arcOk;
+  });
+
+  // remove all existing cards
+  Array.from(grid.querySelectorAll(".char-card")).forEach(el => el.remove());
+
+  if (!filtered.length) {
+    noRes.style.display = "block";
+    return;
+  }
+  noRes.style.display = "none";
+
+  filtered.forEach(char => {
+    const card = document.createElement("div");
+    card.className = "char-card";
+    card.dataset.clan = char.clan;
+
+    // Arc tags HTML
+    const arcTagsHtml = char.arcs.map(a =>
+      `<span class="arc-tag">${ARC_NAMES[a] || a}</span>`
+    ).join("");
+
+    // Relationships HTML
+    const relHtml = Object.entries(char.relationships || {}).map(([k,v]) =>
+      `<div class="rel-item"><span class="rel-key">${k}</span><span class="rel-val">${v}</span></div>`
+    ).join("");
+
+    // Q&A HTML
+    const qHtml = char.questions.map((qa, i) => `
+      <div class="qa-item">
+        <div class="qa-question">❓ ${qa.q}</div>
+        <button class="qa-reveal-btn" data-qid="${char.name}-${i}">Tap to reveal answer</button>
+        <div class="qa-answer" id="qa-${char.name.replace(/\s/g,'_')}-${i}">${qa.a}</div>
+      </div>
+    `).join("");
+
+    const formerHtml = char.formerNames?.length
+      ? `<div class="char-former">formerly: ${char.formerNames.join(" → ")}</div>` : "";
+
+    card.innerHTML = `
+      <div class="clan-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="clan-badge">${CLAN_EMOJI[char.clan] || "🐾"}</div>
+          <div class="char-names">
+            <div class="char-name">${char.name}</div>
+            ${formerHtml}
+          </div>
+          <span class="char-rank">${char.rank}</span>
+        </div>
+        <div class="card-section-label">Appearance</div>
+        <div class="card-desc">${char.description}</div>
+        ${relHtml ? `<div class="card-section-label">Relationships</div><div class="rel-list">${relHtml}</div>` : ""}
+        <div class="card-section-label">Story Role</div>
+        <div class="card-role">${char.role}</div>
+        <div class="card-section-label">Appears In</div>
+        <div class="arc-tags">${arcTagsHtml}</div>
+        <div class="qa-section">
+          <button class="qa-toggle" data-char="${char.name}">
+            📚 Comprehension Questions <em class="chevron">▾</em>
+          </button>
+          <div class="qa-items" id="qa-items-${char.name.replace(/\s/g,'_')}">
+            ${qHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  // bind Q&A toggles
+  grid.querySelectorAll(".qa-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const name = btn.dataset.char.replace(/\s/g,"_");
+      const items = document.getElementById("qa-items-" + name);
+      const open = items.classList.toggle("open");
+      btn.classList.toggle("open", open);
+    });
+  });
+
+  // bind reveal buttons
+  grid.querySelectorAll(".qa-reveal-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const qid = btn.dataset.qid;
+      const parts = qid.split("-");
+      const idx = parts.pop();
+      const name = parts.join("-").replace(/\s/g,"_");
+      const ans = document.getElementById("qa-" + name + "-" + idx);
+      if (!ans) return;
+      const shown = ans.classList.toggle("shown");
+      btn.textContent = shown ? "Hide answer" : "Tap to reveal answer";
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER ARC STORYLINES
+═══════════════════════════════════════════════ */
+function renderArcs() {
+  const container = document.getElementById("arc-blocks");
+  ARCS.forEach(arc => {
+    const block = document.createElement("div");
+    block.className = "arc-block";
+    const booksHtml = arc.books.map(b => `<span class="arc-book-tag">📘 ${b}</span>`).join("");
+    const pqHtml = arc.parentQuestions.map((pq, i) => `
+      <div class="parent-q-item">
+        <div class="parent-q-text">💬 ${pq.q}</div>
+        <button class="parent-a-btn" data-arc="${arc.id}" data-idx="${i}">Show discussion answer</button>
+        <div class="parent-a-text" id="pq-${arc.id}-${i}">${pq.a}</div>
+      </div>
+    `).join("");
+
+    block.innerHTML = `
+      <button class="arc-toggle" data-arc="${arc.id}">
+        ${arc.emoji} ${arc.name}
+        <span class="arc-chev">▾</span>
+      </button>
+      <div class="arc-content" id="arc-content-${arc.id}">
+        <div class="arc-books">${booksHtml}</div>
+        <div class="arc-summary">${arc.summary}</div>
+        <div class="parent-qs-label">🧑‍🏫 Parent &amp; Kid Discussion Questions</div>
+        ${pqHtml}
+      </div>
+    `;
+    container.appendChild(block);
+  });
+
+  // bind arc toggles
+  container.querySelectorAll(".arc-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.arc;
+      const content = document.getElementById("arc-content-" + id);
+      const open = content.classList.toggle("open");
+      btn.classList.toggle("open", open);
+    });
+  });
+
+  // bind parent answer reveals
+  container.querySelectorAll(".parent-a-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.arc;
+      const idx = btn.dataset.idx;
+      const el = document.getElementById(`pq-${id}-${idx}`);
+      if (!el) return;
+      const shown = el.classList.toggle("shown");
+      btn.textContent = shown ? "Hide answer" : "Show discussion answer";
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   FILTER CONTROLS
+═══════════════════════════════════════════════ */
+document.getElementById("arcFilter").addEventListener("change", e => {
+  activeArc = e.target.value;
+  renderCharacters();
+});
+
+document.getElementById("clanTabs").addEventListener("click", e => {
+  const tab = e.target.closest(".clan-tab");
+  if (!tab) return;
+  document.querySelectorAll(".clan-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  activeClan = tab.dataset.clan;
+  renderCharacters();
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+renderCharacters();
+renderArcs();
+</script>
+</body>
+</html>

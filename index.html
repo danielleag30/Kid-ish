@@ -223,6 +223,33 @@
     border: 1px solid rgba(255,232,31,0.4);
   }
 
+  /* ── CARD: WARRIORS ──────────────────────────── */
+  .card-warriors .card-banner {
+    background: radial-gradient(ellipse at 40% 30%, #1a3a1a 0%, #070f07 100%);
+  }
+  .card-warriors .card-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 25%, rgba(200,230,200,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 10%, rgba(200,230,200,0.6) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 20%, rgba(168,200,240,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 15%, rgba(200,230,200,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 30%, rgba(200,230,200,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 70%, rgba(200,230,200,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 65%, rgba(200,230,200,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 80% 55%, rgba(168,200,240,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 80%, rgba(200,230,200,0.3) 0%, transparent 100%);
+  }
+  .card-warriors .card-tag {
+    background: rgba(74,184,122,0.15);
+    color: #2a6a3a;
+  }
+  .card-warriors .card-title { color: #0d2010; }
+  .card-warriors .card-desc  { color: #3a5a3a; }
+  .card-warriors .card-btn   { background: linear-gradient(135deg, #1a3a1a, #3a6a2a); }
+
   /* ── COMING SOON CARD ────────────────────────── */
   .card-soon {
     border: 3px dashed #d4c7f0;
@@ -319,6 +346,23 @@
         Every Star Wars movie and show, connected in order — from the High Republic all the way to the Sequel Trilogy!
       </div>
       <div class="card-btn">Explore the galaxy →</div>
+    </div>
+  </a>
+
+  <!-- Warriors Character Charts -->
+  <a href="/warriors-novels" class="card card-warriors">
+    <div class="card-banner">
+      <span class="banner-icon" style="font-size:3.5rem; animation-delay:0s;">🌲</span>
+      <span class="banner-icon" style="font-size:4rem; animation-delay:0.5s;">🐱</span>
+      <span class="banner-icon" style="font-size:3rem; animation-delay:1s;">⭐</span>
+    </div>
+    <div class="card-body">
+      <div class="card-tag">🐾 Warriors</div>
+      <div class="card-title">Warriors Character Charts</div>
+      <div class="card-desc">
+        Every cat, clan, and arc from the Warriors series — novels and graphic novels — with comprehension questions and story guides!
+      </div>
+      <div class="card-btn">Explore the Clans →</div>
     </div>
   </a>
 
