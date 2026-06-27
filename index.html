@@ -321,6 +321,35 @@
   .gray-btn { background: #b8a6d9; }
   #gateAnswer { font-size: 24px; text-align: center; }
   .err { color: #d23f5e; font-size: 15px; display: none; }
+
+  /* ============ EXPLORE LINKS ============ */
+  #explore {
+    width: min(900px, 100%);
+    margin-top: 10px;
+    padding-bottom: 32px;
+  }
+  #explore h2 { font-size: clamp(20px, 3vw, 28px); color: #6b4fa0; margin-bottom: 14px; text-align: center; }
+  .explore-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .explore-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 20px 16px 18px;
+    text-decoration: none;
+    color: var(--ink);
+    border: 3px solid transparent;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .explore-card:active { transform: scale(0.96); }
+  .explore-card.warriors { border-color: #4a7a3a; background: linear-gradient(160deg, #f0f7ec 0%, #fff 60%); }
+  .explore-card .explore-icon { font-size: 40px; line-height: 1; }
+  .explore-card .explore-title { font-size: clamp(15px, 2.4vw, 18px); font-weight: bold; color: #3a5a2a; text-align: center; }
+  .explore-card .explore-desc { font-size: 13px; color: #6b8a60; text-align: center; line-height: 1.35; }
 </style>
 </head>
 <body>
@@ -343,6 +372,22 @@
   <div id="shelf">
     <h2>📚 My Storybooks</h2>
     <div class="shelf-row" id="shelfRow"></div>
+  </div>
+
+  <div id="explore">
+    <h2>🌲 Explore More</h2>
+    <div class="explore-row">
+      <a class="explore-card warriors" href="warriors-novels.html">
+        <span class="explore-icon">🐱</span>
+        <span class="explore-title">Warriors Novels</span>
+        <span class="explore-desc">Character chart &amp; arc guide for the Warriors book series</span>
+      </a>
+      <a class="explore-card warriors" href="warriors-gn.html">
+        <span class="explore-icon">📖</span>
+        <span class="explore-title">Warriors Graphic Novels</span>
+        <span class="explore-desc">Characters &amp; story guide for all Warriors manga &amp; GN series</span>
+      </a>
+    </div>
   </div>
 </div>
 
