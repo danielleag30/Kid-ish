@@ -394,12 +394,29 @@
     border-radius: 8px;
     padding: 14px;
     transition: all 0.2s;
+    text-align: center;
   }
 
   .char-card:hover {
     background: rgba(255,255,255,0.08);
     border-color: rgba(255,232,31,0.3);
   }
+
+  .char-portrait {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 2px solid rgba(255,232,31,0.2);
+    box-shadow: 0 0 14px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .char-card:hover .char-portrait {
+    border-color: rgba(255,232,31,0.5);
+    box-shadow: 0 0 18px rgba(255,232,31,0.15), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+  .char-portrait svg { display: block; width: 100%; height: 100%; }
 
   .char-name {
     font-family: 'Orbitron', monospace;
@@ -413,6 +430,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+    justify-content: center;
   }
 
   .char-pill {
@@ -807,7 +825,25 @@
   <h2>&#9670; Key Characters Across the Saga &#9670;</h2>
   <div class="char-grid">
 
+    <!-- Darth Vader -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#060002"/>
+          <rect x="10" y="63" width="60" height="17" rx="3" fill="#111"/>
+          <path d="M14 44 Q14 12 40 12 Q66 12 66 44Z" fill="#111" stroke="#1e1e1e" stroke-width="1"/>
+          <path d="M16 44 L21 64 L59 64 L64 44 Q52 37 40 37 Q28 37 16 44Z" fill="#1c1c1c"/>
+          <ellipse cx="29" cy="46" rx="7" ry="4" fill="#5a0000"/>
+          <ellipse cx="29" cy="46" rx="5" ry="2.5" fill="#dd0000"/>
+          <ellipse cx="51" cy="46" rx="7" ry="4" fill="#5a0000"/>
+          <ellipse cx="51" cy="46" rx="5" ry="2.5" fill="#dd0000"/>
+          <rect x="29" y="53" width="22" height="1.5" rx="0.8" fill="#2e2e2e"/>
+          <rect x="29" y="57" width="22" height="1.5" rx="0.8" fill="#2e2e2e"/>
+          <rect x="29" y="61" width="22" height="1.5" rx="0.8" fill="#2e2e2e"/>
+          <rect x="30" y="68" width="7" height="5" rx="1" fill="#cc0000"/>
+          <rect x="40" y="68" width="7" height="5" rx="1" fill="#444"/>
+        </svg>
+      </div>
       <div class="char-name">Anakin / Darth Vader</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep I</span>
@@ -819,7 +855,34 @@
       </div>
     </div>
 
+    <!-- Ahsoka Tano -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#0c1828"/>
+          <!-- lekku (head-tails) -->
+          <ellipse cx="26" cy="63" rx="8" ry="20" fill="#d0c4b4" transform="rotate(-10,26,63)"/>
+          <ellipse cx="54" cy="63" rx="8" ry="20" fill="#d0c4b4" transform="rotate(10,54,63)"/>
+          <line x1="23" y1="50" x2="20" y2="76" stroke="#b8ac9c" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="57" y1="50" x2="60" y2="76" stroke="#b8ac9c" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- montral (top horns) -->
+          <path d="M28 33 C22 22 21 10 29 7 C31 17 33 25 34 33Z" fill="#d0c4b4"/>
+          <path d="M52 33 C58 22 59 10 51 7 C49 17 47 25 46 33Z" fill="#d0c4b4"/>
+          <!-- face -->
+          <ellipse cx="40" cy="44" rx="17" ry="19" fill="#c06830"/>
+          <!-- white brow markings -->
+          <ellipse cx="40" cy="33" rx="5" ry="2.5" fill="#ede0c8"/>
+          <!-- eyes -->
+          <ellipse cx="33" cy="43" rx="5" ry="5.5" fill="white"/>
+          <ellipse cx="47" cy="43" rx="5" ry="5.5" fill="white"/>
+          <circle cx="33" cy="44" r="3" fill="#1a3868"/>
+          <circle cx="47" cy="44" r="3" fill="#1a3868"/>
+          <circle cx="34" cy="43" r="1.4" fill="#080e1e"/>
+          <circle cx="48" cy="43" r="1.4" fill="#080e1e"/>
+          <!-- chin stripe -->
+          <path d="M35 59 Q40 65 45 59" stroke="#ede0c8" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Ahsoka Tano</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(230,126,34,0.3)">Clone Wars</span>
@@ -830,7 +893,28 @@
       </div>
     </div>
 
+    <!-- Obi-Wan Kenobi -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#2e1e08"/>
+          <path d="M0 70 Q20 58 40 60 Q60 58 80 70 L80 80 L0 80Z" fill="#5a3e18"/>
+          <ellipse cx="22" cy="38" rx="7" ry="13" fill="#7a5620"/>
+          <ellipse cx="58" cy="38" rx="7" ry="13" fill="#7a5620"/>
+          <path d="M18 36 Q18 20 40 18 Q62 20 62 36 Q56 28 40 28 Q24 28 18 36Z" fill="#8a6228"/>
+          <ellipse cx="40" cy="46" rx="18" ry="20" fill="#e8c090"/>
+          <path d="M26 57 Q40 68 54 57 Q50 74 40 76 Q30 74 26 57Z" fill="#9a7430"/>
+          <ellipse cx="33" cy="43" rx="4.5" ry="4.5" fill="white"/>
+          <ellipse cx="47" cy="43" rx="4.5" ry="4.5" fill="white"/>
+          <circle cx="33" cy="44" r="2.8" fill="#4a7830"/>
+          <circle cx="47" cy="44" r="2.8" fill="#4a7830"/>
+          <circle cx="33.5" cy="43.5" r="1.3" fill="#111"/>
+          <circle cx="47.5" cy="43.5" r="1.3" fill="#111"/>
+          <path d="M29 37 Q33 35 37 37" stroke="#7a5620" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M43 37 Q47 35 51 37" stroke="#7a5620" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M33 54 Q40 57 47 54" stroke="#9a7430" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Obi-Wan Kenobi</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep I–III</span>
@@ -840,7 +924,33 @@
       </div>
     </div>
 
+    <!-- Darth Maul -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#080002"/>
+          <!-- horns crown -->
+          <ellipse cx="40" cy="18" rx="3.5" ry="9" fill="#180808"/>
+          <ellipse cx="30" cy="20" rx="3" ry="7.5" fill="#180808"/>
+          <ellipse cx="50" cy="20" rx="3" ry="7.5" fill="#180808"/>
+          <ellipse cx="22" cy="27" rx="2.5" ry="6" fill="#180808"/>
+          <ellipse cx="58" cy="27" rx="2.5" ry="6" fill="#180808"/>
+          <!-- face red base -->
+          <ellipse cx="40" cy="50" rx="19" ry="22" fill="#cc1100"/>
+          <!-- black tattoo half (left) -->
+          <path d="M40 28 L40 72 Q29 70 26 60 Q22 50 25 40 Q28 32 34 29Z" fill="#100000"/>
+          <!-- tattoo lines on red right side -->
+          <line x1="44" y1="32" x2="54" y2="30" stroke="#0a0000" stroke-width="2.5"/>
+          <line x1="46" y1="40" x2="58" y2="39" stroke="#0a0000" stroke-width="2.5"/>
+          <line x1="44" y1="48" x2="57" y2="46" stroke="#0a0000" stroke-width="2.5"/>
+          <path d="M23 38 Q40 33 57 38" stroke="#0a0000" stroke-width="3" fill="none"/>
+          <!-- yellow eyes -->
+          <ellipse cx="32" cy="44" rx="5.5" ry="5" fill="#e8c000"/>
+          <ellipse cx="48" cy="44" rx="5.5" ry="5" fill="#e8c000"/>
+          <circle cx="32" cy="44" r="3" fill="#100000"/>
+          <circle cx="48" cy="44" r="3" fill="#100000"/>
+        </svg>
+      </div>
       <div class="char-name">Darth Maul</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep I</span>
@@ -850,7 +960,29 @@
       </div>
     </div>
 
+    <!-- Boba Fett -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#141408"/>
+          <path d="M0 68 Q18 58 40 60 Q62 58 80 68 L80 80 L0 80Z" fill="#384020"/>
+          <ellipse cx="40" cy="37" rx="24" ry="27" fill="#2e3818"/>
+          <path d="M16 44 Q16 64 40 66 Q64 64 64 44Z" fill="#242e10"/>
+          <!-- T-visor horizontal -->
+          <rect x="20" y="37" width="40" height="11" rx="2" fill="#080c04"/>
+          <!-- T-visor vertical -->
+          <rect x="34" y="25" width="12" height="23" rx="2" fill="#080c04"/>
+          <!-- visor sheen -->
+          <rect x="21" y="38" width="14" height="3.5" rx="1" fill="#1a2008" opacity="0.6"/>
+          <!-- rangefinder -->
+          <rect x="57" y="22" width="5" height="18" rx="2" fill="#3a4820"/>
+          <rect x="56" y="22" width="7" height="6" rx="1.5" fill="#4a5828"/>
+          <!-- battle dents -->
+          <circle cx="30" cy="30" r="2" fill="#1e2810"/>
+          <line x1="47" y1="27" x2="52" y2="23" stroke="#1e2810" stroke-width="2"/>
+          <circle cx="52" cy="50" r="1.5" fill="#1e2810"/>
+        </svg>
+      </div>
       <div class="char-name">Boba Fett</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep II</span>
@@ -862,7 +994,34 @@
       </div>
     </div>
 
+    <!-- Cassian Andor -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#161820"/>
+          <path d="M0 70 Q18 56 40 58 Q62 56 80 70 L80 80 L0 80Z" fill="#282c3c"/>
+          <path d="M32 60 L40 54 L48 60 L44 68 L36 68Z" fill="#363a4a"/>
+          <!-- dark hair -->
+          <path d="M20 36 Q20 18 40 16 Q60 18 60 36 Q54 26 40 26 Q26 26 20 36Z" fill="#201410"/>
+          <ellipse cx="21" cy="36" rx="6" ry="10" fill="#201410"/>
+          <ellipse cx="59" cy="36" rx="6" ry="10" fill="#201410"/>
+          <!-- face -->
+          <ellipse cx="40" cy="46" rx="18" ry="20" fill="#a07850"/>
+          <!-- stubble shadow -->
+          <ellipse cx="40" cy="56" rx="12" ry="7" fill="#8a6040" opacity="0.5"/>
+          <!-- eyes -->
+          <ellipse cx="33" cy="44" rx="4.5" ry="4.5" fill="white"/>
+          <ellipse cx="47" cy="44" rx="4.5" ry="4.5" fill="white"/>
+          <circle cx="33" cy="45" r="2.8" fill="#3a2010"/>
+          <circle cx="47" cy="45" r="2.8" fill="#3a2010"/>
+          <circle cx="33.5" cy="44.5" r="1.3" fill="#0a0808"/>
+          <circle cx="47.5" cy="44.5" r="1.3" fill="#0a0808"/>
+          <path d="M29 38 Q33 36 37 38" stroke="#201410" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M43 38 Q47 36 51 38" stroke="#201410" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <!-- set jaw / thin lips -->
+          <path d="M33 54 Q40 57 47 54" stroke="#8a6040" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Cassian Andor</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(192,57,43,0.3)">Andor</span>
@@ -870,7 +1029,33 @@
       </div>
     </div>
 
+    <!-- Grand Admiral Thrawn -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#161824"/>
+          <!-- white Imperial uniform -->
+          <path d="M0 72 Q18 56 36 60 L40 56 L44 60 Q62 56 80 72 L80 80 L0 80Z" fill="#e8eaf2"/>
+          <path d="M32 60 L40 54 L48 60 L44 70 L36 70Z" fill="#d4d8e6"/>
+          <!-- dark hair -->
+          <path d="M20 34 Q20 18 40 16 Q60 18 60 34 Q54 24 40 24 Q26 24 20 34Z" fill="#18181e"/>
+          <!-- blue skin face -->
+          <ellipse cx="40" cy="46" rx="18" ry="20" fill="#4080b0"/>
+          <!-- cheekbone shadows -->
+          <ellipse cx="30" cy="50" rx="6" ry="8" fill="#3070a0" opacity="0.4"/>
+          <ellipse cx="50" cy="50" rx="6" ry="8" fill="#3070a0" opacity="0.4"/>
+          <!-- glowing red eyes -->
+          <ellipse cx="33" cy="43" rx="5.5" ry="5" fill="#880000"/>
+          <ellipse cx="47" cy="43" rx="5.5" ry="5" fill="#880000"/>
+          <ellipse cx="33" cy="43" rx="3.5" ry="3" fill="#ee2222"/>
+          <ellipse cx="47" cy="43" rx="3.5" ry="3" fill="#ee2222"/>
+          <!-- sharp brows -->
+          <path d="M28 36 Q33 33 38 35" stroke="#18181e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M42 35 Q47 33 52 36" stroke="#18181e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- thin lips -->
+          <path d="M34 55 Q40 58 46 55" stroke="#3070a0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Grand Admiral Thrawn</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(192,57,43,0.3)">Rebels</span>
@@ -879,7 +1064,33 @@
       </div>
     </div>
 
+    <!-- Saw Gerrera -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#100c06"/>
+          <path d="M0 68 Q18 56 40 58 Q62 56 80 68 L80 80 L0 80Z" fill="#2a1e0e"/>
+          <!-- bald head -->
+          <ellipse cx="40" cy="38" rx="21" ry="24" fill="#8a6040"/>
+          <!-- scar -->
+          <line x1="24" y1="34" x2="28" y2="50" stroke="#6a4820" stroke-width="2" stroke-linecap="round"/>
+          <!-- eyes above mask -->
+          <ellipse cx="33" cy="40" rx="5" ry="5" fill="white"/>
+          <ellipse cx="47" cy="40" rx="5" ry="5" fill="white"/>
+          <circle cx="33" cy="41" r="3" fill="#4a2e10"/>
+          <circle cx="47" cy="41" r="3" fill="#4a2e10"/>
+          <circle cx="33.5" cy="40.5" r="1.5" fill="#0a0808"/>
+          <circle cx="47.5" cy="40.5" r="1.5" fill="#0a0808"/>
+          <!-- breathing apparatus / lower face mask -->
+          <rect x="22" y="50" width="36" height="22" rx="8" fill="#383838"/>
+          <rect x="26" y="55" width="10" height="6" rx="2" fill="#505050"/>
+          <rect x="44" y="55" width="10" height="6" rx="2" fill="#505050"/>
+          <rect x="35" y="53" width="10" height="4" rx="2" fill="#606060"/>
+          <!-- tubes -->
+          <path d="M22 62 Q14 64 12 72" stroke="#3a3a3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M58 62 Q66 64 68 72" stroke="#3a3a3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Saw Gerrera</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(230,126,34,0.3)">Clone Wars</span>
@@ -889,7 +1100,33 @@
       </div>
     </div>
 
+    <!-- Palpatine -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#04000a"/>
+          <!-- dark robes fill most of frame -->
+          <path d="M0 0 L0 80 L80 80 L80 0Z" fill="#08000e" opacity="0.6"/>
+          <!-- hood shadow -->
+          <path d="M8 20 Q8 8 40 8 Q72 8 72 20 Q60 14 40 14 Q20 14 8 20Z" fill="#04000a"/>
+          <!-- face peek - pale and wrinkled -->
+          <ellipse cx="40" cy="50" rx="16" ry="18" fill="#9a9490"/>
+          <!-- deep wrinkle shadows -->
+          <ellipse cx="32" cy="52" rx="5" ry="10" fill="#7a7470" opacity="0.6"/>
+          <ellipse cx="48" cy="52" rx="5" ry="10" fill="#7a7470" opacity="0.6"/>
+          <path d="M35 40 Q40 38 45 40" stroke="#7a7470" stroke-width="1.5" fill="none"/>
+          <path d="M30 60 Q40 66 50 60" stroke="#7a7470" stroke-width="1.5" fill="none"/>
+          <!-- glowing yellow Sith eyes -->
+          <ellipse cx="33" cy="46" rx="6" ry="5" fill="#cc8800"/>
+          <ellipse cx="47" cy="46" rx="6" ry="5" fill="#cc8800"/>
+          <ellipse cx="33" cy="46" rx="4" ry="3" fill="#ffcc00"/>
+          <ellipse cx="47" cy="46" rx="4" ry="3" fill="#ffcc00"/>
+          <circle cx="33" cy="46" r="2" fill="#2a1800"/>
+          <circle cx="47" cy="46" r="2" fill="#2a1800"/>
+          <!-- dark hood edges overlapping face -->
+          <path d="M0 0 Q20 30 20 50 Q22 40 24 35 Q30 20 40 16 Q50 20 56 35 Q58 40 60 50 Q60 30 80 0Z" fill="#08000e" opacity="0.8"/>
+        </svg>
+      </div>
       <div class="char-name">Palpatine / Sidious</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep I–III</span>
@@ -899,7 +1136,36 @@
       </div>
     </div>
 
+    <!-- Luke Skywalker -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#121e2e"/>
+          <!-- black ROTJ outfit -->
+          <path d="M0 70 Q18 56 40 58 Q62 56 80 70 L80 80 L0 80Z" fill="#1a1a1a"/>
+          <path d="M32 60 L40 54 L48 60 L44 70 L36 70Z" fill="#222"/>
+          <!-- blonde hair -->
+          <path d="M20 36 Q18 18 40 16 Q62 18 60 36 Q54 24 40 24 Q26 24 20 36Z" fill="#c8a020"/>
+          <ellipse cx="20" cy="36" rx="7" ry="12" fill="#c8a020"/>
+          <ellipse cx="60" cy="36" rx="7" ry="12" fill="#c8a020"/>
+          <!-- face -->
+          <ellipse cx="40" cy="46" rx="18" ry="20" fill="#e0b878"/>
+          <!-- blue eyes -->
+          <ellipse cx="33" cy="44" rx="5" ry="5" fill="white"/>
+          <ellipse cx="47" cy="44" rx="5" ry="5" fill="white"/>
+          <circle cx="33" cy="45" r="3.2" fill="#2060a8"/>
+          <circle cx="47" cy="45" r="3.2" fill="#2060a8"/>
+          <circle cx="33.5" cy="44.5" r="1.5" fill="#080e18"/>
+          <circle cx="47.5" cy="44.5" r="1.5" fill="#080e18"/>
+          <!-- eye shine -->
+          <circle cx="34.5" cy="43.5" r="0.7" fill="white" opacity="0.8"/>
+          <circle cx="48.5" cy="43.5" r="0.7" fill="white" opacity="0.8"/>
+          <path d="M29 38 Q33 35.5 37 38" stroke="#a07818" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M43 38 Q47 35.5 51 38" stroke="#a07818" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- hopeful small smile -->
+          <path d="M34 55 Q40 59 46 55" stroke="#c09060" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="char-name">Luke Skywalker</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(230,126,34,0.3)">Ep III</span>
@@ -910,7 +1176,48 @@
       </div>
     </div>
 
+    <!-- R2-D2 & C-3PO -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#101828"/>
+          <!-- divider -->
+          <line x1="40" y1="8" x2="40" y2="76" stroke="#202838" stroke-width="1.5"/>
+          <!-- LEFT: R2-D2 -->
+          <rect x="11" y="52" width="25" height="22" rx="4" fill="#8898a8"/>
+          <rect x="13" y="56" width="7" height="9" rx="1.5" fill="#4878cc"/>
+          <rect x="22" y="56" width="12" height="3" rx="1" fill="#7090b0"/>
+          <rect x="22" y="61" width="12" height="3" rx="1" fill="#7090b0"/>
+          <rect x="13" y="67" width="21" height="4" rx="1.5" fill="#6888a0"/>
+          <!-- R2 dome -->
+          <ellipse cx="23" cy="46" rx="14" ry="13" fill="#c8d8e8"/>
+          <ellipse cx="23" cy="46" rx="12" ry="11" fill="#b8ccd8"/>
+          <!-- R2 main eye -->
+          <circle cx="22" cy="43" r="5.5" fill="#1858cc"/>
+          <circle cx="22" cy="43" r="3.5" fill="#0a3eaa"/>
+          <circle cx="22.8" cy="42.2" r="1.5" fill="#aaccff"/>
+          <!-- R2 small lights -->
+          <circle cx="30" cy="42" r="1.5" fill="#cc4422"/>
+          <circle cx="30" cy="46" r="1.5" fill="#44aa22"/>
+          <!-- RIGHT: C-3PO -->
+          <rect x="46" y="56" width="23" height="18" rx="4" fill="#b88810"/>
+          <rect x="48" y="60" width="19" height="3" rx="1" fill="#a07808"/>
+          <rect x="48" y="65" width="19" height="3" rx="1" fill="#a07808"/>
+          <!-- C-3PO head -->
+          <ellipse cx="58" cy="43" rx="14" ry="15" fill="#d4a018"/>
+          <ellipse cx="58" cy="45" rx="11" ry="11" fill="#c09010"/>
+          <!-- C-3PO eyes -->
+          <circle cx="53" cy="41" r="4.5" fill="#e8cc40"/>
+          <circle cx="63" cy="41" r="4.5" fill="#e8cc40"/>
+          <circle cx="53" cy="41" r="2.8" fill="#1a1400"/>
+          <circle cx="63" cy="41" r="2.8" fill="#1a1400"/>
+          <circle cx="53.8" cy="40.2" r="1" fill="#887000"/>
+          <circle cx="63.8" cy="40.2" r="1" fill="#887000"/>
+          <!-- C-3PO mouth -->
+          <rect x="50" y="49" width="16" height="2" rx="1" fill="#a07808"/>
+          <rect x="50" y="52" width="16" height="2" rx="1" fill="#a07808"/>
+        </svg>
+      </div>
       <div class="char-name">R2-D2 &amp; C-3PO</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(26,111,168,0.3)">Ep I–III</span>
@@ -920,7 +1227,34 @@
       </div>
     </div>
 
+    <!-- Din Djarin -->
     <div class="char-card">
+      <div class="char-portrait">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#0c1018"/>
+          <!-- dark cape -->
+          <path d="M0 68 Q10 56 24 60 L20 80 L0 80Z" fill="#1a1a1a"/>
+          <path d="M80 68 Q70 56 56 60 L60 80 L80 80Z" fill="#1a1a1a"/>
+          <!-- beskar chest plate -->
+          <path d="M20 64 Q20 58 40 56 Q60 58 60 64 L62 80 L18 80Z" fill="#9098a8"/>
+          <!-- Mudhorn signet hint -->
+          <circle cx="40" cy="69" r="6" fill="#a8b0c0" stroke="#c0c8d8" stroke-width="1"/>
+          <!-- beskar helmet dome -->
+          <ellipse cx="40" cy="38" rx="23" ry="25" fill="#9098a8"/>
+          <!-- helmet sheen highlights -->
+          <ellipse cx="34" cy="27" rx="9" ry="7" fill="#b8c0d0" opacity="0.45"/>
+          <!-- T-visor horizontal bar -->
+          <rect x="19" y="37" width="42" height="12" rx="2" fill="#080c12"/>
+          <!-- T-visor vertical slot -->
+          <rect x="34" y="24" width="12" height="25" rx="2" fill="#080c12"/>
+          <!-- subtle visor reflection -->
+          <rect x="20" y="38" width="16" height="4" rx="1" fill="#1a2030" opacity="0.5"/>
+          <!-- chin piece -->
+          <rect x="26" y="54" width="28" height="9" rx="3" fill="#848c9c"/>
+          <!-- edge highlight -->
+          <path d="M18 38 Q18 20 40 18 Q62 20 62 38" fill="none" stroke="#b0b8c8" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+      </div>
       <div class="char-name">Din Djarin (The Mandalorian)</div>
       <div class="char-appearances">
         <span class="char-pill" style="background:rgba(46,204,113,0.3)">Mandalorian</span>
