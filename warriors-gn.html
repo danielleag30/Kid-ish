@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Warriors — Graphic Novels Character Chart</title>
+<style>
+:root {
+  --bg:       #07110a;
+  --bg2:      #0d1f10;
+  --bg3:      #122714;
+  --card:     #152918;
+  --card2:    #1c3320;
+  --border:   #2a4a2e;
+  --moon:     #d8e8d0;
+  --silver:   #9ab89e;
+  --mist:     #607860;
+  --gold:     #d4af37;
+  --amber:    #c87941;
+  --text:     #cce0cc;
+  --text-dim: #7a9e7a;
+
+  --thunder:  #e8891a;
+  --shadow:   #9b6dcc;
+  --wind:     #c8b060;
+  --river:    #4a9ad9;
+  --starclan: #a8c8f0;
+  --skyclan:  #4ab87a;
+  --bloodclan:#cc4444;
+  --other:    #8a9e8a;
+
+  --radius: 18px;
+  --shadow-card: 0 6px 24px rgba(0,0,0,0.6);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(168,200,240,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(74,184,122,0.05) 0%, transparent 50%);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(200,230,200,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 34% 5%,  rgba(200,230,200,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 22%, rgba(200,230,200,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 8%,  rgba(200,230,200,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 89% 15%, rgba(200,230,200,0.6) 0%, transparent 100%),
+    radial-gradient(2px 2px at 48% 3%,  rgba(168,200,240,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 23% 55%, rgba(200,230,200,0.3) 0%, transparent 100%);
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: max(env(safe-area-inset-top),16px) 16px max(env(safe-area-inset-bottom),24px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.site-header { text-align:center; padding:24px 0 16px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+.site-header .nav-links { display:flex; justify-content:center; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.nav-link {
+  display:inline-block; background:var(--card2); border:1px solid var(--border);
+  color:var(--silver); text-decoration:none; border-radius:999px; padding:7px 18px;
+  font-size:14px; letter-spacing:0.03em; transition:background 0.2s,color 0.2s;
+}
+.nav-link:hover { background:var(--border); color:var(--moon); }
+.nav-link.active { background:var(--gold); color:#0a1a0a; font-weight:bold; border-color:var(--gold); }
+.site-header h1 { font-size:clamp(24px,4.5vw,42px); color:var(--moon); text-shadow:0 0 24px rgba(212,175,55,0.4),0 2px 0 rgba(0,0,0,0.8); letter-spacing:0.04em; }
+.site-header .tagline { font-size:clamp(13px,2vw,17px); color:var(--mist); margin-top:6px; font-style:italic; }
+
+/* Series selector */
+.series-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+.series-tab {
+  border:none; background:var(--card2); border:1.5px solid var(--border); color:var(--silver);
+  font-family:inherit; font-size:clamp(13px,2.2vw,16px); padding:9px 18px; border-radius:999px;
+  cursor:pointer; display:flex; align-items:center; gap:6px;
+  transition:background 0.18s,color 0.18s,border-color 0.18s;
+  -webkit-user-select:none; user-select:none;
+}
+.series-tab:active { transform:translateY(2px); }
+.series-tab.active { background:var(--gold); border-color:var(--gold); color:#0a0a0a; font-weight:bold; }
+
+/* Series blocks */
+.series-block { margin-bottom:44px; }
+.series-heading {
+  font-size:clamp(18px,3vw,26px); color:var(--moon); letter-spacing:0.04em;
+  border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:6px;
+}
+.series-meta { font-size:13px; color:var(--text-dim); font-style:italic; margin-bottom:18px; }
+
+/* Volume pills */
+.vol-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.vol-pill {
+  background:var(--bg3); border:1px solid var(--border); border-radius:999px;
+  padding:4px 14px; font-size:13px; color:var(--silver);
+}
+
+/* Series summary */
+.series-summary { font-size:15px; color:var(--text); line-height:1.65; margin-bottom:20px; -webkit-user-select:text; user-select:text; }
+
+/* Character grid */
+.char-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; margin-bottom:24px; }
+
+/* Character card */
+.char-card {
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow-card); overflow:hidden; display:flex; flex-direction:column;
+  transition:transform 0.15s;
+}
+.char-card:active { transform:scale(0.985); }
+.clan-bar { height:5px; width:100%; }
+.char-card[data-clan="thunder"] .clan-bar  { background:var(--thunder); }
+.char-card[data-clan="shadow"]  .clan-bar  { background:var(--shadow); }
+.char-card[data-clan="wind"]    .clan-bar  { background:var(--wind); }
+.char-card[data-clan="river"]   .clan-bar  { background:var(--river); }
+.char-card[data-clan="starclan"] .clan-bar { background:linear-gradient(90deg,var(--starclan),var(--silver)); }
+.char-card[data-clan="skyclan"] .clan-bar  { background:var(--skyclan); }
+.char-card[data-clan="bloodclan"] .clan-bar { background:var(--bloodclan); }
+.char-card[data-clan="other"]   .clan-bar  { background:var(--other); }
+
+.card-body { padding:16px; flex:1; display:flex; flex-direction:column; gap:10px; }
+.card-header { display:flex; align-items:flex-start; gap:10px; }
+.clan-badge { flex:none; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; background:var(--bg3); border:1.5px solid var(--border); }
+.char-names { flex:1; }
+.char-name { font-size:clamp(16px,2.5vw,20px); color:var(--moon); font-weight:bold; line-height:1.2; }
+.char-former { font-size:12px; color:var(--text-dim); margin-top:2px; font-style:italic; }
+.char-rank { display:inline-block; background:var(--bg3); border:1px solid var(--border); border-radius:999px; padding:2px 10px; font-size:12px; color:var(--silver); letter-spacing:0.04em; white-space:nowrap; }
+.card-section-label { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-dim); margin-top:4px; }
+.card-desc { font-size:14px; color:var(--text); line-height:1.5; -webkit-user-select:text; user-select:text; }
+.card-role { font-size:14px; color:var(--silver); line-height:1.5; font-style:italic; -webkit-user-select:text; user-select:text; }
+.rel-list { display:flex; flex-direction:column; gap:4px; }
+.rel-item { font-size:13px; color:var(--text); display:flex; gap:6px; }
+.rel-key { color:var(--text-dim); min-width:80px; flex:none; font-style:italic; }
+.rel-val { -webkit-user-select:text; user-select:text; }
+
+/* Q&A */
+.qa-section { margin-top:4px; }
+.qa-toggle { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:10px; color:var(--silver); font-family:inherit; font-size:13px; padding:8px 12px; text-align:left; cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.15s; -webkit-user-select:none; user-select:none; }
+.qa-toggle:hover { background:var(--card2); }
+.qa-toggle .chevron { margin-left:auto; transition:transform 0.2s; font-style:normal; }
+.qa-toggle.open .chevron { transform:rotate(180deg); }
+.qa-items { display:none; flex-direction:column; gap:8px; padding:10px 0 0; }
+.qa-items.open { display:flex; }
+.qa-item { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+.qa-question { font-size:13px; color:var(--moon); line-height:1.45; margin-bottom:6px; -webkit-user-select:text; user-select:text; }
+.qa-reveal-btn { background:none; border:1px dashed var(--border); border-radius:6px; color:var(--text-dim); font-family:inherit; font-size:12px; padding:5px 10px; cursor:pointer; transition:color 0.15s,border-color 0.15s; width:100%; text-align:left; -webkit-user-select:none; user-select:none; }
+.qa-reveal-btn:hover { color:var(--silver); border-color:var(--silver); }
+.qa-answer { display:none; font-size:13px; color:var(--gold); line-height:1.45; margin-top:4px; padding:6px 8px; background:rgba(212,175,55,0.07); border-radius:6px; border-left:2px solid var(--gold); -webkit-user-select:text; user-select:text; }
+.qa-answer.shown { display:block; }
+
+/* Arc storylines */
+.storyline-section { margin-bottom:40px; }
+.section-heading { font-size:clamp(18px,3vw,26px); color:var(--moon); border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:18px; letter-spacing:0.03em; }
+.arc-block { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:14px; overflow:hidden; }
+.arc-toggle { width:100%; background:none; border:none; color:var(--moon); font-family:inherit; font-size:clamp(15px,2.2vw,18px); font-weight:bold; padding:16px 20px; text-align:left; cursor:pointer; display:flex; align-items:center; gap:10px; transition:background 0.15s; -webkit-user-select:none; user-select:none; }
+.arc-toggle:hover { background:var(--card2); }
+.arc-toggle .arc-chev { margin-left:auto; color:var(--text-dim); transition:transform 0.2s; }
+.arc-toggle.open .arc-chev { transform:rotate(180deg); }
+.arc-content { display:none; padding:0 20px 20px; border-top:1px solid var(--border); }
+.arc-content.open { display:block; }
+.arc-summary { font-size:15px; color:var(--text); line-height:1.65; margin:14px 0 16px; -webkit-user-select:text; user-select:text; }
+.parent-qs-label { font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-dim); margin-bottom:10px; }
+.parent-q-item { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; }
+.parent-q-text { font-size:14px; color:var(--moon); margin-bottom:8px; line-height:1.4; -webkit-user-select:text; user-select:text; }
+.parent-a-btn { background:none; border:1px dashed var(--border); border-radius:6px; color:var(--text-dim); font-family:inherit; font-size:13px; padding:6px 12px; cursor:pointer; transition:color 0.15s,border-color 0.15s; -webkit-user-select:none; user-select:none; }
+.parent-a-btn:hover { color:var(--silver); border-color:var(--silver); }
+.parent-a-text { display:none; margin-top:6px; font-size:13px; color:var(--amber); line-height:1.5; padding:6px 8px; background:rgba(200,121,65,0.07); border-left:2px solid var(--amber); border-radius:4px; -webkit-user-select:text; user-select:text; }
+.parent-a-text.shown { display:block; }
+
+footer { text-align:center; color:var(--mist); font-size:13px; padding:20px 0 10px; border-top:1px solid var(--border); font-style:italic; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<header class="site-header">
+  <nav class="nav-links">
+    <a class="nav-link" href="index.html">🌈 Storybook Maker</a>
+    <a class="nav-link" href="warriors-novels.html">🐱 Warriors Novels</a>
+    <a class="nav-link active" href="warriors-gn.html">📖 Graphic Novels</a>
+  </nav>
+  <h1>Warriors — Graphic Novels</h1>
+  <div class="tagline">Character chart &amp; story guide · All Warriors manga &amp; graphic novel series</div>
+</header>
+
+<div class="series-tabs" id="seriesTabs">
+  <button class="series-tab active" data-series="all">📚 All Series</button>
+  <button class="series-tab" data-series="tigerstar-sasha">Tigerstar &amp; Sasha</button>
+  <button class="series-tab" data-series="ravenpaw">Ravenpaw's Path</button>
+  <button class="series-tab" data-series="skyclan">SkyClan &amp; the Stranger</button>
+  <button class="series-tab" data-series="shadow-riverclan">A Shadow in RiverClan</button>
+  <button class="series-tab" data-series="winds-of-change">Winds of Change</button>
+</div>
+
+<div id="series-container"></div>
+
+<section class="storyline-section">
+  <h2 class="section-heading">📜 Series Summaries &amp; Parent Discussion Guide</h2>
+  <div id="arc-blocks"></div>
+</section>
+
+<footer>Warriors Graphic Novels by Erin Hunter · Art by various manga artists · 🐾 May StarClan light your path</footer>
+</div>
+
+<script>
+"use strict";
+
+const CLAN_EMOJI = {
+  thunder:"🔥", shadow:"🌑", wind:"💨", river:"🌊",
+  starclan:"⭐", skyclan:"🍃", bloodclan:"💀", other:"🏚"
+};
+
+/* ═══════════════════════════════════════════════
+   GRAPHIC NOVEL SERIES DATA
+═══════════════════════════════════════════════ */
+const GN_SERIES = [
+  /* ─── Tigerstar & Sasha ─── */
+  {
+    id: "tigerstar-sasha",
+    title: "Tigerstar & Sasha",
+    emoji: "🐅",
+    volumes: ["Into the Woods","Escape from the Forest","Return to the Clans"],
+    description: "Told from the perspective of Sasha, a loner she-cat who falls in love with the fearsome Tigerstar — without knowing who he truly is. This trilogy gives a sympathetic, human side to one of Warriors' greatest villains, and introduces Sasha's kits Hawk (Hawkfrost) and Moth (Mothwing) — two characters who go on to play major roles in the novels.",
+    characters: [
+      {
+        name: "Sasha",
+        clan: "other",
+        rank: "Loner",
+        description: "A tan she-cat with amber eyes who once lived as a kittypet. Gentle, caring, and fiercely devoted to her kits. She is defined by her love of freedom and her capacity to love well.",
+        relationships: { mate: "Tigerstar", kits: "Hawkfrost (Hawk), Mothwing (Moth), Tadpole (deceased)", closeTo: "Pine, Mistyfoo" },
+        role: "The heart of this trilogy. She meets Tigerstar while living as a loner and, despite falling in love, eventually cannot follow him into the Clans when she learns who he really is. Raises her kits alone after his death.",
+        questions: [
+          { q: "Why didn't Sasha join the Clans even though she loved Tigerstar?", a: "She valued freedom and kindness. When she saw how cruel Tigerstar truly was — how he led through fear — she knew she couldn't live in a world he controlled." },
+          { q: "How does Sasha make sure her kits have a future even though she is alone?", a: "She eventually brings Hawk and Moth to RiverClan so they can have a real Clan life, even though it means giving them up. She puts their future above her own feelings." }
+        ]
+      },
+      {
+        name: "Hawkfrost",
+        formerNames: ["Hawk"],
+        clan: "river",
+        rank: "Warrior (villain)",
+        description: "Dark brown tabby tom with icy blue eyes — looks strikingly like his father Tigerstar. Ruthless and calculating beneath a charming surface.",
+        relationships: { mother: "Sasha", father: "Tigerstar", sister: "Mothwing", "half-siblings": "Bramblestar, Tawnypelt" },
+        role: "One of Tigerstar's sons by Sasha. Grew up to be exactly the kind of cat Sasha feared — ambitious and willing to use any means to get power. Was a major villain in the New Prophecy and Power of Three novel arcs. Manipulated his half-brother Brambleclaw.",
+        questions: [
+          { q: "How did Hawkfrost try to take power in RiverClan?", a: "He manipulated events to become deputy, trained in the Dark Forest, and tried to lure Brambleclaw into following Tigerstar's legacy — even setting a trap for Firestar." },
+          { q: "What separated Hawkfrost from Bramblestar even though both were Tigerstar's sons?", a: "Bramblestar chose loyalty and honour over ambition; Hawkfrost chose power. They both had the same father, but made opposite choices." }
+        ]
+      },
+      {
+        name: "Mothwing",
+        formerNames: ["Moth"],
+        clan: "river",
+        rank: "Medicine Cat",
+        description: "Golden dappled tabby she-cat with amber eyes. Steady, practical, compassionate — and secretly does not believe in StarClan.",
+        relationships: { mother: "Sasha", father: "Tigerstar", brother: "Hawkfrost" },
+        role: "Sasha's daughter who joins RiverClan. Becomes a medicine cat despite the irony that she privately doubts StarClan's existence. One of the most nuanced characters in the series — a healer who relies on skill, not divine guidance.",
+        questions: [
+          { q: "What is the irony about Mothwing being a medicine cat?", a: "Medicine cats are supposed to communicate with StarClan and interpret their signs — but Mothwing privately doesn't believe in StarClan. She relies entirely on practical healing knowledge." },
+          { q: "How did Hawkfrost help Mothwing become a medicine cat, and why was that a problem?", a: "He planted a moth's wing near the medicine cat to fake a StarClan sign recommending Mothwing as an apprentice. It was a lie built on manipulation — not a real sign." }
+        ]
+      }
+    ]
+  },
+
+  /* ─── Ravenpaw's Path ─── */
+  {
+    id: "ravenpaw",
+    title: "Ravenpaw's Path",
+    emoji: "🐦",
+    volumes: ["Shattered Peace","A Clan in Need","The Heart of a Warrior"],
+    description: "Set after Firestar's Quest (Super Edition), this trilogy follows Ravenpaw and his mate Barley as a gang of violent rogues — led by three cats from Barley's past — takes over their peaceful farm barn. Ravenpaw must decide whether to fight or flee, and in doing so discovers a courage he never knew he had. A quiet, character-focused story about home, trauma, and bravery.",
+    characters: [
+      {
+        name: "Ravenpaw",
+        clan: "other",
+        rank: "Loner",
+        description: "Sleek black tom with a white-tipped tail and green eyes. Shy and nervous, but deeply observant and braver than he appears.",
+        relationships: { mate: "Barley", closeTo: "Firestar, Graystripe" },
+        role: "The gentle heart of his own trilogy. After escaping ThunderClan and building a peaceful life on the farm with Barley, he is forced to fight to protect it when rogues invade. His journey in this trilogy is about confronting his own fear and the past he ran from.",
+        questions: [
+          { q: "Why does Ravenpaw feel guilty even though he was the victim in ThunderClan?", a: "He ran away rather than standing up to Tigerclaw — even though it was the only safe thing to do, he carries shame about not facing the danger head-on." },
+          { q: "What does Ravenpaw learn about himself in Ravenpaw's Path?", a: "That courage isn't the absence of fear — it's acting despite fear. He fights for his home and Barley even though everything in him wants to flee." }
+        ]
+      },
+      {
+        name: "Barley",
+        clan: "other",
+        rank: "Loner",
+        description: "Black-and-white tom with brown eyes. Steady, quiet, and loyal. Barley's history with the rogues is a dark secret he has never fully shared.",
+        relationships: { mate: "Ravenpaw", "former group": "BloodClan (escaped long ago)" },
+        role: "Ravenpaw's closest companion and chosen family. His backstory — that he escaped BloodClan and has been hiding from his past ever since — is central to why the rogues target the farm. He must finally confront what he ran from.",
+        questions: [
+          { q: "What secret did Barley keep from Ravenpaw about his past?", a: "Barley had been part of BloodClan — Scourge's violent group — and had fled from them. The rogues attacking the farm were connected to that past." },
+          { q: "How are Barley and Ravenpaw alike even though they seem different?", a: "Both ran from their pasts instead of facing them, and both eventually find real courage when they have something worth protecting — each other and their home." }
+        ]
+      },
+      {
+        name: "Violet",
+        clan: "other",
+        rank: "Loner",
+        description: "A small she-cat — Barley's sister — who is found injured and helped by Ravenpaw and Barley. Gentle and brave in her own quiet way.",
+        relationships: { brother: "Barley", closeTo: "Ravenpaw" },
+        role: "Barley's long-lost sister who reappears and helps reconnect him to his past and his family. Her presence helps Barley process old wounds.",
+        questions: [
+          { q: "What does Violet's reappearance mean for Barley?", a: "She is living proof that his past doesn't have to define him — and that family bonds can survive even long separations and painful histories." }
+        ]
+      }
+    ]
+  },
+
+  /* ─── SkyClan & the Stranger ─── */
+  {
+    id: "skyclan",
+    title: "SkyClan & the Stranger",
+    emoji: "🍃",
+    volumes: ["The Rescue","Beyond the Code","After the Flood"],
+    description: "Set in the gorge territory where Firestar rebuilt SkyClan, this trilogy follows Leafstar as she leads her still-fragile Clan through floods, fox attacks, and the most unusual challenge of all: a Twoleg (human) who wants to adopt her kits. The trilogy explores what it means to truly belong to a Clan, and whether the warrior code must always come first.",
+    characters: [
+      {
+        name: "Leafstar",
+        formerNames: ["Leaf"],
+        clan: "skyclan",
+        rank: "Leader",
+        description: "Brown-and-cream tabby she-cat with amber eyes. Measured, fair, and quietly determined. Holds her new Clan together through sheer force of will.",
+        relationships: { mate: "Billystorm", kits: "Firekit, Harrykit, Stormheart" },
+        role: "SkyClan's first leader after its rebuilding. Navigates the challenges of leading a mixed Clan — warriors, former kittypets, and 'daylight warriors' who sleep with Twolegs at night. Faces a personal crisis when a Twoleg takes her kits and she must choose between rescuing them and keeping the peace.",
+        questions: [
+          { q: "What makes leading SkyClan harder than leading a normal Clan?", a: "SkyClan is newly rebuilt and has many cats who aren't fully trained warriors — some are former kittypets, some are 'daylight warriors' who live part-time with Twolegs. Keeping everyone committed to Clan life takes constant effort." },
+          { q: "What would you do if you were Leafstar and a human took your kits?", a: "Open-ended — this question is about what family means vs. what your responsibilities are. Leafstar ultimately fights to get them back, even at risk to the Clan." }
+        ]
+      },
+      {
+        name: "Billystorm",
+        clan: "skyclan",
+        rank: "Daylight Warrior",
+        description: "Ginger-and-white tom. Cheerful and enthusiastic, but struggles with the tension between Clan life and his Twoleg home.",
+        relationships: { mate: "Leafstar", kits: "Firekit, Harrykit, Stormheart" },
+        role: "A 'daylight warrior' — he spends days with SkyClan hunting and training, but returns to his Twoleg household at night. His relationship with Leafstar is complicated by this divided life. He eventually commits fully to the Clan.",
+        questions: [
+          { q: "What is a 'daylight warrior' and why is it unusual?", a: "Daylight warriors live with Twolegs (humans) at night but train and fight with SkyClan during the day. Most Clan cats would see this as a sign of divided loyalty — true Clan cats don't depend on Twolegs." }
+        ]
+      },
+      {
+        name: "Sol",
+        clan: "other",
+        rank: "Loner / Wanderer (antagonist)",
+        description: "A broad-faced tom with a patchy tortoiseshell-and-white coat and pale yellow eyes. Eloquent, charismatic, and deeply manipulative.",
+        relationships: { noFixedLoyalties: "moves between all Clans, loyal to none" },
+        role: "One of Warriors' most unsettling villains — not because of physical strength but because of his words. Sol appears across SkyClan & the Stranger and the novel arcs Power of Three and Omen of the Stars. He turns cats against their Clans by making them doubt StarClan.",
+        questions: [
+          { q: "What makes Sol dangerous even though he doesn't fight?", a: "His weapon is words — he convinces cats to doubt StarClan, abandon their Clans, and follow him instead. He exploits doubt and loneliness." },
+          { q: "Can you think of a real-world person or story that reminds you of Sol?", a: "Open-ended — cult leaders, demagogues, or story characters who use charisma rather than force to gain power. Good discussion about recognising manipulation." }
+        ]
+      }
+    ]
+  },
+
+  /* ─── A Shadow in RiverClan ─── */
+  {
+    id: "shadow-riverclan",
+    title: "A Shadow in RiverClan",
+    emoji: "🌊",
+    volumes: ["A Shadow in RiverClan (standalone)"],
+    description: "A standalone graphic novel set during the Prophecies Begin era. RiverClan apprentice Featherpaw and Stormpaw (Graystripe's kits with Silverstream) navigate divided loyalties as a shadow of treachery moves through their Clan. A story about learning to trust your own judgement and speak up when something is wrong.",
+    characters: [
+      {
+        name: "Featherpaw / Feathertail",
+        formerNames: ["Featherkit"],
+        clan: "river",
+        rank: "Apprentice (in this story)",
+        description: "Silver tabby she-cat with blue eyes. Sensitive and quick to pick up on the emotions of those around her. Half ThunderClan by blood, but fully RiverClan in her heart.",
+        relationships: { father: "Graystripe (ThunderClan)", mother: "Silverstream (RiverClan, deceased)", brother: "Stormfur" },
+        role: "The emotional centre of this graphic novel. Struggling with her mixed heritage while training as a RiverClan apprentice, she must untangle a web of suspicion and dishonesty within her own Clan.",
+        questions: [
+          { q: "Why might Featherpaw feel like she doesn't fully belong anywhere?", a: "Her father is ThunderClan's Graystripe and her mother was RiverClan's Silverstream — she is biologically between two Clans, and some cats remind her of it." },
+          { q: "What is the bravest thing about Featherpaw's choice in this story?", a: "Speaking up against something wrong when you're still an apprentice — the lowest rank — takes enormous courage, especially when senior warriors may not want to hear it." }
+        ]
+      },
+      {
+        name: "Stormfur",
+        formerNames: ["Stormkit"],
+        clan: "river",
+        rank: "Warrior",
+        description: "Dark gray tom with amber eyes. Protective of his sister and loyal to his Clan, even when his loyalties are tested.",
+        relationships: { father: "Graystripe (ThunderClan)", mother: "Silverstream (RiverClan, deceased)", sister: "Feathertail" },
+        role: "Feathertail's brother. Also carries mixed heritage and the weight of his parents' forbidden love. A steady protector whose arc explores what it means to call one place home.",
+        questions: [
+          { q: "How do Stormfur and Feathertail cope with having a father in another Clan?", a: "They focus on their RiverClan identity and the Clanmates who raised them — they let their choices define them rather than their biology." }
+        ]
+      }
+    ]
+  },
+
+  /* ─── Winds of Change ─── */
+  {
+    id: "winds-of-change",
+    title: "Winds of Change",
+    emoji: "💨",
+    volumes: ["Winds of Change (standalone)"],
+    description: "A standalone graphic novel focused on WindClan around the time of the original arc. The Clan must find its footing as tensions rise with ThunderClan over territory and leadership questions loom. A WindClan-centric story giving deeper dimension to cats who appear briefly in the main novels.",
+    characters: [
+      {
+        name: "Onewhisker / Onestar",
+        clan: "wind",
+        rank: "Warrior → Leader",
+        description: "Small brown tabby tom with amber eyes. Friendly and open-hearted as a warrior, trickier and more guarded as a leader.",
+        relationships: { closeTo: "Firestar (as warrior)", "kept at distance from": "Firestar (as leader)" },
+        role: "WindClan's future leader seen at an earlier point in his life. Shows the cat he was before leadership changed him — and the first seeds of why responsibility would push him away from his closest friendship.",
+        questions: [
+          { q: "Why might becoming a leader change a cat's personality so much?", a: "As a leader every decision affects your whole Clan. The weight of that responsibility can make cats more guarded, suspicious, and less willing to depend on others — especially others from rival Clans." }
+        ]
+      },
+      {
+        name: "Mudclaw",
+        clan: "wind",
+        rank: "Warrior · Deputy (disputed)",
+        description: "Mottled dark brown tom with amber eyes. Aggressive, proud, and deeply resentful of what he sees as an unjust slight.",
+        relationships: { leader: "Tallstar (resented)", rival: "Onewhisker" },
+        role: "WindClan's deputy who expected to become leader. When Tallstar changed his deputy on his deathbed to Onewhisker, Mudclaw considered it an injustice and gathered followers to challenge Onestar's authority. His story raises questions about fairness and legitimacy.",
+        questions: [
+          { q: "Was Mudclaw wrong to feel cheated when Tallstar changed the deputy decision at the last moment?", a: "His feelings were understandable — he had served loyally expecting that role. But how he chose to respond (rebellion rather than acceptance) was what made him wrong. Feelings don't justify all actions." },
+          { q: "What is the difference between believing something is unfair and being justified in fighting about it?", a: "A powerful discussion point: it's possible to be genuinely wronged and still choose a harmful response. Mudclaw's frustration was real, but a revolt that endangered lives was not the right answer." }
+        ]
+      }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   STORYLINE / DISCUSSION DATA
+═══════════════════════════════════════════════ */
+const STORYLINES = [
+  {
+    id: "tigerstar-sasha",
+    name: "Tigerstar & Sasha",
+    emoji: "🐅",
+    summary: "A love story told from the perspective of Sasha, a loner who falls for the imposing and charming Tigerstar without knowing the monster he is. When the truth becomes impossible to ignore, she must make impossible choices about her kits and their future. This trilogy gives Warriors' greatest villain unexpected depth — not excusing him, but showing that even the worst cats can inspire real love.",
+    parentQuestions: [
+      { q: "Sasha genuinely loved Tigerstar. How is it possible to love someone who turns out to be terrible?", a: "People often show only their best side early in relationships. Tigerstar was charming and protective to Sasha; she saw a different face than the Clans did. This is a valuable real-world conversation about how manipulation and charm can coexist in the same person." },
+      { q: "Sasha gives her kits to RiverClan so they have a better life than she can give them. Is that a loving act or an abandonment?", a: "Genuinely both, and the book doesn't pretend otherwise. It's loving in intent — she wants what's best for them — and painful as a loss. Great chance to talk about sacrifice and what good parenting looks like when circumstances are hard." },
+      { q: "Knowing that Hawk (Hawkfrost) becomes a villain and Moth (Mothwing) becomes a complicated hero, how does that change how you feel about Sasha's story?", a: "Open-ended — readers often feel the tragedy more sharply knowing the children's futures. Sasha's love couldn't prevent what Hawkfrost became; Mothwing's goodness was her own choice, not a product of her parents." }
+    ]
+  },
+  {
+    id: "ravenpaw",
+    name: "Ravenpaw's Path",
+    emoji: "🐦",
+    summary: "A quiet, character-focused trilogy about home, trauma, and finding courage. Ravenpaw built a peaceful life on the farm after escaping ThunderClan — but peace turns out to be something you have to defend. When violent rogues with a connection to Barley's past invade the barn, Ravenpaw must decide who he is: the cat who always runs, or someone who stands and fights.",
+    parentQuestions: [
+      { q: "Ravenpaw ran from danger instead of facing it when he left ThunderClan. Do you think that was cowardly or wise?", a: "Running was survival — staying would have meant death. Bravery isn't always staying; sometimes it's making the smart choice to live and fight another day on your own terms." },
+      { q: "Barley had been hiding his BloodClan past from Ravenpaw. Is keeping a painful secret from someone you love ever the right thing to do?", a: "Worth exploring — Barley kept it to protect himself and avoid painful memories, not to hurt Ravenpaw. The question is whether honesty in a close relationship should outweigh self-protection." },
+      { q: "Why do you think Ravenpaw and Barley's home on the farm feels so important — even compared to Clan life?", a: "Because they built it themselves, together. It represents freedom, chosen family, and peace earned rather than inherited. The series often asks what 'home' really means beyond just territory." }
+    ]
+  },
+  {
+    id: "skyclan",
+    name: "SkyClan & the Stranger",
+    emoji: "🍃",
+    summary: "A thoughtful trilogy about what it costs to build something new. Leafstar's SkyClan is still finding its footing — mixing former kittypets with wild-born cats — when disasters (floods, fox attacks, a human trying to take her kits) test whether it can hold together. Sol, the silver-tongued wanderer from the novels, also passes through, spreading doubt.",
+    parentQuestions: [
+      { q: "The 'daylight warriors' live half in the Clan and half with Twolegs. Is it possible to truly belong to two worlds at once?", a: "The books suggest it's very difficult — divided loyalty creates friction. But it also reflects real experiences: children of divorce, immigrants between cultures, anyone who belongs somewhere between two worlds. Good discussion point." },
+      { q: "Sol uses words alone to tear apart communities. What are some ways to protect yourself from being manipulated by someone like Sol?", a: "Strong community bonds, critical thinking about claims that aren't backed by evidence, and making space to talk about doubts openly so they can't be exploited. The cats most vulnerable to Sol were isolated or already unhappy." },
+      { q: "A Twoleg tries to keep Leafstar's kits as pets. From the kits' perspective, was that so terrible?", a: "This is deliberately uncomfortable — the kits were safe and fed. But they were removed from their identity, family, and future as Clan cats without their consent. It's a gentle way to explore adoption, autonomy, and who gets to decide what's 'best' for a child." }
+    ]
+  },
+  {
+    id: "shadow-riverclan",
+    name: "A Shadow in RiverClan",
+    emoji: "🌊",
+    summary: "A self-contained mystery set in RiverClan, exploring divided loyalties and the difficulty of speaking truth to authority. Young Featherpaw and Stormfur navigate a Clan where something is wrong — and where admitting it means challenging cats who have power over them.",
+    parentQuestions: [
+      { q: "Featherpaw suspects something is wrong but isn't sure if she should speak up — she's only an apprentice. When should young people speak up to authority figures?", a: "When safety or justice is at stake. The warrior code's hierarchy is meant to protect the Clan, not to silence anyone who notices wrongdoing. Speaking up, even nervously, is always braver than staying quiet." },
+      { q: "Feathertail and Stormfur are half-ThunderClan by blood. Does that make them less trustworthy RiverClan cats?", a: "The series says no — your birth doesn't determine your loyalty or character. Their behaviour proves their allegiance more than their parentage ever could." }
+    ]
+  },
+  {
+    id: "winds-of-change",
+    name: "Winds of Change",
+    emoji: "💨",
+    summary: "A WindClan-focused story exploring the Clan's culture and the complicated feelings around leadership transition. Seeing Onewhisker before he became the guarded Onestar — and understanding Mudclaw's bitterness — adds nuance to events readers know from the main novels.",
+    parentQuestions: [
+      { q: "Mudclaw felt he had earned the role of leader and was cheated at the last moment. Can something be technically legal (Tallstar had the right to change his deputy) but still feel deeply unfair?", a: "Yes — and this distinction is important. 'Legal' and 'fair' are not the same thing. Mudclaw's feelings of injustice were real. What was wrong was his response, not his feelings." },
+      { q: "What does WindClan's moorland home and lifestyle tell you about the cats who live there?", a: "Open moors breed swift, lean cats who value speed and independence. Environment shapes culture — just as it does with human societies. WindClan's directness and pride come from their demanding terrain." }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════ */
+let activeSeries = "all";
+
+function buildCharCard(char, seriesId) {
+  const formerHtml = char.formerNames?.length
+    ? `<div class="char-former">formerly: ${char.formerNames.join(" → ")}</div>` : "";
+
+  const relHtml = Object.entries(char.relationships || {}).map(([k,v]) =>
+    `<div class="rel-item"><span class="rel-key">${k}</span><span class="rel-val">${v}</span></div>`
+  ).join("");
+
+  const safeId = (char.name + seriesId).replace(/[^a-zA-Z0-9]/g,"_");
+
+  const qHtml = (char.questions || []).map((qa, i) => `
+    <div class="qa-item">
+      <div class="qa-question">❓ ${qa.q}</div>
+      <button class="qa-reveal-btn" data-qid="${safeId}-${i}">Tap to reveal answer</button>
+      <div class="qa-answer" id="qa-${safeId}-${i}">${qa.a}</div>
+    </div>
+  `).join("");
+
+  const qaSection = qHtml ? `
+    <div class="qa-section">
+      <button class="qa-toggle" data-charkey="${safeId}">
+        📚 Comprehension Questions <em class="chevron">▾</em>
+      </button>
+      <div class="qa-items" id="qai-${safeId}">${qHtml}</div>
+    </div>
+  ` : "";
+
+  return `
+    <div class="char-card" data-clan="${char.clan}">
+      <div class="clan-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="clan-badge">${CLAN_EMOJI[char.clan] || "🐾"}</div>
+          <div class="char-names">
+            <div class="char-name">${char.name}</div>
+            ${formerHtml}
+          </div>
+          <span class="char-rank">${char.rank}</span>
+        </div>
+        <div class="card-section-label">Appearance</div>
+        <div class="card-desc">${char.description}</div>
+        ${relHtml ? `<div class="card-section-label">Relationships</div><div class="rel-list">${relHtml}</div>` : ""}
+        <div class="card-section-label">Story Role</div>
+        <div class="card-role">${char.role}</div>
+        ${qaSection}
+      </div>
+    </div>
+  `;
+}
+
+function renderSeries() {
+  const container = document.getElementById("series-container");
+  container.innerHTML = "";
+
+  const toShow = activeSeries === "all"
+    ? GN_SERIES
+    : GN_SERIES.filter(s => s.id === activeSeries);
+
+  toShow.forEach(series => {
+    const block = document.createElement("section");
+    block.className = "series-block";
+    block.dataset.series = series.id;
+
+    const volPills = series.volumes.map(v => `<span class="vol-pill">📘 ${v}</span>`).join("");
+    const cardHtml = series.characters.map(c => buildCharCard(c, series.id)).join("");
+
+    block.innerHTML = `
+      <h2 class="series-heading">${series.emoji} ${series.title}</h2>
+      <div class="series-meta">${series.volumes.length} volume${series.volumes.length !== 1 ? "s" : ""}</div>
+      <div class="vol-pills">${volPills}</div>
+      <div class="series-summary">${series.description}</div>
+      <div class="char-grid">${cardHtml}</div>
+    `;
+    container.appendChild(block);
+  });
+
+  // bind Q&A toggles
+  container.querySelectorAll(".qa-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.charkey;
+      const items = document.getElementById("qai-" + key);
+      const open = items.classList.toggle("open");
+      btn.classList.toggle("open", open);
+    });
+  });
+
+  // bind reveal buttons
+  container.querySelectorAll(".qa-reveal-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const qid = btn.dataset.qid;
+      const parts = qid.split("-");
+      const idx = parts.pop();
+      const safeId = parts.join("-");
+      const ans = document.getElementById("qa-" + safeId + "-" + idx);
+      if (!ans) return;
+      const shown = ans.classList.toggle("shown");
+      btn.textContent = shown ? "Hide answer" : "Tap to reveal answer";
+    });
+  });
+}
+
+function renderStorylines() {
+  const container = document.getElementById("arc-blocks");
+  STORYLINES.forEach(story => {
+    const block = document.createElement("div");
+    block.className = "arc-block";
+
+    const pqHtml = story.parentQuestions.map((pq, i) => `
+      <div class="parent-q-item">
+        <div class="parent-q-text">💬 ${pq.q}</div>
+        <button class="parent-a-btn" data-arc="${story.id}" data-idx="${i}">Show discussion answer</button>
+        <div class="parent-a-text" id="pq-${story.id}-${i}">${pq.a}</div>
+      </div>
+    `).join("");
+
+    block.innerHTML = `
+      <button class="arc-toggle" data-arc="${story.id}">
+        ${story.emoji} ${story.name}
+        <span class="arc-chev">▾</span>
+      </button>
+      <div class="arc-content" id="arc-content-${story.id}">
+        <div class="arc-summary">${story.summary}</div>
+        <div class="parent-qs-label">🧑‍🏫 Parent &amp; Kid Discussion Questions</div>
+        ${pqHtml}
+      </div>
+    `;
+    container.appendChild(block);
+  });
+
+  container.querySelectorAll(".arc-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.arc;
+      const content = document.getElementById("arc-content-" + id);
+      const open = content.classList.toggle("open");
+      btn.classList.toggle("open", open);
+    });
+  });
+
+  container.querySelectorAll(".parent-a-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.arc;
+      const idx = btn.dataset.idx;
+      const el = document.getElementById(`pq-${id}-${idx}`);
+      if (!el) return;
+      const shown = el.classList.toggle("shown");
+      btn.textContent = shown ? "Hide answer" : "Show discussion answer";
+    });
+  });
+}
+
+/* ─── Series tabs ─── */
+document.getElementById("seriesTabs").addEventListener("click", e => {
+  const tab = e.target.closest(".series-tab");
+  if (!tab) return;
+  document.querySelectorAll(".series-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  activeSeries = tab.dataset.series;
+  renderSeries();
+});
+
+/* ─── Init ─── */
+renderSeries();
+renderStorylines();
+</script>
+</body>
+</html>
