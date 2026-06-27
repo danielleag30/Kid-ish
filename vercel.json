@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/allison-storybook", "dest": "/allison-storybook.html" },
+    { "src": "/star-wars-flowchart", "dest": "/star-wars-flowchart.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

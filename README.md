@@ -1,4 +1,27 @@
-# 🌈 Allison's Storybook Maker
+# Kid-ish
+
+A collection of fun, interactive web apps for kids (and kids at heart).
+
+---
+
+## 🌌 Star Wars Universe Flowchart
+
+An interactive, Star Wars-themed flowchart showing every film and series in **in-universe chronological order** — from the High Republic all the way through the Sequel Trilogy.
+
+**Open:** [`star-wars-flowchart.html`](./star-wars-flowchart.html)
+
+### What's inside
+
+- **7 color-coded eras** flowing left to right: High Republic → Fall of the Republic → The Clone Wars → Imperial Era → Galactic Civil War → New Republic → Rise of the First Order
+- Every **theatrical film**, **live-action series**, and **animated series** as its own card
+- **Hover any card** to see a plot summary tooltip
+- **Cross-era connection badges** showing how stories link (e.g. Andor → Rogue One, Rebels → Ahsoka)
+- **Character web** at the bottom tracing 12 key characters across the whole saga
+- Animated starfield background — pure HTML/CSS/JS, no build step
+
+---
+
+## 🌈 Allison's Storybook Maker
 
 A magical picture-storybook app for Allison (age 7). She tells it a story idea — by **talking** 🎤 or typing — and the AI writes a gentle, silly story **and draws an illustration for every page**, which she can flip through like a real book and have read aloud to her.
 
