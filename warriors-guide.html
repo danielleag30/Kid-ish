@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>🌍 Warriors World Guide!</title>
+<style>
+:root {
+  --bg:       #0b2113;
+  --bg2:      #103019;
+  --bg3:      #173d22;
+  --card:     #1c4a29;
+  --card2:    #245c33;
+  --border:   #3a7a45;
+  --leaf:     #8fe06a;
+  --moss:     #b6e8a0;
+  --bark:     #c99a5b;
+  --sun:      #ffe27a;
+  --gold:     #ffd24a;
+  --amber:    #ff9b42;
+  --text:     #e6f6e0;
+  --text-dim: #a8cfa0;
+  --danger:   #ff5e5e;
+
+  --thunder:  #ff8a1e;
+  --shadow:   #b585f5;
+  --wind:     #ecd35e;
+  --river:    #44b4ff;
+  --starclan: #bcd6ff;
+  --skyclan:  #4fd98a;
+  --other:    #b8b0a0;
+
+  --radius:   22px;
+  --shadow-card: 0 8px 26px rgba(0,0,0,0.45);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; }
+body {
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255,226,122,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 5%, rgba(143,224,106,0.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(16,48,25,0.9) 0%, transparent 60%);
+}
+body::before {
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(3px 3px at 12% 18%, rgba(143,224,106,0.35) 0%, transparent 100%),
+    radial-gradient(2px 2px at 34% 8%,  rgba(255,226,122,0.30) 0%, transparent 100%),
+    radial-gradient(3px 3px at 72% 12%, rgba(143,224,106,0.28) 0%, transparent 100%),
+    radial-gradient(2px 2px at 89% 22%, rgba(255,226,122,0.22) 0%, transparent 100%),
+    radial-gradient(2px 2px at 23% 60%, rgba(143,224,106,0.20) 0%, transparent 100%),
+    radial-gradient(3px 3px at 64% 75%, rgba(143,224,106,0.16) 0%, transparent 100%);
+}
+
+#app {
+  position: relative; z-index: 1;
+  min-height: 100%;
+  display: flex; flex-direction: column;
+  padding: max(env(safe-area-inset-top),16px) 14px max(env(safe-area-inset-bottom),96px);
+  max-width: 1100px; margin: 0 auto;
+}
+
+/* ── Header ── */
+.site-header { text-align:center; padding:20px 0 14px; border-bottom:2px dashed var(--border); margin-bottom:18px; }
+.site-header .nav-links { display:flex; justify-content:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.nav-link {
+  display:inline-block; background:var(--card2); border:2px solid var(--border);
+  color:var(--moss); text-decoration:none; border-radius:999px; padding:8px 18px;
+  font-size:15px; font-weight:bold; transition:transform .15s, background .2s;
+}
+.nav-link:hover { background:var(--border); color:#fff; }
+.nav-link:active { transform:scale(.94); }
+.nav-link.active { background:var(--leaf); color:#0a2410; border-color:var(--leaf); }
+.site-header h1 { font-size:clamp(26px,5.5vw,44px); color:#fff; text-shadow:0 0 22px rgba(143,224,106,.5), 0 3px 0 rgba(0,0,0,.5); }
+.site-header .tagline { font-size:clamp(14px,2.4vw,18px); color:var(--moss); margin-top:6px; font-weight:bold; }
+
+/* ── Section tabs ── */
+.guide-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; justify-content:center; }
+.guide-tab {
+  background:var(--card2); border:2px solid var(--border); color:var(--moss);
+  font-family:inherit; font-size:clamp(13px,2.3vw,16px); font-weight:bold;
+  padding:11px 18px; border-radius:999px; cursor:pointer;
+  display:flex; align-items:center; gap:6px; transition:transform .15s;
+}
+.guide-tab:active { transform:scale(.93); }
+.guide-tab.active { background:var(--leaf); border-color:var(--leaf); color:#0a2410; }
+
+.guide-section { display:none; }
+.guide-section.active { display:block; }
+
+.section-heading { font-size:clamp(20px,3.4vw,28px); color:#fff; border-bottom:2px dashed var(--border); padding-bottom:10px; margin-bottom:16px; }
+.section-sub { font-size:14px; color:var(--moss); font-weight:bold; margin-bottom:18px; line-height:1.5; }
+
+/* ── Warrior Code scroll ── */
+.scroll-wrap { margin-bottom:32px; }
+.scroll-toggle {
+  width:100%; background:linear-gradient(100deg,var(--bark),#a67c3f);
+  border:none; border-radius:18px; color:#2a1500; font-family:inherit;
+  font-size:clamp(16px,2.6vw,20px); font-weight:800; padding:18px 20px;
+  text-align:left; cursor:pointer; display:flex; align-items:center; gap:10px;
+  box-shadow:var(--shadow-card);
+}
+.scroll-toggle:active { transform:scale(.98); }
+.scroll-toggle .chev { margin-left:auto; transition:transform .25s; }
+.scroll-toggle.open .chev { transform:rotate(180deg); }
+.scroll-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .4s ease;
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-top:none;
+  border-radius:0 0 18px 18px;
+}
+.scroll-body.open { max-height:3000px; }
+.scroll-inner { padding:18px 20px 22px; }
+.code-rule {
+  display:flex; gap:12px; align-items:flex-start;
+  padding:12px 0; border-bottom:1px dashed var(--border);
+}
+.code-rule:last-child { border-bottom:none; }
+.code-num {
+  flex:none; width:30px; height:30px; border-radius:50%;
+  background:var(--leaf); color:#0a2410; font-weight:800; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+}
+.code-text { font-size:15px; line-height:1.5; color:var(--text); -webkit-user-select:text; user-select:text; }
+
+/* ── Clan profile cards ── */
+.clan-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; margin-bottom:32px; }
+.clan-card {
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow-card); overflow:hidden;
+}
+.clan-card-bar { height:8px; width:100%; }
+.clan-card[data-clan="thunder"] .clan-card-bar { background:var(--thunder); }
+.clan-card[data-clan="shadow"]  .clan-card-bar { background:var(--shadow); }
+.clan-card[data-clan="wind"]    .clan-card-bar { background:var(--wind); }
+.clan-card[data-clan="river"]   .clan-card-bar { background:var(--river); }
+.clan-card[data-clan="sky"]     .clan-card-bar { background:var(--skyclan); }
+.clan-card[data-clan="star"]    .clan-card-bar { background:linear-gradient(90deg,var(--starclan),#fff); }
+.clan-card-body { padding:18px; display:flex; flex-direction:column; gap:10px; }
+.clan-card-title { font-size:clamp(19px,3vw,23px); font-weight:800; color:#fff; display:flex; align-items:center; gap:8px; }
+.clan-fact { font-size:13.5px; line-height:1.5; }
+.clan-fact .lbl { font-weight:800; color:var(--moss); display:block; margin-bottom:2px; }
+.clan-fact .val { color:var(--text); -webkit-user-select:text; user-select:text; }
+
+/* ── Glossary ── */
+.glossary-search {
+  width:100%; background:var(--card2); border:2px solid var(--border); color:#fff;
+  font-family:inherit; font-size:16px; font-weight:bold; padding:13px 16px; border-radius:14px;
+  outline:none; margin-bottom:20px;
+}
+.glossary-search::placeholder { color:var(--text-dim); }
+.gloss-cat { margin-bottom:22px; }
+.gloss-cat-title { font-size:17px; font-weight:800; color:var(--leaf); margin-bottom:10px; }
+.gloss-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+.gloss-item {
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-radius:14px; padding:12px 14px;
+}
+.gloss-term { font-weight:800; color:var(--sun); font-size:15px; margin-bottom:4px; -webkit-user-select:text; user-select:text; }
+.gloss-def { font-size:13.5px; color:var(--text); line-height:1.4; -webkit-user-select:text; user-select:text; }
+.gloss-item.hidden { display:none; }
+
+/* ── Herb guide ── */
+.herb-warning {
+  background:linear-gradient(100deg,var(--danger),#c93c3c); color:#fff; font-weight:800;
+  border-radius:16px; padding:14px 16px; margin-bottom:22px; font-size:14px; line-height:1.5;
+  display:flex; gap:10px; align-items:flex-start; box-shadow:var(--shadow-card);
+}
+.herb-warning .wi { font-size:22px; flex:none; }
+.herb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+.herb-card {
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-radius:18px; overflow:hidden; box-shadow:var(--shadow-card);
+}
+.herb-bar { height:6px; width:100%; background:var(--leaf); }
+.herb-card.danger .herb-bar { background:var(--danger); }
+.herb-body { padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.herb-name { font-size:16px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px; }
+.herb-name .tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; background:var(--leaf); color:#0a2410; }
+.herb-card.danger .herb-name .tag { background:var(--danger); color:#fff; }
+.herb-use { font-size:13.5px; color:var(--text); line-height:1.5; -webkit-user-select:text; user-select:text; }
+
+footer { text-align:center; color:var(--moss); font-size:13px; padding:20px 0 10px; border-top:2px dashed var(--border); font-weight:bold; margin-top:20px; }
+
+/* ── Floating Fun button ── */
+.fun-fab {
+  position:fixed; right:16px; bottom:max(env(safe-area-inset-bottom),16px); z-index:50;
+  background:linear-gradient(135deg,var(--gold),var(--amber)); color:#2a1500;
+  border:3px solid rgba(255,255,255,.3); border-radius:999px; padding:14px 20px;
+  font-weight:800; font-size:15px; text-decoration:none;
+  box-shadow:0 8px 22px rgba(0,0,0,.5), 0 0 24px rgba(255,210,74,.4);
+  display:flex; align-items:center; gap:8px;
+  animation: fabPulse 2.4s ease-in-out infinite;
+}
+@keyframes fabPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
+.fun-fab:active { transform:scale(.93); }
+</style>
+</head>
+<body>
+<div id="app">
+
+<header class="site-header">
+  <nav class="nav-links">
+    <a class="nav-link" href="/">🏠 Home</a>
+    <a class="nav-link" href="/warriors-novels">🐱 Novels</a>
+    <a class="nav-link" href="/warriors-gn">📖 Comics</a>
+    <a class="nav-link active" href="/warriors-guide">🌍 World Guide</a>
+  </nav>
+  <h1>🌍 Warrior World Guide!</h1>
+  <div class="tagline">📜 The Code, the Clans, the words, and the healing herbs!</div>
+</header>
+
+<div class="guide-tabs" id="guideTabs">
+  <button class="guide-tab active" data-section="code">📜 Warrior Code</button>
+  <button class="guide-tab" data-section="clans">🐾 Clan Profiles</button>
+  <button class="guide-tab" data-section="glossary">📖 Glossary</button>
+  <button class="guide-tab" data-section="herbs">🌿 Herb Guide</button>
+</div>
+
+<!-- ═══════ WARRIOR CODE ═══════ -->
+<section id="section-code" class="guide-section active">
+  <h2 class="section-heading">📜 The Warrior Code</h2>
+  <div class="section-sub">Every Clan cat lives by these ancient rules, passed down since the Clans began. Tap the scroll to unroll it!</div>
+  <div class="scroll-wrap">
+    <button class="scroll-toggle" id="scrollToggle">
+      🗞️ Unroll the Ancient Scroll <span class="chev">▾</span>
+    </button>
+    <div class="scroll-body" id="scrollBody">
+      <div class="scroll-inner" id="codeRules"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CLAN PROFILES ═══════ -->
+<section id="section-clans" class="guide-section">
+  <h2 class="section-heading">🐾 The Five Clans (and StarClan!)</h2>
+  <div class="section-sub">Every Clan has its own home, its own hunting style, and its own personality. Which one feels most like you?</div>
+  <div class="clan-grid" id="clanGrid"></div>
+</section>
+
+<!-- ═══════ GLOSSARY ═══════ -->
+<section id="section-glossary" class="guide-section">
+  <h2 class="section-heading">📖 Warrior Cat Dictionary</h2>
+  <div class="section-sub">Clan cats have their own special words! Search below or scroll to learn them all.</div>
+  <input type="text" class="glossary-search" id="glossarySearch" placeholder="🔍 Search a word, like 'Twoleg'...">
+  <div id="glossaryList"></div>
+</section>
+
+<!-- ═══════ HERB GUIDE ═══════ -->
+<section id="section-herbs" class="guide-section">
+  <h2 class="section-heading">🌿 Medicine Cat Herb Guide</h2>
+  <div class="herb-warning">
+    <span class="wi">⚠️</span>
+    <span>This is all make-believe Warrior Cats magic! Never eat or touch real plants, berries, or mushrooms without a grown-up's help — some real plants are dangerous.</span>
+  </div>
+  <div class="herb-grid" id="herbGrid"></div>
+</section>
+
+<footer>🐾 Warriors by Erin Hunter · A fun guide for cat warriors ages 6–12 · May StarClan light your path ⭐</footer>
+</div>
+
+<a href="/warriors-fun" class="fun-fab">🎲 Fun Stuff!</a>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+
+/* ════════ TAB SWITCHING ════════ */
+document.getElementById("guideTabs").addEventListener("click", (e) => {
+  const tab = e.target.closest(".guide-tab");
+  if (!tab) return;
+  document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
+  tab.classList.add("active");
+  document.getElementById("section-" + tab.dataset.section).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ════════ WARRIOR CODE ════════ */
+const CODE_RULES = [
+  "🛡️ Protect your Clan first, even if it means putting yourself in danger.",
+  "🍗 Elders, kits, and nursing mothers eat before anyone else — even before the leader!",
+  "🐭 Only hunt for the food your Clan needs, and always be thankful for it.",
+  "🎓 A kit becomes an apprentice at six moons old (about six months) and starts training.",
+  "🌙 New warriors keep a silent vigil all night after their ceremony — no talking allowed!",
+  "💔 A warrior cannot fall in love with or have kits with a cat from another Clan.",
+  "🚪 A cat may leave to live alone, but coming back means proving their loyalty all over again.",
+  "👑 What the Clan leader says, goes — their word IS the warrior code.",
+  "🕊️ Never hurt a cat who is only visiting on peaceful Clan business.",
+  "🚧 Never hunt or cross into another Clan's territory without being invited.",
+  "⚖️ A cat may challenge a leader's right to rule if they can prove the leader broke the code.",
+  "🌿 Every Clan has a medicine cat who heals with herbs — no cat may ever attack them in battle.",
+  "⚔️ Every cat (except leaders and medicine cats) may fight to defend their Clan, no matter their age.",
+  "🤝 Try not to kill another cat in battle unless there is truly no other way.",
+  "🐾 Elders may retire and hunt just for themselves once their duties to the Clan are done.",
+];
+function renderCode() {
+  $("codeRules").innerHTML = CODE_RULES.map((rule, i) => `
+    <div class="code-rule">
+      <div class="code-num">${i + 1}</div>
+      <div class="code-text">${rule}</div>
+    </div>
+  `).join("");
+}
+$("scrollToggle").addEventListener("click", () => {
+  const open = $("scrollBody").classList.toggle("open");
+  $("scrollToggle").classList.toggle("open", open);
+});
+
+/* ════════ CLAN PROFILES ════════ */
+const CLANS = [
+  {
+    id: "thunder", emoji: "🔥", name: "ThunderClan",
+    home: "A sheltered forest hollow, surrounded by tall oak trees.",
+    hunt: "Climbs trees and stalks silently through leafy undergrowth.",
+    vibe: "Known for fairness, courage, and welcoming cats who need a home.",
+    fact: "Their very first leader was Thunder, one of the five cats who founded the Clans!",
+  },
+  {
+    id: "shadow", emoji: "🌑", name: "ShadowClan",
+    home: "Dark pine forest and marshy, boggy ground.",
+    hunt: "Expert night hunters — silent, sneaky, and hard to spot.",
+    vibe: "Tough and fiercely independent. Other Clans sometimes think they're unfriendly, but really they're just proud.",
+    fact: "Their founder was Shadow, who loved patrolling in the dark better than anyone.",
+  },
+  {
+    id: "wind", emoji: "💨", name: "WindClan",
+    home: "Wide-open, windy moorland with almost no trees or cover.",
+    hunt: "Incredibly fast runners who chase down rabbits in the open.",
+    vibe: "Speedy, tough, and proud — with a strong sense of independence.",
+    fact: "WindClan cats have famously long legs, perfect for running flat-out across the moor.",
+  },
+  {
+    id: "river", emoji: "🌊", name: "RiverClan",
+    home: "Riverbanks and reedy marshland by the water.",
+    hunt: "Expert swimmers who catch fish right out of the river!",
+    vibe: "Strong and deeply loyal, though sometimes seen as a little stand-offish by other Clans.",
+    fact: "RiverClan is the only Clan that regularly eats fish instead of forest prey.",
+  },
+  {
+    id: "sky", emoji: "🍃", name: "SkyClan",
+    home: "Originally the forest — later, a rocky gorge far from the others.",
+    hunt: "Amazing jumpers and climbers who snatch birds right out of the air.",
+    vibe: "Adaptable and resilient — they were driven from their home and had to rebuild everything.",
+    fact: "SkyClan is the only Clan to ever be lost completely... and then found again!",
+  },
+  {
+    id: "star", emoji: "⭐", name: "StarClan",
+    home: "Not a place on the ground at all — the stars themselves!",
+    hunt: "None — StarClan cats are spirits, not living, breathing cats.",
+    vibe: "Wise and watchful. They guide living Clan cats through dreams and signs.",
+    fact: "New leaders receive their nine lives from StarClan at a special ceremony.",
+  },
+];
+function renderClans() {
+  $("clanGrid").innerHTML = CLANS.map(c => `
+    <div class="clan-card" data-clan="${c.id}">
+      <div class="clan-card-bar"></div>
+      <div class="clan-card-body">
+        <div class="clan-card-title">${c.emoji} ${c.name}</div>
+        <div class="clan-fact"><span class="lbl">🏡 Home</span><span class="val">${c.home}</span></div>
+        <div class="clan-fact"><span class="lbl">🎯 Hunting Style</span><span class="val">${c.hunt}</span></div>
+        <div class="clan-fact"><span class="lbl">💚 Known For</span><span class="val">${c.vibe}</span></div>
+        <div class="clan-fact"><span class="lbl">✨ Fun Fact</span><span class="val">${c.fact}</span></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ════════ GLOSSARY ════════ */
+const GLOSSARY = [
+  { cat: "⏳ Time Words", terms: [
+    { term: "Moon", def: "One month. Cats measure time in moons instead of months." },
+    { term: "Sunrise", def: "One day. 'Three sunrises ago' means three days ago." },
+    { term: "Newleaf", def: "Spring — when the forest wakes up and prey returns." },
+    { term: "Greenleaf", def: "Summer — the warmest, most plentiful season." },
+    { term: "Leaf-fall", def: "Autumn — when leaves drop and cats prepare for cold." },
+    { term: "Leaf-bare", def: "Winter — the hardest season, when prey is scarce." },
+    { term: "Half-moon", def: "The midpoint between full moons, when medicine cats often meet." },
+  ]},
+  { cat: "🐾 Clan Life", terms: [
+    { term: "Kit", def: "A cat younger than six moons old, too young to train yet." },
+    { term: "Apprentice", def: "A cat in training, six moons or older. Their name ends in -paw." },
+    { term: "Warrior", def: "A fully trained adult Clan cat who hunts and fights for the Clan." },
+    { term: "Queen", def: "A mother cat who is expecting or nursing kits." },
+    { term: "Elder", def: "A retired cat who no longer hunts or fights, but is deeply respected." },
+    { term: "Medicine cat", def: "The Clan's healer, who uses herbs and can speak with StarClan." },
+    { term: "Deputy", def: "The Clan's second-in-command, who becomes leader if the leader dies." },
+    { term: "Leader", def: "The head of a Clan, chosen by StarClan. Their name ends in -star." },
+    { term: "Vigil", def: "The silent night-long watch new warriors keep after their ceremony." },
+    { term: "Gathering", def: "The once-a-month meeting of all the Clans at the full moon, held in peace." },
+    { term: "Fresh-kill pile", def: "The shared pile of hunted food in camp that every cat eats from." },
+    { term: "Nine lives", def: "The extra lives a new leader receives from StarClan at their ceremony." },
+    { term: "Border", def: "The scent-marked edge of a Clan's territory." },
+  ]},
+  { cat: "😝 Cat Insults (the silly kind!)", terms: [
+    { term: "Mouse-brain", def: "A gentle insult for a cat who did something a little silly." },
+    { term: "Bee-brain", def: "Another way to say someone's being a bit foolish." },
+    { term: "Feather-brain", def: "Used for a cat who's being scatterbrained or forgetful." },
+    { term: "Crowfood", def: "Rotten prey — food that's gone bad and isn't safe to eat." },
+  ]},
+  { cat: "🌍 Outside the Clans", terms: [
+    { term: "Twoleg", def: "A human! Cats call people 'Twolegs' because they walk on two legs." },
+    { term: "Kittypet", def: "A cat that lives as a pet with Twolegs, with a cozy bed and regular food." },
+    { term: "Monster", def: "A car or other big Twoleg vehicle." },
+    { term: "Thunderpath", def: "A paved road — named for the roaring 'monsters' that speed down it." },
+    { term: "Loner", def: "A cat with no Clan who lives independently, often peacefully." },
+    { term: "Rogue", def: "A cat with no Clan who lives by no code at all — sometimes dangerous." },
+  ]},
+  { cat: "⭐ Sacred Places & Spirits", terms: [
+    { term: "StarClan", def: "The spirits of warrior ancestors who watch over the living Clans from the sky." },
+    { term: "Dark Forest", def: "A shadowy afterlife for cats who broke the warrior code badly in life." },
+    { term: "Moonstone / Moonpool", def: "Sacred places where medicine cats and leaders can share dreams with StarClan." },
+  ]},
+];
+function renderGlossary(filter) {
+  const f = (filter || "").trim().toLowerCase();
+  $("glossaryList").innerHTML = GLOSSARY.map(group => {
+    const items = group.terms.filter(t =>
+      !f || t.term.toLowerCase().includes(f) || t.def.toLowerCase().includes(f)
+    );
+    if (!items.length) return "";
+    return `
+      <div class="gloss-cat">
+        <div class="gloss-cat-title">${group.cat}</div>
+        <div class="gloss-grid">
+          ${items.map(t => `
+            <div class="gloss-item">
+              <div class="gloss-term">${t.term}</div>
+              <div class="gloss-def">${t.def}</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("") || `<div style="text-align:center; color:var(--moss); padding:30px 0; font-weight:bold;">No words found — try a different search! 🔍</div>`;
+}
+$("glossarySearch").addEventListener("input", (e) => renderGlossary(e.target.value));
+
+/* ════════ HERB GUIDE ════════ */
+const HERBS = [
+  { name: "Cobwebs", danger: false, use: "Wrapped around a wound to stop bleeding fast." },
+  { name: "Marigold", danger: false, use: "Chewed into a poultice to stop wounds from getting infected." },
+  { name: "Poppy seeds", danger: false, use: "Help an injured or upset cat rest and fall asleep." },
+  { name: "Thyme", danger: false, use: "Calms a cat down after a scary shock." },
+  { name: "Catmint", danger: false, use: "Treats coughs and colds — but it's rare and hard to find!" },
+  { name: "Borage leaves", danger: false, use: "Lowers a fever and helps nursing mother cats make milk." },
+  { name: "Chervil", danger: false, use: "Soothes a bellyache; the root helps with infections." },
+  { name: "Coltsfoot", danger: false, use: "Eases coughing and helps a cat breathe easier." },
+  { name: "Horsetail", danger: false, use: "Cleans a wound and helps stop infection from spreading." },
+  { name: "Juniper berries", danger: false, use: "Settles an upset stomach and gives a tired cat energy." },
+  { name: "Watermint", danger: false, use: "Calms a stomach ache or icky feeling." },
+  { name: "Feverfew", danger: false, use: "Brings down a hot fever." },
+  { name: "Goldenrod", danger: false, use: "Helps heal wounds and eases stiff, achy joints." },
+  { name: "Deathberries", danger: true, use: "DANGER — these are poisonous! Medicine cats never use them to heal — only to end great suffering. Never make-believe eating these, even in play!" },
+];
+function renderHerbs() {
+  $("herbGrid").innerHTML = HERBS.map(h => `
+    <div class="herb-card ${h.danger ? "danger" : ""}">
+      <div class="herb-bar"></div>
+      <div class="herb-body">
+        <div class="herb-name">🌿 ${h.name} <span class="tag">${h.danger ? "DANGER" : "Safe use"}</span></div>
+        <div class="herb-use">${h.use}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ════════ INIT ════════ */
+renderCode();
+renderClans();
+renderGlossary("");
+renderHerbs();
+</script>
+</body>
+</html>

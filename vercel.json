@@ -6,6 +6,8 @@
     { "src": "/star-wars-flowchart", "dest": "/star-wars-flowchart.html" },
     { "src": "/warriors-novels", "dest": "/warriors-novels.html" },
     { "src": "/warriors-gn", "dest": "/warriors-gn.html" },
+    { "src": "/warriors-guide", "dest": "/warriors-guide.html" },
+    { "src": "/warriors-fun", "dest": "/warriors-fun.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
