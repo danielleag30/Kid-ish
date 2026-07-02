@@ -262,12 +262,12 @@ const QUIZ = [
     { t: "🐟 A fish caught right out of the water", c: "river" },
     { t: "🐦 A bird snatched out of mid-air", c: "sky" },
   ]},
-  { q: "Your friend is in trouble. What do you do?", opts: [
-    { t: "🛡️ Stand your ground and fight fair", c: "thunder" },
-    { t: "🥷 Sneak in quietly and surprise the danger", c: "shadow" },
-    { t: "🏃 Run in FAST before anyone notices", c: "wind" },
-    { t: "💪 Power through with raw strength", c: "river" },
-    { t: "🤸 Find a clever way around the problem", c: "sky" },
+  { q: "How do you like to move around?", opts: [
+    { t: "🧗 Climbing trees and creeping through the undergrowth", c: "thunder" },
+    { t: "🥷 Slinking low and sneaking past unseen", c: "shadow" },
+    { t: "🏃 Sprinting flat-out across open ground", c: "wind" },
+    { t: "🏊 Swimming and diving through the water", c: "river" },
+    { t: "🤸 Leaping across rocks and gaps", c: "sky" },
   ]},
   { q: "What's your best skill?", opts: [
     { t: "⚖️ Being fair, even when it's hard", c: "thunder" },
@@ -374,13 +374,21 @@ $("quizAgainBtn").addEventListener("click", resetQuiz);
 
 /* ════════ WARRIOR NAME GENERATOR ════════ */
 const COLOR_PREFIXES = {
+  red: ["Ruby", "Scarlet", "Crimson", "Cherry"],
   orange: ["Fire", "Amber", "Ginger", "Sunny"],
+  golden: ["Gold", "Sun", "Honey", "Blaze"],
+  yellow: ["Sun", "Buttercup", "Gold", "Daffodil"],
+  green: ["Emerald", "Ivy", "Jade", "Moss"],
+  teal: ["Teal", "Wave", "Aqua", "Turquoise"],
+  blue: ["Sky", "Azure", "Sapphire", "Blue"],
+  purple: ["Violet", "Amethyst", "Plum", "Lilac"],
+  pink: ["Blossom", "Rose", "Petal", "Pink"],
+  rainbow: ["Rainbow", "Sparkle", "Shimmer", "Prism"],
   gray: ["Storm", "Ash", "Smoke", "Grey"],
   black: ["Night", "Raven", "Shadow", "Onyx"],
   white: ["Snow", "Frost", "Cloud", "Moon"],
   brown: ["Oak", "Bramble", "Fern", "Chestnut"],
   silver: ["Silver", "Moon", "Mist", "Pearl"],
-  golden: ["Gold", "Sun", "Honey", "Amber"],
   ginger: ["Fire", "Ginger", "Copper", "Blaze"],
   tortoiseshell: ["Patch", "Dapple", "Speckle", "Tortoise"],
   cream: ["Cream", "Petal", "Sandy", "Pale"],
@@ -420,8 +428,10 @@ function fillSelect(id, map, prettyNames) {
   ).join("");
 }
 fillSelect("genColor", COLOR_PREFIXES, {
-  orange:"🧡 Orange", gray:"🩶 Gray", black:"🖤 Black", white:"🤍 White",
-  brown:"🤎 Brown", silver:"⚪ Silver", golden:"💛 Golden", ginger:"🧡 Ginger",
+  red:"❤️ Red", orange:"🧡 Orange", golden:"💛 Golden", yellow:"💛 Yellow",
+  green:"💚 Green", teal:"🩵 Teal", blue:"💙 Blue", purple:"💜 Purple",
+  pink:"🩷 Pink", rainbow:"🌈 Rainbow", gray:"🩶 Gray", black:"🖤 Black",
+  white:"🤍 White", brown:"🤎 Brown", silver:"⚪ Silver", ginger:"🧡 Ginger",
   tortoiseshell:"🐆 Tortoiseshell", cream:"🍦 Cream",
 });
 fillSelect("genAnimal", ANIMAL_PREFIXES, {
