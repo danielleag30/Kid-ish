@@ -69,7 +69,7 @@ body::before {
   position: relative; z-index: 1;
   min-height: 100%;
   display: flex; flex-direction: column;
-  padding: max(env(safe-area-inset-top),16px) 14px max(env(safe-area-inset-bottom),24px);
+  padding: max(env(safe-area-inset-top),16px) 14px max(env(safe-area-inset-bottom),96px);
   max-width: 1100px; margin: 0 auto;
 }
 
@@ -229,6 +229,19 @@ body::before {
 .parent-a-text.shown { display:block; }
 
 footer { text-align:center; color:var(--moss); font-size:13px; padding:20px 0 10px; border-top:2px dashed var(--border); font-weight:bold; }
+
+/* ── Floating Fun button ── */
+.fun-fab {
+  position:fixed; right:16px; bottom:max(env(safe-area-inset-bottom),16px); z-index:50;
+  background:linear-gradient(135deg,var(--gold),var(--amber)); color:#2a1500;
+  border:3px solid rgba(255,255,255,.3); border-radius:999px; padding:14px 20px;
+  font-weight:800; font-size:15px; text-decoration:none;
+  box-shadow:0 8px 22px rgba(0,0,0,.5), 0 0 24px rgba(255,210,74,.4);
+  display:flex; align-items:center; gap:8px;
+  animation: fabPulse 2.4s ease-in-out infinite;
+}
+@keyframes fabPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
+.fun-fab:active { transform:scale(.93); }
 </style>
 </head>
 <body>
@@ -239,6 +252,7 @@ footer { text-align:center; color:var(--moss); font-size:13px; padding:20px 0 10
     <a class="nav-link" href="/">🏠 Home</a>
     <a class="nav-link active" href="/warriors-novels">🐱 Novels</a>
     <a class="nav-link" href="/warriors-gn">📖 Comics</a>
+    <a class="nav-link" href="/warriors-guide">🌍 World Guide</a>
   </nav>
   <h1>🐱 Warrior Cats!</h1>
   <div class="tagline">🌲 Meet the cats, find their powers, see how they're all connected!</div>
@@ -281,6 +295,8 @@ footer { text-align:center; color:var(--moss); font-size:13px; padding:20px 0 10
 
 <footer>🐾 Warriors by Erin Hunter · A fun chart for cat warriors ages 6–12 · May StarClan light your path ⭐</footer>
 </div>
+
+<a href="/warriors-fun" class="fun-fab">🎲 Fun Stuff!</a>
 
 <script>
 "use strict";

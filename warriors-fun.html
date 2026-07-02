@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>🎲 Warriors Fun & Games!</title>
+<style>
+:root {
+  --bg:       #0b2113;
+  --bg2:      #103019;
+  --bg3:      #173d22;
+  --card:     #1c4a29;
+  --card2:    #245c33;
+  --border:   #3a7a45;
+  --leaf:     #8fe06a;
+  --moss:     #b6e8a0;
+  --bark:     #c99a5b;
+  --sun:      #ffe27a;
+  --gold:     #ffd24a;
+  --amber:    #ff9b42;
+  --text:     #e6f6e0;
+  --text-dim: #a8cfa0;
+
+  --thunder:  #ff8a1e;
+  --shadow:   #b585f5;
+  --wind:     #ecd35e;
+  --river:    #44b4ff;
+  --skyclan:  #4fd98a;
+
+  --radius:   22px;
+  --shadow-card: 0 8px 26px rgba(0,0,0,0.45);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; }
+body {
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255,226,122,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 5%, rgba(143,224,106,0.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(16,48,25,0.9) 0%, transparent 60%);
+}
+body::before {
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(3px 3px at 12% 18%, rgba(143,224,106,0.35) 0%, transparent 100%),
+    radial-gradient(2px 2px at 34% 8%,  rgba(255,226,122,0.30) 0%, transparent 100%),
+    radial-gradient(3px 3px at 72% 12%, rgba(143,224,106,0.28) 0%, transparent 100%),
+    radial-gradient(2px 2px at 89% 22%, rgba(255,226,122,0.22) 0%, transparent 100%),
+    radial-gradient(2px 2px at 23% 60%, rgba(143,224,106,0.20) 0%, transparent 100%),
+    radial-gradient(3px 3px at 64% 75%, rgba(143,224,106,0.16) 0%, transparent 100%);
+}
+
+#app {
+  position: relative; z-index: 1;
+  min-height: 100%;
+  display: flex; flex-direction: column;
+  padding: max(env(safe-area-inset-top),16px) 14px max(env(safe-area-inset-bottom),24px);
+  max-width: 900px; margin: 0 auto;
+}
+
+/* ── Header ── */
+.site-header { text-align:center; padding:20px 0 14px; border-bottom:2px dashed var(--border); margin-bottom:18px; }
+.site-header .nav-links { display:flex; justify-content:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.nav-link {
+  display:inline-block; background:var(--card2); border:2px solid var(--border);
+  color:var(--moss); text-decoration:none; border-radius:999px; padding:8px 18px;
+  font-size:15px; font-weight:bold; transition:transform .15s, background .2s;
+}
+.nav-link:hover { background:var(--border); color:#fff; }
+.nav-link:active { transform:scale(.94); }
+.nav-link.active { background:var(--leaf); color:#0a2410; border-color:var(--leaf); }
+.site-header h1 { font-size:clamp(26px,5.5vw,44px); color:#fff; text-shadow:0 0 22px rgba(143,224,106,.5), 0 3px 0 rgba(0,0,0,.5); }
+.site-header .tagline { font-size:clamp(14px,2.4vw,18px); color:var(--moss); margin-top:6px; font-weight:bold; }
+
+/* ── Tool tabs ── */
+.fun-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; justify-content:center; }
+.fun-tab {
+  background:var(--card2); border:2px solid var(--border); color:var(--moss);
+  font-family:inherit; font-size:clamp(14px,2.4vw,17px); font-weight:bold;
+  padding:12px 20px; border-radius:999px; cursor:pointer;
+  display:flex; align-items:center; gap:6px; transition:transform .15s;
+}
+.fun-tab:active { transform:scale(.93); }
+.fun-tab.active { background:var(--gold); border-color:var(--gold); color:#2a1500; }
+
+.fun-section { display:none; }
+.fun-section.active { display:block; }
+
+/* ── Quiz ── */
+.quiz-card {
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow-card); padding:24px 20px; text-align:center;
+}
+.quiz-progress { font-size:13px; color:var(--moss); font-weight:bold; margin-bottom:14px; }
+.quiz-question { font-size:clamp(19px,3.4vw,25px); color:#fff; font-weight:800; margin-bottom:20px; line-height:1.3; }
+.quiz-options { display:flex; flex-direction:column; gap:12px; }
+.quiz-opt {
+  background:var(--card2); border:2px solid var(--border); border-radius:16px;
+  color:var(--text); font-family:inherit; font-size:16px; font-weight:bold;
+  padding:14px 18px; text-align:left; cursor:pointer; transition:transform .12s, background .15s;
+}
+.quiz-opt:active { transform:scale(.97); background:var(--leaf); color:#0a2410; }
+
+.quiz-result { display:none; text-align:center; }
+.quiz-result.active { display:block; }
+.result-banner {
+  border-radius:var(--radius); padding:28px 20px; margin-bottom:18px;
+  box-shadow:var(--shadow-card);
+}
+.result-emoji { font-size:64px; margin-bottom:8px; }
+.result-title { font-size:clamp(24px,4.4vw,34px); font-weight:800; margin-bottom:10px; }
+.result-desc { font-size:15px; line-height:1.6; font-weight:600; }
+.result-again {
+  background:linear-gradient(135deg,var(--gold),var(--amber)); color:#2a1500;
+  border:none; border-radius:999px; padding:14px 26px; font-family:inherit;
+  font-size:16px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-card);
+}
+.result-again:active { transform:scale(.96); }
+
+/* ── Name Generator ── */
+.gen-card {
+  background:linear-gradient(180deg,var(--card),var(--bg3));
+  border:2px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow-card); padding:22px 20px; display:flex; flex-direction:column; gap:18px;
+}
+.gen-field { display:flex; flex-direction:column; gap:8px; }
+.gen-label { font-size:14px; font-weight:800; color:var(--moss); }
+.gen-select {
+  width:100%; background:var(--card2); border:2px solid var(--border); color:#fff;
+  font-family:inherit; font-size:16px; font-weight:bold; padding:12px 14px; border-radius:14px;
+  outline:none; cursor:pointer; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b6e8a0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;
+}
+.gen-btn {
+  background:linear-gradient(135deg,var(--leaf),#5fc23e); color:#0a2410;
+  border:none; border-radius:999px; padding:16px 20px; font-family:inherit;
+  font-size:18px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-card);
+}
+.gen-btn:active { transform:scale(.97); }
+.gen-result {
+  display:none; text-align:center; margin-top:6px;
+  background:linear-gradient(100deg,var(--gold),var(--amber)); color:#2a1500;
+  border-radius:18px; padding:22px 16px; box-shadow:0 0 20px rgba(255,210,74,.4);
+}
+.gen-result.shown { display:block; }
+.gen-result .gr-label { font-size:13px; font-weight:800; opacity:.8; margin-bottom:6px; }
+.gen-result .gr-name { font-size:clamp(26px,5vw,36px); font-weight:800; }
+
+footer { text-align:center; color:var(--moss); font-size:13px; padding:24px 0 10px; border-top:2px dashed var(--border); font-weight:bold; margin-top:20px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<header class="site-header">
+  <nav class="nav-links">
+    <a class="nav-link" href="/">🏠 Home</a>
+    <a class="nav-link" href="/warriors-novels">🐱 Novels</a>
+    <a class="nav-link" href="/warriors-gn">📖 Comics</a>
+    <a class="nav-link" href="/warriors-guide">🌍 World Guide</a>
+  </nav>
+  <h1>🎲 Fun & Games!</h1>
+  <div class="tagline">🔮 Find your Clan and build your very own warrior name!</div>
+</header>
+
+<div class="fun-tabs" id="funTabs">
+  <button class="fun-tab active" data-tool="quiz">🔮 Which Clan Are You?</button>
+  <button class="fun-tab" data-tool="namegen">✨ Name Generator</button>
+</div>
+
+<!-- ═══════ QUIZ ═══════ -->
+<section id="tool-quiz" class="fun-section active">
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-progress" id="quizProgress">Question 1 of 8</div>
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+  </div>
+  <div class="quiz-result" id="quizResult">
+    <div class="result-banner" id="resultBanner">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-desc" id="resultDesc"></div>
+    </div>
+    <button class="result-again" id="quizAgainBtn">🔄 Take the Quiz Again!</button>
+  </div>
+</section>
+
+<!-- ═══════ NAME GENERATOR ═══════ -->
+<section id="tool-namegen" class="fun-section">
+  <div class="gen-card">
+    <div class="gen-field">
+      <label class="gen-label">🎨 Pick your favorite color</label>
+      <select class="gen-select" id="genColor"></select>
+    </div>
+    <div class="gen-field">
+      <label class="gen-label">🐾 Pick a nature word you love</label>
+      <select class="gen-select" id="genAnimal"></select>
+    </div>
+    <div class="gen-field">
+      <label class="gen-label">😊 Pick a trait that's most like you</label>
+      <select class="gen-select" id="genTrait"></select>
+    </div>
+    <div class="gen-field">
+      <label class="gen-label">🎓 Pick your rank</label>
+      <select class="gen-select" id="genRank">
+        <option value="kit">Kit (under 6 moons)</option>
+        <option value="paw">Apprentice</option>
+        <option value="warrior" selected>Warrior</option>
+        <option value="star">Leader</option>
+      </select>
+    </div>
+    <button class="gen-btn" id="genBtn">✨ Generate My Warrior Name! ✨</button>
+    <div class="gen-result" id="genResult">
+      <div class="gr-label">YOUR WARRIOR NAME IS...</div>
+      <div class="gr-name" id="genName"></div>
+    </div>
+  </div>
+</section>
+
+<footer>🐾 Warriors by Erin Hunter · Fun tools for cat warriors ages 6–12 · May StarClan light your path ⭐</footer>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+
+/* ════════ TOOL TAB SWITCHING ════════ */
+document.getElementById("funTabs").addEventListener("click", (e) => {
+  const tab = e.target.closest(".fun-tab");
+  if (!tab) return;
+  document.querySelectorAll(".fun-tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".fun-section").forEach(s => s.classList.remove("active"));
+  tab.classList.add("active");
+  document.getElementById("tool-" + tab.dataset.tool).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ════════ WHICH-CLAN-ARE-YOU QUIZ ════════ */
+const QUIZ = [
+  { q: "Where do you feel most at home?", opts: [
+    { t: "🌳 Climbing trees in a shady forest", c: "thunder" },
+    { t: "🌑 Exploring dark pine woods at night", c: "shadow" },
+    { t: "💨 Racing across open, windy hills", c: "wind" },
+    { t: "🌊 Splashing around by a riverbank", c: "river" },
+    { t: "🪨 Leaping across rocky cliffs", c: "sky" },
+  ]},
+  { q: "Pick a snack!", opts: [
+    { t: "🐭 A plump mouse from the woods", c: "thunder" },
+    { t: "🦎 A lizard sunning on a rock", c: "shadow" },
+    { t: "🐇 A rabbit you chased down fast", c: "wind" },
+    { t: "🐟 A fish caught right out of the water", c: "river" },
+    { t: "🐦 A bird snatched out of mid-air", c: "sky" },
+  ]},
+  { q: "Your friend is in trouble. What do you do?", opts: [
+    { t: "🛡️ Stand your ground and fight fair", c: "thunder" },
+    { t: "🥷 Sneak in quietly and surprise the danger", c: "shadow" },
+    { t: "🏃 Run in FAST before anyone notices", c: "wind" },
+    { t: "💪 Power through with raw strength", c: "river" },
+    { t: "🤸 Find a clever way around the problem", c: "sky" },
+  ]},
+  { q: "What's your best skill?", opts: [
+    { t: "⚖️ Being fair, even when it's hard", c: "thunder" },
+    { t: "🔒 Keeping secrets and staying loyal", c: "shadow" },
+    { t: "🏆 Standing up for yourself with pride", c: "wind" },
+    { t: "🏋️ Being strong and never giving up", c: "river" },
+    { t: "🔄 Bouncing back no matter what happens", c: "sky" },
+  ]},
+  { q: "Pick your favorite kind of weather!", opts: [
+    { t: "☀️ Warm and sunny under leafy trees", c: "thunder" },
+    { t: "🌙 Cool, misty, and a little spooky", c: "shadow" },
+    { t: "🌬️ Big open gusty sky", c: "wind" },
+    { t: "🌧️ Rainy with puddles everywhere", c: "river" },
+    { t: "⛅ Clear skies over tall rocks", c: "sky" },
+  ]},
+  { q: "A stranger cat shows up at camp. You...", opts: [
+    { t: "🤝 Welcome them if they truly need help", c: "thunder" },
+    { t: "🧐 Watch them closely before trusting them", c: "shadow" },
+    { t: "🗣️ Tell them exactly what you think", c: "wind" },
+    { t: "🛑 Let the leader decide, you back the Clan", c: "river" },
+    { t: "🎉 Get curious and ask a hundred questions", c: "sky" },
+  ]},
+  { q: "Pick your favorite game!", opts: [
+    { t: "🌲 Hide-and-seek in the woods", c: "thunder" },
+    { t: "🌘 Sneaking around undetected", c: "shadow" },
+    { t: "🏁 A footrace, obviously", c: "wind" },
+    { t: "🏊 Swimming races", c: "river" },
+    { t: "🧗 Climbing as high as you can go", c: "sky" },
+  ]},
+  { q: "Last one — pick a superpower!", opts: [
+    { t: "💚 Super kindness", c: "thunder" },
+    { t: "🕵️ Invisibility", c: "shadow" },
+    { t: "⚡ Super speed", c: "wind" },
+    { t: "💧 Water breathing", c: "river" },
+    { t: "🦘 Super jumping", c: "sky" },
+  ]},
+];
+
+const CLAN_RESULTS = {
+  thunder: { emoji: "🔥", name: "ThunderClan", bg: "linear-gradient(135deg,#ff8a1e,#ff5e1e)",
+    desc: "You're brave, fair, and always ready to help a cat in need — just like Firestar! ThunderClan cats believe in doing what's right, even when it's hard." },
+  shadow: { emoji: "🌑", name: "ShadowClan", bg: "linear-gradient(135deg,#b585f5,#7a4fd9)",
+    desc: "You're tough, loyal, and a little mysterious — you don't need everyone's approval to know your own worth. ShadowClan cats are proud and fiercely independent." },
+  wind: { emoji: "💨", name: "WindClan", bg: "linear-gradient(135deg,#ecd35e,#d9a83e)",
+    desc: "You're fast, proud, and always ready for a challenge! WindClan cats love speed, open spaces, and standing tall for themselves." },
+  river: { emoji: "🌊", name: "RiverClan", bg: "linear-gradient(135deg,#44b4ff,#2e7fd9)",
+    desc: "You're strong, steady, and deeply loyal to the cats you love. RiverClan cats are powerful swimmers who never back down from a challenge." },
+  sky: { emoji: "🍃", name: "SkyClan", bg: "linear-gradient(135deg,#4fd98a,#2ea866)",
+    desc: "You're adaptable and endlessly curious — no obstacle keeps you down for long! SkyClan cats bounce back from anything life throws at them." },
+};
+
+let quizIdx = 0;
+let quizScores = { thunder: 0, shadow: 0, wind: 0, river: 0, sky: 0 };
+
+function renderQuizQuestion() {
+  const step = QUIZ[quizIdx];
+  $("quizProgress").textContent = `Question ${quizIdx + 1} of ${QUIZ.length}`;
+  $("quizQuestion").textContent = step.q;
+  $("quizOptions").innerHTML = step.opts.map((o, i) => `
+    <button class="quiz-opt" data-clan="${o.c}">${o.t}</button>
+  `).join("");
+}
+
+function showQuizResult() {
+  let best = "thunder", bestScore = -1, ties = [];
+  for (const c in quizScores) {
+    if (quizScores[c] > bestScore) { bestScore = quizScores[c]; }
+  }
+  for (const c in quizScores) if (quizScores[c] === bestScore) ties.push(c);
+  const winner = CLAN_RESULTS[ties[0]];
+
+  $("quizCard").style.display = "none";
+  $("quizResult").classList.add("active");
+  $("resultBanner").style.background = winner.bg;
+  $("resultEmoji").textContent = winner.emoji;
+
+  if (ties.length > 1) {
+    const names = ties.map(c => CLAN_RESULTS[c].name).join(" & ");
+    $("resultTitle").textContent = `You're a mix of ${names}!`;
+    $("resultDesc").textContent = "You've got the best of both worlds — no single Clan can hold you!";
+  } else {
+    $("resultTitle").textContent = `You belong in ${winner.name}!`;
+    $("resultDesc").textContent = winner.desc;
+  }
+}
+
+function resetQuiz() {
+  quizIdx = 0;
+  quizScores = { thunder: 0, shadow: 0, wind: 0, river: 0, sky: 0 };
+  $("quizCard").style.display = "block";
+  $("quizResult").classList.remove("active");
+  renderQuizQuestion();
+}
+
+$("quizOptions").addEventListener("click", (e) => {
+  const opt = e.target.closest(".quiz-opt");
+  if (!opt) return;
+  quizScores[opt.dataset.clan]++;
+  quizIdx++;
+  if (quizIdx >= QUIZ.length) showQuizResult();
+  else renderQuizQuestion();
+});
+$("quizAgainBtn").addEventListener("click", resetQuiz);
+
+/* ════════ WARRIOR NAME GENERATOR ════════ */
+const COLOR_PREFIXES = {
+  orange: ["Fire", "Amber", "Ginger", "Sunny"],
+  gray: ["Storm", "Ash", "Smoke", "Grey"],
+  black: ["Night", "Raven", "Shadow", "Onyx"],
+  white: ["Snow", "Frost", "Cloud", "Moon"],
+  brown: ["Oak", "Bramble", "Fern", "Chestnut"],
+  silver: ["Silver", "Moon", "Mist", "Pearl"],
+  golden: ["Gold", "Sun", "Honey", "Amber"],
+  ginger: ["Fire", "Ginger", "Copper", "Blaze"],
+  tortoiseshell: ["Patch", "Dapple", "Speckle", "Tortoise"],
+  cream: ["Cream", "Petal", "Sandy", "Pale"],
+};
+const ANIMAL_PREFIXES = {
+  hawk: ["Hawk"], fox: ["Fox"], storm: ["Storm"], leaf: ["Leaf"], river: ["River"],
+  thistle: ["Thistle"], sparrow: ["Sparrow"], moon: ["Moon"], fire: ["Fire"],
+  shadow: ["Shadow"], bramble: ["Bramble"], wind: ["Wind"], ivy: ["Ivy"],
+  frost: ["Frost"], rain: ["Rain"],
+};
+const TRAIT_PREFIXES = {
+  brave: ["Lion", "Bold", "Fierce"],
+  clever: ["Fox", "Sly", "Swift"],
+  gentle: ["Dove", "Soft", "Petal"],
+  fierce: ["Tiger", "Blaze", "Talon"],
+  quick: ["Swift", "Dash", "Wind"],
+  loyal: ["True", "Steady", "Rock"],
+  curious: ["Sparrow", "Whisker", "Spark"],
+  calm: ["Still", "Quiet", "Pool"],
+  playful: ["Dapple", "Bounce", "Sunny"],
+  wise: ["Wise", "Owl", "Star"],
+};
+const RANK_SUFFIX = {
+  kit: () => "kit",
+  paw: () => "paw",
+  star: () => "star",
+  warrior: () => {
+    const pool = ["heart","claw","fur","stripe","wing","tail","nose","storm","frost","blaze","flight","shine","pool","leaf","foot","whisker","spots","pelt","song","fang","light"];
+    return pool[Math.floor(Math.random() * pool.length)];
+  },
+};
+
+function fillSelect(id, map, prettyNames) {
+  const sel = $(id);
+  sel.innerHTML = Object.keys(map).map(key =>
+    `<option value="${key}">${prettyNames[key] || key}</option>`
+  ).join("");
+}
+fillSelect("genColor", COLOR_PREFIXES, {
+  orange:"🧡 Orange", gray:"🩶 Gray", black:"🖤 Black", white:"🤍 White",
+  brown:"🤎 Brown", silver:"⚪ Silver", golden:"💛 Golden", ginger:"🧡 Ginger",
+  tortoiseshell:"🐆 Tortoiseshell", cream:"🍦 Cream",
+});
+fillSelect("genAnimal", ANIMAL_PREFIXES, {
+  hawk:"🦅 Hawk", fox:"🦊 Fox", storm:"⛈️ Storm", leaf:"🍃 Leaf", river:"🌊 River",
+  thistle:"🌾 Thistle", sparrow:"🐦 Sparrow", moon:"🌙 Moon", fire:"🔥 Fire",
+  shadow:"🌑 Shadow", bramble:"🌿 Bramble", wind:"💨 Wind", ivy:"🍀 Ivy",
+  frost:"❄️ Frost", rain:"🌧️ Rain",
+});
+fillSelect("genTrait", TRAIT_PREFIXES, {
+  brave:"🦁 Brave", clever:"🦊 Clever", gentle:"🕊️ Gentle", fierce:"🐯 Fierce",
+  quick:"⚡ Quick", loyal:"🪨 Loyal", curious:"🐦 Curious", calm:"💧 Calm",
+  playful:"🎈 Playful", wise:"🦉 Wise",
+});
+
+$("genBtn").addEventListener("click", () => {
+  const color = $("genColor").value;
+  const animal = $("genAnimal").value;
+  const trait = $("genTrait").value;
+  const rank = $("genRank").value;
+
+  const pools = [COLOR_PREFIXES[color], ANIMAL_PREFIXES[animal], TRAIT_PREFIXES[trait]];
+  const chosenPool = pools[Math.floor(Math.random() * pools.length)];
+  const prefix = chosenPool[Math.floor(Math.random() * chosenPool.length)];
+  const suffix = RANK_SUFFIX[rank]();
+
+  $("genName").textContent = prefix + suffix.charAt(0).toLowerCase() + suffix.slice(1);
+  $("genResult").classList.add("shown");
+});
+
+/* ════════ INIT ════════ */
+renderQuizQuestion();
+</script>
+</body>
+</html>
