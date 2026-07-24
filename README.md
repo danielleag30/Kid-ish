@@ -1,95 +1,100 @@
 # Kid-ish
 
-A collection of fun, interactive web apps for kids (and kids at heart).
+A hub of interactive web apps, one landing page linking out to each — story-making, reference charts, and a game companion, all built for actual daily use by an actual kid.
+
+**Live:** [kid-ish.vercel.app](https://kid-ish.vercel.app)
 
 ---
 
-## 🌌 Star Wars Universe Flowchart
+## What's inside
 
-An interactive, Star Wars-themed flowchart showing every film and series in **in-universe chronological order** — from the High Republic all the way through the Sequel Trilogy.
+| App | What it does | Route |
+|---|---|---|
+| 🌈 Allison's Storybook | AI writes and illustrates a picture book from a spoken or typed idea | `/allison-storybook` |
+| 🌌 Galaxy Flowchart | Every Star Wars film/series, connected in chronological order | `/star-wars-flowchart` |
+| 🐾 Warriors Character Charts | Cats, clans, and arcs across the novels | `/warriors-novels` |
+| 📖 Warriors Comics | The graphic novel series, same treatment | `/warriors-gn` |
+| 🌍 Warriors World Guide | Warrior Code, the Clans, a cat-dictionary, and a medicine-cat herb guide | `/warriors-guide` |
+| 🎲 Warriors Fun & Games | Quizzes and a warrior name generator | `/warriors-fun` |
+| ⚡ Phantom Royale | Fortnite cosmetics browser, locker, and a fully-researched lore timeline | [phantom-royale.vercel.app](https://phantom-royale.vercel.app) (separate deploy, see below) |
 
-**Open:** [`star-wars-flowchart.html`](./star-wars-flowchart.html)
-
-### What's inside
-
-- **7 color-coded eras** flowing left to right: High Republic → Fall of the Republic → The Clone Wars → Imperial Era → Galactic Civil War → New Republic → Rise of the First Order
-- Every **theatrical film**, **live-action series**, and **animated series** as its own card
-- **Hover any card** to see a plot summary tooltip
-- **Cross-era connection badges** showing how stories link (e.g. Andor → Rogue One, Rebels → Ahsoka)
-- **Character web** at the bottom tracing 12 key characters across the whole saga
-- Animated starfield background — pure HTML/CSS/JS, no build step
+Six of these are single self-contained HTML files with no build step, routed by `vercel.json`. Phantom Royale is the exception — it's a real React app with its own build — see [Why Phantom Royale is different](#why-phantom-royale-is-different) below.
 
 ---
 
 ## 🌈 Allison's Storybook Maker
 
-A magical picture-storybook app for Allison (age 7). She tells it a story idea — by **talking** 🎤 or typing — and the AI writes a gentle, silly story **and draws an illustration for every page**, which she can flip through like a real book and have read aloud to her.
+She tells it a story idea — by **talking** or typing — and the same model that writes the story draws it too: one hand-crafted SVG illustration per page, generated live as part of the same response.
 
-Everything is one file (`index.html`). No build step, no server, no accounts. Stories are saved on the device in a little bookshelf.
+- **Talk or type** an idea, or tap a suggestion chip
+- **The model illustrates its own story** — no separate image-gen call. AI-generated SVG art is sanitized (scripts, event handlers, and external references stripped) before it's rendered
+- **Swipe or tap** to turn pages, **🔊 Read to me!** to have it read aloud
+- **On-device bookshelf** — stories persist in `localStorage`, no account
+- **Four configurable model backends** — a Cloudflare Worker proxy (recommended), direct OpenAI, direct Ollama Cloud, or any OpenAI-compatible endpoint — picked from a parent-gated settings panel (a randomized multiplication question stands between the home screen and the API config)
 
-## ✨ What Allison can do
+### One-time setup (grown-ups) — Ollama Cloud via a free Cloudflare Worker
 
-- **Talk her idea** with the microphone button (uses iPad's built-in speech recognition)
-- Tap a **suggestion chip** ("A unicorn who loves pancakes" …) if she's stuck
-- Watch pages get **drawn live** while the story is being made
-- **Swipe** or tap arrows to turn pages
-- Tap **🔊 Read to me!** and the iPad reads the page aloud
-- Reopen any saved book from **📚 My Storybooks**
+A browser can't call Ollama Cloud directly (no CORS headers) — the fix is a tiny free proxy that holds the key server-side and forwards the request. This is the recommended path; it also keeps the API key off the kid's device entirely.
 
-## 🔧 One-time setup (grown-ups)
+1. **Get a key:** sign up at [ollama.com](https://ollama.com), create one at **ollama.com/settings/keys**.
+2. **Create the Worker** (free, ~5 min): [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Workers → Create Worker**. Edit code, paste in [`worker.js`](./worker.js), deploy.
+3. **Add the secret:** Settings → Variables and Secrets → type **Secret**, name `OLLAMA_API_KEY`, value = your key.
+4. *(Recommended)* Lock it down: add a Text variable `ALLOWED_ORIGIN` set to your app's URL, so nobody else can ride your Worker.
+5. **Point the app at it:** open the app → ⚙️ (answer the math question) → Provider: *Ollama Cloud — via Worker proxy* → paste your Worker URL → leave the API key blank → Save.
 
-A browser (like Safari on the iPad) can't call Ollama Cloud directly — Ollama Cloud doesn't send the CORS headers a browser requires, so the request gets blocked. The fix is a **tiny free proxy** (a Cloudflare Worker) that sits in the middle: it holds your Ollama key safely on a server, adds the CORS header the iPad needs, and forwards the request. This is the **recommended** path — it also keeps your API key off the kid's device.
+Other provider options (direct OpenAI, direct Ollama, or any custom OpenAI-compatible endpoint) are in the same settings panel — see the ⚙️ menu in-app.
 
-### Step by step — Ollama Cloud via a free Cloudflare Worker
+---
 
-**A. Get an Ollama Cloud key**
-1. Sign up at [ollama.com](https://ollama.com).
-2. Create an API key at **ollama.com/settings/keys** and copy it.
+## 🌌 Galaxy Flowchart
 
-**B. Create the Worker** (free, ~5 minutes)
-1. Make a free account at [dash.cloudflare.com](https://dash.cloudflare.com).
-2. In the dashboard: **Workers & Pages → Create → Workers → Create Worker**. Give it a name (e.g. `allison-stories`) and click **Deploy**.
-3. Click **Edit code**. Delete the sample code, then paste the entire contents of [`worker.js`](./worker.js) from this repo. Click **Deploy** again.
-4. Add your key as a secret: **Settings → Variables and Secrets → Add**.
-   - Type **Secret**, name **`OLLAMA_API_KEY`**, value = the key from step A. Save/Deploy.
-5. *(Recommended)* Lock it to your app so nobody else can use your Worker:
-   - Add another variable (type **Text**), name **`ALLOWED_ORIGIN`**, value = your app's address, e.g. `https://danielleag30.github.io` (no trailing slash, no path). Save/Deploy.
-6. Copy your Worker URL — it looks like `https://allison-stories.<your-name>.workers.dev`.
+Every Star Wars film, live-action series, and animated series, laid out left to right across 7 color-coded eras — High Republic → Fall of the Republic → The Clone Wars → Imperial Era → Galactic Civil War → New Republic → Rise of the First Order. Hover any card for a plot summary; cross-era badges show real connections (Andor → Rogue One, Rebels → Ahsoka); a character web at the bottom traces 12 key characters across the whole saga. Pure HTML/CSS/JS, animated starfield, no build step.
 
-**C. Point the app at the Worker**
-1. Open the app, tap **⚙️** (answer the multiplication question).
-2. Provider: **Ollama Cloud — via Worker proxy (recommended)**.
-3. **API base URL** = your Worker URL from step B6.
-4. Leave **API key** blank (the Worker holds it). Pick a model (default `gpt-oss:120b`). **Save**.
+## 🐾 Warriors — Character Charts, Comics, World Guide & Fun
 
-That's it — Allison can now make stories.
+Four pages covering the *Warriors* series in as much depth as the Star Wars flowchart covers its universe:
 
-### Other options (in the ⚙️ menu)
+- **Character Charts** (`warriors-novels`) — cats, clans, and story arcs across the novels, filterable by Clan (ThunderClan, ShadowClan, WindClan, RiverClan, SkyClan, StarClan, and loners)
+- **Comics** (`warriors-gn`) — the same treatment for the graphic novel adaptations
+- **World Guide** (`warriors-guide`) — the Warrior Code, the five Clans plus StarClan, a cat-dictionary, and a medicine-cat herb guide
+- **Fun & Games** (`warriors-fun`) — comprehension quizzes and a warrior-name generator
 
-- **ChatGPT (OpenAI API, direct):** create a key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys), choose this option, paste the key. ⚠️ The OpenAI *API* is billed separately from a ChatGPT Pro subscription — Pro does **not** include API credits. (A 6-page story is a fraction of a cent on `gpt-4o-mini`; $5 of credit makes a *lot* of stories.) This calls the API straight from the browser and may be blocked by CORS depending on OpenAI's current rules — if stories won't load, put a Worker in front of it the same way (point `OLLAMA_URL` in `worker.js` at OpenAI instead).
-- **Ollama Cloud (direct):** calls Ollama Cloud straight from the iPad. Usually blocked by the browser — use the Worker option instead.
-- **Custom:** any OpenAI-compatible `/chat/completions` endpoint (a proxy, LM Studio, or a home Ollama started with `OLLAMA_ORIGINS='*'`).
+All four are age-banded for 6–12 and, like the Star Wars flowchart, are single static HTML files.
 
-Any key you enter is stored **only in the browser's localStorage on that device** and is sent only to the URL you configured. With the Worker option there's no key on the device at all.
+## ⚡ Phantom Royale
 
-## 📱 Getting it on her iPad
+A Fortnite companion app: browse every cosmetic and the current item shop, track your locker (owned/favorited items, stored locally), and read a fully-researched storyline mode covering **34 lore entries across Chapters 1–6** — built by a two-stage agent pipeline (a research pass that cites its sources, a review pass that flags low-confidence entries rather than silently guessing).
 
-The easiest way is GitHub Pages (free):
+**Live:** [phantom-royale.vercel.app](https://phantom-royale.vercel.app) · **Source:** [`/phantom-royale`](./phantom-royale)
 
-1. In this repo on GitHub: **Settings → Pages → Source: Deploy from a branch → `main` / root → Save**.
-2. After a minute the app is live at `https://<your-username>.github.io/Kid-ish/`.
-3. Open that link in **Safari on the iPad** → tap the **Share** button → **Add to Home Screen**.
-4. It now launches full-screen like a real app. Do the ⚙️ setup once on the iPad and you're done.
+### Why Phantom Royale is different
 
-(Any static host works the same way — Netlify, Vercel, or even AirDropping the file and opening it in Safari.)
+Every other app in this repo is a single HTML file with zero build step. Phantom Royale is a real React 19 + Vite + Tailwind 4 app with client-side routing (lobby, item shop, locker, storyline, chapter/map detail pages) and a PWA build — that doesn't fit the "just open the file" model the rest of this repo uses. Rather than force a framework build into the same static deploy as six no-build HTML pages, its source lives in this repo under `/phantom-royale` but **deploys as its own separate Vercel project**, with its own build step and its own URL. The landing page just links out to it.
+
+```bash
+cd phantom-royale
+npm install
+npm run dev      # local dev, http://localhost:5173
+npm run build    # production build → dist/
+```
+
+---
 
 ## 🛡️ Kid-safety notes
 
-- The system prompt instructs the model to keep stories sweet, age-appropriate, and never scary.
-- AI-generated SVG art is sanitized before rendering (scripts, event handlers, and external references are stripped).
-- Settings are behind a grown-ups-only arithmetic gate.
-- No analytics, no tracking, no data leaves the device except the story request to your chosen API.
+- Storybook system prompt keeps stories sweet, age-appropriate, never scary.
+- AI-generated SVG art is sanitized before rendering — scripts, event handlers, and external references stripped.
+- Storybook settings are behind a grown-ups-only arithmetic gate.
+- No analytics, no tracking. The only network calls are: the storybook's model request (to whichever endpoint you configure), and Phantom Royale's public cosmetics/shop data fetch (no key required).
 
-## 🧩 How it works (for the curious)
+## Deployment
+
+The whole hub (everything except Phantom Royale) is one static site with clean URLs handled by [`vercel.json`](./vercel.json) rewrites — `/allison-storybook` → `allison-storybook.html`, and so on. Live at [kid-ish.vercel.app](https://kid-ish.vercel.app).
+
+Any static host works the same way (Netlify, GitHub Pages, or even opening a file directly in Safari) — just note that GitHub Pages doesn't apply `vercel.json` rewrites, so the clean URLs (`/allison-storybook` etc.) would need an equivalent redirect rule, or you'd link to the `.html` files directly.
+
+Phantom Royale deploys independently — see [above](#why-phantom-royale-is-different).
+
+## 🧩 How the storybook works (for the curious)
 
 One HTML file. On "Make my story!" it streams a `chat/completions` request to the configured endpoint. The model answers in a simple delimited format (`@@TITLE@@`, `@@PAGE@@` text, `@@ART@@` SVG, `@@END@@`) so pages can be parsed and previewed live as they stream in. Each page's SVG is sanitized with `DOMParser` and rendered inline. Finished books are kept in `localStorage`.

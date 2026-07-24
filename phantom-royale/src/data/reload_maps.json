@@ -1,0 +1,51 @@
+[
+  {
+    "id": "venture",
+    "name": "Venture",
+    "mapFile": "reload/reload-venture.jpg",
+    "description": "The original Reload map, a shrunken-down version of the classic Chapter 1 island centered on Tilted Towers.",
+    "youtubeId": "c-OyGQCPBaY"
+  },
+  {
+    "id": "oasis",
+    "name": "Oasis",
+    "mapFile": "reload/reload-oasis.jpg",
+    "description": "A desert-themed island inspired by the Chapter 1 biome, with Paradise Palms as its central POI.",
+    "youtubeId": "CNqW7lwfD74"
+  },
+  {
+    "id": "slurp-rush",
+    "name": "Slurp Rush",
+    "mapFile": "reload/reload-slurp-rush.jpg",
+    "description": "A Chapter 2-inspired island centered on Slurpy Swamp, packed with Slurp-themed locations.",
+    "youtubeId": "UIcXxvWUS8I"
+  },
+  {
+    "id": "squid-grounds",
+    "name": "Squid Grounds",
+    "mapFile": "reload/reload-squid-grounds.jpg",
+    "description": "A Squid Game collaboration map featuring The Labyrinth, Red Greens, and Square Meals.",
+    "youtubeId": "__1ss5tFbwM"
+  },
+  {
+    "id": "nitemare-island",
+    "name": "Nitemare Island",
+    "mapFile": "reload/reload-nitemare-island.jpg",
+    "description": "A Halloween-themed Fortnitemares 2025 map with Spooky Suburbs, Haunted Hamlet, and Terror Turrets.",
+    "youtubeId": "S43nqlrgfKQ"
+  },
+  {
+    "id": "surf-city",
+    "name": "Surf City",
+    "mapFile": "reload/reload-surf-city.jpg",
+    "description": "A Chapter 7-inspired Hollywood and West Coast map with Battlewood Boulevard at its center.",
+    "youtubeId": "Q7Adz31_bMY"
+  },
+  {
+    "id": "elite-stronghold",
+    "name": "Elite Stronghold",
+    "mapFile": "reload/reload-elite-stronghold.jpg",
+    "description": "The personal fortress of the Elites, featuring Elite Armory, Chiseled Cubes, Hostile Hold, and more.",
+    "youtubeId": "Ec4CKWY6ab8"
+  }
+]

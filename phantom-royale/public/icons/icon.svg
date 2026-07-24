@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="#111827"/>
+
+  <!-- Crown -->
+  <polygon points="128,220 128,160 192,200 256,140 320,200 384,160 384,220" fill="#FBBF24" stroke="#F59E0B" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Crown gems -->
+  <circle cx="256" cy="148" r="14" fill="#60A5FA"/>
+  <circle cx="384" cy="168" r="10" fill="#F87171"/>
+  <circle cx="128" cy="168" r="10" fill="#34D399"/>
+
+  <!-- Skull body -->
+  <ellipse cx="256" cy="300" rx="110" ry="100" fill="#E5E7EB"/>
+
+  <!-- Skull forehead flat top under crown -->
+  <rect x="146" y="220" width="220" height="60" fill="#E5E7EB"/>
+
+  <!-- Eye sockets -->
+  <ellipse cx="210" cy="290" rx="30" ry="34" fill="#111827"/>
+  <ellipse cx="302" cy="290" rx="30" ry="34" fill="#111827"/>
+  <!-- Eye glows -->
+  <ellipse cx="210" cy="290" rx="18" ry="22" fill="#60A5FA" opacity="0.8"/>
+  <ellipse cx="302" cy="290" rx="18" ry="22" fill="#60A5FA" opacity="0.8"/>
+
+  <!-- Nose cavity -->
+  <path d="M245,330 Q256,345 267,330 L262,318 Q256,322 250,318 Z" fill="#111827"/>
+
+  <!-- Teeth / jaw -->
+  <rect x="175" y="365" width="162" height="28" rx="8" fill="#E5E7EB"/>
+  <!-- Tooth gaps -->
+  <rect x="202" y="365" width="8" height="28" fill="#111827"/>
+  <rect x="229" y="365" width="8" height="28" fill="#111827"/>
+  <rect x="256" y="365" width="8" height="28" fill="#111827"/>
+  <rect x="283" y="365" width="8" height="28" fill="#111827"/>
+  <rect x="310" y="365" width="8" height="28" fill="#111827"/>
+</svg>

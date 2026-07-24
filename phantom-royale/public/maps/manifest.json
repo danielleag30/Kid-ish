@@ -1,0 +1,342 @@
+[
+  {
+    "chapter": 1,
+    "season": 1,
+    "filename": "chapter1-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_1/1_11/1_11.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1135222,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 2,
+    "filename": "chapter1-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_2/2_1_0/2_1_0.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 643341,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 3,
+    "filename": "chapter1-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_3/3_1_0/3_1_0.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 2824067,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 4,
+    "filename": "chapter1-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_4/4_0/4_0.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 2793386,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 5,
+    "filename": "chapter1-season5.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_5/5_10/5_10.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 983548,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 6,
+    "filename": "chapter1-season6.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_6/6_01/6_01.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 2936198,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 7,
+    "filename": "chapter1-season7.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_7/7_00/7_00.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 2996456,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 8,
+    "filename": "chapter1-season8.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_8/8_00/8_00.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 3046221,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 9,
+    "filename": "chapter1-season9.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_9/9_00/9_00.jpg",
+    "status": "ok",
+    "dimensions": "4096x4096",
+    "fileSize": 3008562,
+    "notes": "Full island top-down map, 4096x4096px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 1,
+    "season": 10,
+    "filename": "chapter1-season10.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_1/season_10/10_10/10_10.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 911476,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 1,
+    "filename": "chapter2-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_1/11_00/11_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 671475,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 2,
+    "filename": "chapter2-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_2/12_00/12_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 888039,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 3,
+    "filename": "chapter2-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_3/13_00/13_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 631628,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 4,
+    "filename": "chapter2-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_4/14_00/14_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 941518,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 5,
+    "filename": "chapter2-season5.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_5/15_00/15_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 769057,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 6,
+    "filename": "chapter2-season6.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_6/16_00/16_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 915791,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 7,
+    "filename": "chapter2-season7.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_7/17_00/17_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1150909,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 2,
+    "season": 8,
+    "filename": "chapter2-season8.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_2/season_8/18_00/18_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1139814,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 3,
+    "season": 1,
+    "filename": "chapter3-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_3/season_1/19_00/19_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 990770,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 3,
+    "season": 2,
+    "filename": "chapter3-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_3/season_2/20_00/20_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 986126,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 3,
+    "season": 3,
+    "filename": "chapter3-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_3/season_3/21_00/21_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1046967,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 3,
+    "season": 4,
+    "filename": "chapter3-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_3/season_4/22_00/22_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1032452,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 4,
+    "season": 1,
+    "filename": "chapter4-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_4/season_1/23_00/23_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 798397,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 4,
+    "season": 2,
+    "filename": "chapter4-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_4/season_2/24_00/24_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 733144,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 4,
+    "season": 3,
+    "filename": "chapter4-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_4/season_3/25_00/25_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 681995,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 4,
+    "season": 4,
+    "filename": "chapter4-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_4/season_4/26_00/26_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 724714,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 5,
+    "season": 1,
+    "filename": "chapter5-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_5/season_1/28_00/28_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 780310,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 5,
+    "season": 2,
+    "filename": "chapter5-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_5/season_2/29_00/29_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 799547,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 5,
+    "season": 3,
+    "filename": "chapter5-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_5/season_3/30_00/30_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 852470,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 5,
+    "season": 4,
+    "filename": "chapter5-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_5/season_4/31_00/31_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 857149,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 6,
+    "season": 1,
+    "filename": "chapter6-season1.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_6/season_1/33_00/33_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 826055,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 6,
+    "season": 2,
+    "filename": "chapter6-season2.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_6/season_2/34_00/34_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1097326,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 6,
+    "season": 3,
+    "filename": "chapter6-season3.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_6/season_3/35_00/35_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1511635,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  },
+  {
+    "chapter": 6,
+    "season": 4,
+    "filename": "chapter6-season4.jpg",
+    "sourceUrl": "https://raw.githubusercontent.com/yaelbrinkert/fortnite-archives/main/chapter_6/season_4/36_00/36_00.jpg",
+    "status": "ok",
+    "dimensions": "2048x2048",
+    "fileSize": 1555031,
+    "notes": "Full island top-down map, 2048x2048px. Source: yaelbrinkert/fortnite-archives on GitHub."
+  }
+]

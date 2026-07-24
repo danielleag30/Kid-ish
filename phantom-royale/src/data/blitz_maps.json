@@ -1,0 +1,16 @@
+[
+  {
+    "id": "starfall-island",
+    "name": "Starfall Island",
+    "mapFile": "blitz/blitz-starfall-island.jpg",
+    "description": "A Chapter 5-themed island with Flowberry Fields, Snooty Strip, Ritzy Redux, Boutique Bay, and Holloway House.",
+    "youtubeId": "Vu3VLsFpgeM"
+  },
+  {
+    "id": "stranger-things",
+    "name": "Stranger Things",
+    "mapFile": "blitz/blitz-stranger-things.jpg",
+    "description": "A Hawkins, Indiana-themed island split between the normal world and the Upside Down, featuring Hawkins Heights, Library Landing, Gnarly Farms, and Stranger Suburbs.",
+    "youtubeId": "rVD5U5ZBd8Y"
+  }
+]
