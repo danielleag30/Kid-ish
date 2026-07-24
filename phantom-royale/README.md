@@ -66,3 +66,42 @@ actively-maintained data pipeline looks like mid-update, not a gap worth hiding.
 
 ## Project structure
 
+```
+phantom-royale/
+├── src/
+│   ├── context/AppContext.jsx     # Cosmetics fetch + owned/favorited state
+│   ├── components/
+│   │   ├── LobbyShell.jsx          # Tab shell: Discover / Shop / Locker / Search
+│   │   ├── CosmeticCard.jsx, OfflineBanner.jsx, OnboardingOverlay.jsx
+│   ├── pages/
+│   │   ├── DiscoverTab.jsx, SearchTab.jsx, LockerTab.jsx, ItemShop.jsx
+│   │   ├── DailyRandom.jsx, Storyline.jsx, ChapterDetail.jsx
+│   │   └── ModeMapDetail.jsx      # Reload / Blitz map detail
+│   ├── data/
+│   │   ├── lore.json               # 37 chapter/season entries (Ch.1–7)
+│   │   ├── STORY_AGENT_REPORT.md   # Research pass, sources + confidence flags
+│   │   └── OVERSEER_REPORT.md      # Review pass, ID/asset spot-checks
+│   └── utils/api.js, storage.js     # fortnite-api.com client, localStorage helpers
+└── public/maps/                       # Chapter/season map imagery
+```
+
+## Local development
+
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production build → dist/
+```
+
+## Deployment note
+
+This app lives inside the Kid-ish hub but deploys as its **own** Vercel project (own
+build step, own URL) rather than as part of Kid-ish's single static-site deploy —
+see the root README for why. `vercel.json` here just adds the SPA rewrite React
+Router needs so deep links and refreshes don't 404.
+
+## Status
+
+Live. Storyline coverage runs through Chapter 7 (Chapter 7 not yet through the
+documented review pipeline — see above); the map-detail pages (Reload/Blitz) and
+daily-random pull from separate map-data files.

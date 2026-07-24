@@ -148,3 +148,50 @@ lives in this repo under `/phantom-royale` but **deploys as its own separate Ver
 project**, with its own build step and its own URL. The landing page just links out
 to it.
 
+```bash
+cd phantom-royale
+npm install
+npm run dev      # local dev, http://localhost:5173
+npm run build    # production build → dist/
+```
+
+It's also offline-aware: a service worker caches the app shell and network-first-caches
+the cosmetics catalog (with a 24h expiry), while the item shop is deliberately left
+uncached so it's always fresh-or-honestly-offline rather than showing yesterday's shop
+as if it were today's.
+
+---
+
+## Kid-safety & privacy notes
+
+- The storybook's system prompt keeps stories sweet and age-appropriate — no scary
+  content, sad endings, violence, or grown-up topics.
+- AI-generated SVG art is sanitized before it's ever inserted into the page — see above.
+- Storybook settings are behind a grown-ups-only arithmetic gate.
+- No analytics, no first-party tracking anywhere in the hub. Outbound network calls:
+  the storybook's model request (to whichever endpoint you configure), Phantom
+  Royale's public, unauthenticated cosmetics/shop fetch, and — worth naming
+  explicitly — the YouTube trailers embedded on Phantom Royale's lore and map pages,
+  which are third-party iframes subject to YouTube's own tracking.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| 6 static apps | Vanilla HTML/CSS/JS, no build step, no framework |
+| Storybook proxy | Cloudflare Worker (`worker.js`) |
+| LLM backends | OpenAI API, Ollama Cloud, or any OpenAI-compatible endpoint |
+| Phantom Royale | React 19, Vite 8, React Router 7, Tailwind CSS 4, `vite-plugin-pwa` |
+| Phantom Royale data | fortnite-api.com (public, unauthenticated) |
+| Hosting | Vercel — two independent projects (see architecture note above) |
+| Persistence | `localStorage` everywhere; no database, no accounts, anywhere in this repo |
+
+## Deployment
+
+The hub (everything except Phantom Royale) is one static site with clean URLs
+handled by [`vercel.json`](./vercel.json) rewrites. Any static host works the same
+way (Netlify, GitHub Pages, or opening a file directly) — GitHub Pages just won't
+apply `vercel.json`'s rewrites, so clean URLs would need an equivalent redirect rule
+there.
+
+Phantom Royale deploys independently — see [above](#one-repo-two-deploy-models).
