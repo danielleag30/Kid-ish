@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Allison's Stories">
-<title>Allison's Storybook Maker</title>
+<meta name="apple-mobile-web-app-title" content="Storybook Maker">
+<title>Storybook Maker</title>
 <style>
   :root {
     --pink: #ff7eb6;
@@ -328,7 +328,7 @@
 <!-- ================= HOME ================= -->
 <div id="home" class="screen active">
   <button id="gearBtn" title="Grown-ups">⚙️</button>
-  <h1>🌈 Hi Allison! 🦄</h1>
+  <h1>🌈 Hi there! 🦄</h1>
   <div class="subtitle">What story shall we make today?</div>
 
   <div class="ask-box">
@@ -464,8 +464,8 @@ const PROVIDERS = {
   },
 };
 
-const SETTINGS_KEY = "allison_settings_v1";
-const LIBRARY_KEY = "allison_library_v1";
+const SETTINGS_KEY = "storybook_settings_v1";
+const LIBRARY_KEY = "storybook_library_v1";
 
 function loadSettings() {
   try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }
@@ -500,7 +500,7 @@ const $ = (id) => document.getElementById(id);
 const IDEAS = [
   "🦄 A unicorn who loves pancakes",
   "🐉 A tiny dragon's first day of school",
-  "🚀 Allison flies to a candy planet",
+  "🚀 A trip to a candy planet",
   "🐶 A puppy detective solves a mystery",
   "🧜‍♀️ A mermaid who collects seashell music",
   "🦖 A dinosaur who wants to learn ballet",
@@ -608,12 +608,12 @@ const FALLBACK_SVG = `<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/s
 
 /* ---------------- story generation ---------------- */
 function buildSystemPrompt(pageCount) {
-  return `You are a magical storybook maker for Allison, a seven-year-old girl. You write warm, funny, gentle picture-book stories and you ILLUSTRATE every page yourself with hand-crafted SVG art.
+  return `You are a magical storybook maker for a curious seven-year-old. You write warm, funny, gentle picture-book stories and you ILLUSTRATE every page yourself with hand-crafted SVG art.
 
 RULES FOR THE STORY:
 - Exactly ${pageCount} pages. Each page is 2-4 short sentences a 7-year-old can follow.
 - Sweet, silly, adventurous. Nothing scary, sad endings, violence, or grown-up topics.
-- If the idea mentions Allison, make her the brave hero.
+- If the idea mentions the reader by name, make them the brave hero.
 - Vocabulary for age 7; one or two fun new words are okay.
 
 RULES FOR THE ART (one SVG per page):

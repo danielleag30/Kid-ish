@@ -31,7 +31,7 @@ export default function Storyline() {
             Lore coming soon
           </h2>
           <p className="text-gray-400 text-sm max-w-xs">
-            Brantley is writing the Fortnite story! Check back once the chapters are added.
+            Jonesy is writing the Fortnite story! Check back once the chapters are added.
           </p>
         </div>
       ) : (

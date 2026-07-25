@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/", "dest": "/index.html" },
-    { "src": "/allison-storybook", "dest": "/allison-storybook.html" },
+    { "src": "/storybook-maker", "dest": "/storybook-maker.html" },
     { "src": "/star-wars-flowchart", "dest": "/star-wars-flowchart.html" },
     { "src": "/warriors-novels", "dest": "/warriors-novels.html" },
     { "src": "/warriors-gn", "dest": "/warriors-gn.html" },

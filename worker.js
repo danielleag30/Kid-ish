@@ -1,11 +1,11 @@
 /**
- * Allison's Storybook Maker — Ollama Cloud proxy (Cloudflare Worker)
+ * Storybook Maker — Ollama Cloud proxy (Cloudflare Worker)
  *
  * Why this exists:
  *   The iPad's browser can't call Ollama Cloud directly (Ollama Cloud doesn't
  *   send the CORS headers a browser requires). This tiny Worker sits in the
  *   middle: it holds your Ollama API key as a server-side secret (so the key is
- *   never on Allison's iPad), adds the CORS header the browser needs, and
+ *   never on the reader's device), adds the CORS header the browser needs, and
  *   forwards the request to Ollama Cloud — streaming the reply straight back.
  *
  * Setup (see README "Step by step"):
@@ -35,7 +35,7 @@ export default {
     }
     if (request.method === "GET") {
       // Friendly health check: open the Worker URL in a browser to verify it's live.
-      return new Response("Allison's story proxy is running ✨", {
+      return new Response("Storybook Maker proxy is running ✨", {
         status: 200,
         headers: { ...cors, "Content-Type": "text/plain; charset=utf-8" },
       });
