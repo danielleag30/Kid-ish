@@ -276,6 +276,30 @@
     border: 1px solid rgba(255,214,74,0.4);
   }
 
+  /* ── CARD: NYC TRIP ──────────────────────────── */
+  .card-nyc .card-banner {
+    background: linear-gradient(160deg, #17171a 0%, #26262b 60%, #17171a 100%);
+  }
+  .card-nyc .card-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,199,44,0.10) 0 18px, transparent 18px 40px),
+      radial-gradient(1px 1px at 18% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 66% 22%, rgba(255,199,44,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 84% 62%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  }
+  .card-nyc .card-tag {
+    background: rgba(255,199,44,0.18);
+    color: #b8860a;
+  }
+  .card-nyc .card-title { color: #17171a; }
+  .card-nyc .card-btn {
+    background: linear-gradient(135deg, #17171a, #3a3a42);
+    border: 1px solid rgba(255,199,44,0.5);
+  }
+
   /* ── COMING SOON CARD ────────────────────────── */
   .card-soon {
     border: 3px dashed #d4c7f0;
@@ -406,6 +430,23 @@
         Browse every skin and item, check your locker, and explore the full storyline across every chapter and season!
       </div>
       <div class="card-btn">Drop in →</div>
+    </div>
+  </a>
+
+  <!-- NYC Trip -->
+  <a href="/nyc-trip" class="card card-nyc">
+    <div class="card-banner">
+      <span class="banner-icon" style="font-size:3.5rem; animation-delay:0s;">🗽</span>
+      <span class="banner-icon" style="font-size:4rem; animation-delay:0.5s;">🚕</span>
+      <span class="banner-icon" style="font-size:3rem; animation-delay:1s;">🍕</span>
+    </div>
+    <div class="card-body">
+      <div class="card-tag">🗺️ Trip Guide</div>
+      <div class="card-title">NYC or Bust</div>
+      <div class="card-desc">
+        Four days in New York City — the zoo, the Statue of Liberty, dinosaurs, and Times Square at night. Here's the whole plan, day by day!
+      </div>
+      <div class="card-btn">All aboard →</div>
     </div>
   </a>
 
