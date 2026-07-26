@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYC OR BUST — The Family Takes Manhattan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cab-yellow:#FFC72C;
+    --subway-blue:#0039A6;
+    --subway-red:#EE352E;
+    --subway-green:#00933C;
+    --subway-orange:#FF6319;
+    --subway-purple:#B933AD;
+    --asphalt:#17171A;
+    --cream:#FFF8EA;
+    --concrete:#EDE7D8;
+    --ink:#1F1B16;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Poppins',sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:0.03em;
+    line-height:0.95;
+  }
+  .mono{font-family:'Space Mono',monospace;}
+  a{color:inherit;}
+
+  .ticket{
+    background:var(--asphalt);
+    color:var(--cream);
+    position:relative;
+    overflow:hidden;
+    padding:48px 20px 40px;
+    text-align:center;
+    border-bottom:14px solid var(--cab-yellow);
+  }
+  .ticket::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(115deg, rgba(255,199,44,0.08) 0 18px, transparent 18px 40px);
+    pointer-events:none;
+  }
+  .ticket .eyebrow{
+    font-family:'Space Mono',monospace;
+    letter-spacing:0.3em;
+    font-size:12px;
+    color:var(--cab-yellow);
+    text-transform:uppercase;
+  }
+  .ticket h1{
+    font-size:clamp(48px,10vw,110px);
+    margin:6px 0 0;
+    color:var(--cream);
+    text-shadow:4px 4px 0 var(--subway-red);
+  }
+  .ticket .sub{
+    font-size:clamp(16px,3vw,22px);
+    margin-top:14px;
+    color:var(--concrete);
+  }
+  .ticket .dates{
+    display:inline-block;
+    margin-top:22px;
+    background:var(--cab-yellow);
+    color:var(--asphalt);
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    padding:10px 22px;
+    border-radius:4px;
+    letter-spacing:0.05em;
+    transform:rotate(-2deg);
+  }
+  .crew{
+    margin-top:26px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+  }
+  .crew span{
+    background:rgba(255,255,255,0.08);
+    border:1.5px dashed var(--cab-yellow);
+    color:var(--cream);
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:14px;
+    font-family:'Space Mono',monospace;
+  }
+
+  .lineNav{
+    position:sticky; top:0; z-index:50;
+    background:var(--asphalt);
+    padding:14px 16px;
+    display:flex;
+    justify-content:center;
+    gap:0;
+    overflow-x:auto;
+    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+  }
+  .lineNav .track{
+    display:flex;
+    align-items:center;
+    position:relative;
+  }
+  .lineNav .track::before{
+    content:"";
+    position:absolute;
+    left:24px; right:24px; top:50%;
+    height:5px;
+    background:var(--concrete);
+    transform:translateY(-50%);
+    z-index:0;
+    border-radius:3px;
+  }
+  .lineNav a{
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:8px;
+    text-decoration:none;
+    padding:8px 18px;
+  }
+  .lineNav .bullet{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue';font-size:20px;color:white;
+    border:3px solid var(--asphalt);
+    flex-shrink:0;
+  }
+  .lineNav .lbl{
+    color:var(--cream);
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    white-space:nowrap;
+  }
+  .b1{background:var(--subway-orange);}
+  .b2{background:var(--subway-blue);}
+  .b3{background:var(--subway-green);}
+  .b4{background:var(--subway-red);}
+
+  .day{
+    padding:60px 20px 40px;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .dayHead{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:6px;
+  }
+  .dayHead .bignum{
+    width:66px;height:66px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue';font-size:34px;color:white;
+    flex-shrink:0;
+    box-shadow:3px 3px 0 var(--asphalt);
+  }
+  .dayHead h2{
+    font-size:clamp(32px,6vw,54px);
+    margin:0;
+  }
+  .dayHead .dsub{
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    color:#6b6455;
+    margin-top:-4px;
+  }
+  .skyline{
+    width:100%;
+    height:auto;
+    margin:18px 0 26px;
+    display:block;
+  }
+
+  .kidCard{
+    background:white;
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:18px;
+    position:relative;
+    box-shadow:6px 6px 0 rgba(0,0,0,0.08);
+  }
+  .kidCard h3{
+    font-size:26px;
+    margin:0 0 8px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .kidCard p{margin:0 0 8px; font-size:15.5px;}
+  .kidCard .tag{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    background:var(--concrete);
+    padding:3px 9px;
+    border-radius:999px;
+    margin:2px 6px 2px 0;
+  }
+  .voteBox{
+    background:var(--cab-yellow);
+    border:2px solid var(--ink);
+    border-radius:12px;
+    padding:14px 18px;
+    margin:18px 0;
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    text-align:center;
+  }
+  .fork{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+  }
+  .fork .opt{
+    border:2px dashed var(--ink);
+    border-radius:12px;
+    padding:16px;
+    background:var(--concrete);
+  }
+  .fork .opt h4{
+    font-family:'Bebas Neue';
+    font-size:22px;
+    margin:0 0 6px;
+  }
+  .fork .opt .tag{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-size:10.5px;
+    background:white;
+    padding:2px 8px;
+    border-radius:999px;
+    margin:2px 4px 2px 0;
+  }
+
+  details.adult{
+    background:var(--asphalt);
+    color:var(--cream);
+    border-radius:12px;
+    margin:22px 0;
+    padding:2px 20px;
+    border:2px solid var(--asphalt);
+  }
+  details.adult summary{
+    cursor:pointer;
+    list-style:none;
+    padding:14px 0;
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--cab-yellow);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    letter-spacing:0.05em;
+  }
+  details.adult summary::-webkit-details-marker{display:none;}
+  details.adult summary::before{
+    content:"▸";
+    transition:transform 0.2s;
+    color:var(--cab-yellow);
+  }
+  details.adult[open] summary::before{transform:rotate(90deg);}
+  .adultBody{padding:2px 0 18px;}
+  .adultBody table{
+    width:100%; border-collapse:collapse;
+    font-size:13.5px;
+    margin:10px 0 14px;
+  }
+  .adultBody th,.adultBody td{
+    border-bottom:1px solid rgba(255,255,255,0.15);
+    padding:8px 6px;
+    text-align:left;
+    vertical-align:top;
+  }
+  .adultBody th{color:var(--cab-yellow); font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase;}
+  .adultBody .joke{
+    font-style:italic;
+    color:#9a9488;
+    font-size:12.5px;
+    border-left:2px solid var(--cab-yellow);
+    padding-left:10px;
+    margin-top:10px;
+  }
+  .adultBody .note{
+    background:rgba(255,199,44,0.1);
+    border-left:3px solid var(--cab-yellow);
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:13.5px;
+    margin:10px 0;
+  }
+  .adultBody .tbd{
+    background:rgba(238,53,46,0.15);
+    border-left:3px solid var(--subway-red);
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:13.5px;
+    margin:10px 0;
+  }
+  .adultBody a{color:var(--cab-yellow); text-decoration:underline;}
+
+  .stub{
+    display:flex; align-items:flex-start; gap:12px;
+    background:repeating-linear-gradient(135deg, #fff 0 10px, #fdfaf2 10px 20px);
+    border:2px solid var(--ink);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+  }
+  .stub .punch{
+    width:22px;height:22px;border-radius:50%;
+    border:2px dashed #b7ae98;
+    flex-shrink:0; margin-top:2px;
+  }
+  .stub b{display:block;font-size:15.5px;}
+  .stub span{font-size:13.5px;color:#5a544a;}
+  .stub a.lnk{font-size:12px; font-family:'Space Mono',monospace; text-decoration:underline; color:var(--subway-blue);}
+
+  .divider{
+    text-align:center; padding:26px 0 6px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:#9a9488;
+  }
+
+  footer{
+    background:var(--asphalt);
+    color:var(--concrete);
+    text-align:center;
+    padding:34px 20px 44px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+  }
+  footer .big{
+    font-family:'Bebas Neue';
+    font-size:34px;
+    color:var(--cab-yellow);
+    display:block;
+    margin-bottom:10px;
+  }
+  .brianbox{
+    max-width:520px;margin:22px auto 0;
+    border:1px dashed var(--cab-yellow);
+    border-radius:10px;
+    padding:14px 18px;
+    text-align:left;
+  }
+</style>
+</head>
+<body>
+
+<div class="ticket">
+  <div class="eyebrow">★ ALL ABOARD ★ FOUR DAYS, ZERO NAPS, INFINITE PIZZA ★</div>
+  <h1>NYC OR BUST</h1>
+  <div class="sub">The Official Field Guide &amp; Survival Manual (Casualties Not Covered)</div>
+  <div class="dates">AUG 1 → AUG 4, 2026 · VIA AMTRAK</div>
+  <div class="crew">
+    <span>🎮 BRANTLEY, 10</span>
+    <span>💄 ALLISON, 7</span>
+    <span>🐱 PRESTON, 9</span>
+    <span>🦕 GREYSON, 5</span>
+    <span>🗽 + 2 GROWN-UPS (RUNNING ON CAFFEINE &amp; VIBES)</span>
+  </div>
+</div>
+
+<div class="lineNav">
+  <div class="track">
+    <a href="#day1"><span class="bullet b1">1</span><span class="lbl">ROCKEFELLER<br>+ ZOO</span></a>
+    <a href="#day2"><span class="bullet b2">2</span><span class="lbl">LIBERTY<br>+ DUMBO</span></a>
+    <a href="#day3"><span class="bullet b3">3</span><span class="lbl">MUSEUM<br>+ TIMES SQ</span></a>
+    <a href="#day4"><span class="bullet b4">4</span><span class="lbl">HOME<br>WARD</span></a>
+  </div>
+</div>
+
+<section class="day" id="day1">
+  <div class="dayHead">
+    <div class="bignum" style="background:var(--subway-orange)">1</div>
+    <div>
+      <h2>SATURDAY: WE HAVE ARRIVED</h2>
+      <div class="dsub">Aug 1 · Zoo → Toy Stores → Rooftop of the City</div>
+    </div>
+  </div>
+
+  <svg class="skyline" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="120" fill="#FFF8EA"/>
+    <g fill="#1F1B16">
+      <rect x="0" y="70" width="40" height="50"/>
+      <rect x="45" y="50" width="30" height="70"/>
+      <rect x="80" y="60" width="25" height="60"/>
+      <rect x="110" y="30" width="45" height="90"/>
+      <rect x="160" y="55" width="30" height="65"/>
+      <rect x="195" y="20" width="20" height="100"/>
+      <rect x="220" y="65" width="35" height="55"/>
+      <polygon points="270,20 285,20 285,90 300,90 300,120 260,120 260,90 270,90"/>
+      <rect x="310" y="45" width="28" height="75"/>
+      <rect x="345" y="60" width="40" height="60"/>
+      <rect x="390" y="25" width="22" height="95"/>
+      <rect x="418" y="55" width="35" height="65"/>
+      <rect x="460" y="35" width="30" height="85"/>
+      <rect x="495" y="65" width="45" height="55"/>
+      <rect x="545" y="45" width="25" height="75"/>
+      <rect x="575" y="60" width="30" height="60"/>
+      <rect x="610" y="30" width="20" height="90"/>
+      <rect x="635" y="50" width="40" height="70"/>
+      <rect x="680" y="65" width="30" height="55"/>
+      <rect x="715" y="40" width="25" height="80"/>
+      <rect x="745" y="60" width="35" height="60"/>
+    </g>
+  </svg>
+
+  <div class="kidCard">
+    <h3>🎟️ Welcome to New York!</h3>
+    <p>The train doors open and — surprise — you're in New York City. <i>Cue up "Welcome to New York" by Taylor Swift.</i> First stop: dropping bags at the hotel, then straight into the wild. Today's mission: find the animals, find the toys, and see the whole city from 70 floors up, right as the sun goes down.</p>
+  </div>
+
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.centralparkzoo.com/" target="_blank">🦁 Central Park Zoo</a></b><span>Snow leopards, red pandas, penguins doing penguin things. Grab lunch nearby first.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.nintendo.com/us/store/ny/" target="_blank">🍄 Nintendo NY + LEGO Store</a></b><span>Brantley &amp; Preston — this one's for you. Try every Switch demo, build anything, zero rules.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.faoschwarz.com/" target="_blank">🧸 FAO Schwarz</a></b><span>Same building as Top of the Rock. Walk the giant floor piano from the movie "Big," and Allison — there's an actual makeup counter here just for you.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.topoftherocknyc.com/" target="_blank">🌆 Top of the Rock — 7:10pm</a></b><span>The whole city, all at once, right as it lights up for the night. Tickets are booked, this one's locked in.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍔 Dinner near Rockefeller Center</b><span>Burgers, pub food, or a big family-style Italian table — earned it.</span></div></div>
+
+  <details class="adult">
+    <summary>🧾 GROWN-UP INTEL — DAY 1</summary>
+    <div class="adultBody">
+      <div class="note"><b>Red Cap service on arrival:</b> free porter/luggage help at Penn Station — genuinely worth it for 6 people with bags. Best odds of getting one: call Amtrak (800-USA-RAIL) ahead of time or have the conductor radio ahead before you pull into Penn Station, since they primarily meet trains that requested help rather than roaming the platform. Tip $5-10/bag or $10-20/person if used.</div>
+      <div class="note">Zoo's an 18-min walk from the hotel if you'd rather skip the car entirely. If you do Uber, 6 people means a standard Uber (seats 4) won't cut it — XL or two cars, same math as the Day 4 station problem.</div>
+      <p><b>Hotel confirmed: Residence Inn Manhattan/Midtown East, 148 E 48th St.</b> ~10 min from Top of the Rock/Rockefeller Center, ~18 min walk from the zoo (genuinely walkable, Uber optional not required), ~25 min walk from Penn Station.</p>
+      <div class="tbd"><b>Check-in is 4pm — you'll arrive around 2pm.</b> This is a bag-check at the bell desk, not full room access. Don't expect to get upstairs until later.</div>
+      <p><b>Timing:</b> Lunch at Moynihan Food Hall, Penn Station (~1:30-2pm) → drop bags at hotel bell desk → Uber/subway/walk to the zoo (~2:30-3pm arrival) → Nintendo/LEGO/FAO Schwarz (~4:30-6pm) → Top of the Rock, <b>confirmed reservation 7:10pm</b> (sunset Aug 1 is ~8:13pm, so you'll catch daylight into dusk).</p>
+      <div class="note"><b>Zoo hours:</b> open 10am-5:30pm Saturdays, last entry 4:30pm. A 2:30-4:30pm visit is genuinely enough time — it's a compact 6.5-acre zoo, most people do it in 1-2 hours.</div>
+      <div class="tbd"><b>Option: skip the zoo entirely.</b> If the kids are more excited about the stores, Nintendo/LEGO/FAO Schwarz are the actual top priorities — the zoo is nice but not irreplaceable. Skipping it just means a longer, more relaxed shopping block instead (roughly 4:30/5-7:45pm with a snack break) with dinner shifting to after Top of the Rock instead of before.</div>
+      <div class="note"><b>Dinner placement is flexible — before or after Top of the Rock, your call in the moment.</b> Before means eating ~6-6:45pm to make the 7:10 reservation comfortably. After means a later dinner ~8:15pm+ once you're down from the observation deck. Neither is locked in — decide based on how hungry/tired everyone is by 6pm.</div>
+      <table>
+        <tr><th>Dinner spot</th><th>Vibe</th><th>Reservation (party of 6)</th></tr>
+        <tr><td>Luke's Lobster</td><td>4.8★, lobster rolls/chowder, right in Rockefeller Center</td><td>Not accepted, walk-up counter</td></tr>
+        <tr><td>Ace's Pizza</td><td>4.4★, Detroit-style, cheap, right in Rockefeller Center</td><td>Not required</td></tr>
+        <tr><td>Bill's Bar &amp; Burger</td><td>Loud, easy, on-site at Rockefeller Center</td><td>Not required, call ahead weekends</td></tr>
+        <tr><td>Jupiter</td><td>Upscale Italian, right in Rockefeller Plaza, genuinely great pasta</td><td>Recommended</td></tr>
+        <tr><td>Ellen's Stardust Diner</td><td>Singing waitstaff, '50s diner, Times Sq — fun but loud, tourist-trap reputation</td><td>Not accepted, expect a line</td></tr>
+      </table>
+      <div class="note"><b>Top of the Rock: tickets booked</b> — 7:10pm, Aug 1. One less thing to worry about.</div>
+      <div class="joke">Coffee status by 5pm: theoretical. Wine status by 8pm: load-bearing. Nintendo Store receipt status: already forgotten, will resurface in a bank statement like a haunting.</div>
+    </div>
+  </details>
+</section>
+
+<div class="divider">— NEXT STOP —</div>
+
+<section class="day" id="day2">
+  <div class="dayHead">
+    <div class="bignum" style="background:var(--subway-blue)">2</div>
+    <div>
+      <h2>SUNDAY: LIBERTY, BRIDGES &amp; A SKY RIDE</h2>
+      <div class="dsub">Aug 2 · Statue Ferry → Battery Park → DUMBO → 9/11 Memorial → Tram → Ice Cream</div>
+    </div>
+  </div>
+
+  <div class="kidCard">
+    <h3>🗽 Say Hi to Lady Liberty</h3>
+    <p>She's been standing in that harbor since 1886 holding a torch up for everyone who's ever sailed into this city. She has never once sat down. Today you ride a boat right past her — twice — then spend the day at two different playgrounds, two carousels, a floating gondola ride across a river, and end with ice cream. Big day. Worth it.</p>
+  </div>
+
+  <div class="stub"><div class="punch"></div><div><b>⛴️ Board the Ferry — Midtown West</b><span>Right from West 39th St. No subway required. Ride all the way out toward Staten Island and straight back — that's the part that passes the statue.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🗽 Statue of Liberty, from the water — TWICE</b><span>Once on the way out, once on the way back. Best view from the right side of the boat. Wave at her. She's used to it.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🏖️ Battery Playscape + Sea Glass Carousel</b><span>An hour on a boat is an hour of pent-up energy. This is where it goes.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍕 Lunch</b><span>Wherever hunger strikes first — Battery Park or once we're over in DUMBO.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🌉 Brooklyn Bridge or Ferry to DUMBO</b><span>Walk it if legs allow, ferry it if they don't. Both get you there.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🎠 Main St Playground + Pebble Beach + Jane's Carousel</b><span>The best playground of the whole trip. This is the big one.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.timeoutmarket.com/newyork/" target="_blank">🍦 Snack: Time Out Market (Rooftop)</a></b><span>Everyone picks their own food. No group menu negotiations.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.911memorial.org/" target="_blank">🕊️ 9/11 Memorial</a></b><span>A short, quiet stop. Brantley and Preston — you'll learn more about this at school soon, and this is a real piece of history. We'll keep it brief and calm.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍕 Dinner: Little Italy Pizza</b><span>Two of the most talked-about pizza slices in the whole city are basically next door to each other. We'll pick one (or both, if everyone's still hungry).</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b><a href="https://rioc.ny.gov/341/Parks-Recreation" target="_blank">🚡 Roosevelt Island Tram</a></b><span>A cable car that flies over the East River — the same kind of ride you'd find at a ski resort, except it's the subway.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍨 Dessert near the tram</b><span>Frrrozen Hot Chocolate awaits. Last stop before the hotel.</span></div></div>
+
+  <details class="adult">
+    <summary>🧾 GROWN-UP INTEL — DAY 2</summary>
+    <div class="adultBody">
+      <p><b>The ferry route:</b> board the NYC Ferry St. George route at West 39th St, Midtown West. The statue is out in the harbor past the tip of Manhattan, so you have to ride the full route out toward Staten Island and catch the next boat straight back to actually pass her — roughly an hour of sailing, statue twice. Congratulations, you've paid money to look at a large green woman from a boat, twice. Worth it. If you have to get off at St. George, Bake Culture is a bakery literally as you step off the ferry — donuts, pastries, coffee. Kids don't need to know this exists; it's your fallback, not theirs.</p>
+      <div class="note"><b>Fare is per ride, not a day pass:</b> $4.50/one-way, per person, per boat. Free transfer to a different NYC Ferry route within 120 minutes of activating your ticket. Kids under 44" ride free with an adult. There's also a <b>$15 Unlimited 2-Day Ticket</b> (per person, unlimited rides for 48 hours) — with this many legs in one day, do the math before buying six separate single-ride tickets like a sucker.</div>
+      <p><b>Lunch is genuinely flexible</b> — Battery Park if the kids are already losing it, Time Out Market in DUMBO if everyone can hold out for a later, better lunch. No fixed rule here, no one's grading you.</p>
+      <div class="note"><b>Ferry, Pier 11 to DUMBO:</b> ~4-7 minutes. It's a hop, not a cruise — don't oversell it to the kids as a long boat ride, they will notice the betrayal.</div>
+      <p><b>Getting from DUMBO back toward the Memorial:</b> flexible — walk the bridge, ferry, subway, or Uber. The bridge walk itself plus the 10-15 min walk to the Memorial adds up to roughly <b>20-30 minutes total for kids</b> — factor that in as real walking time, not a quick hop, when deciding whether to walk or take the ferry/subway instead.</p>
+      <div class="note">Most NYC playgrounds close at dusk and aren't lit at night — sunset's around 8:13pm this time of year. If you're rolling through late, don't count on a playground being usable; it's ambiance at that point, not recreation.</div>
+      <p><b><a href="https://www.serendipity3.com/" target="_blank">Serendipity 3</a> (original, 225 E 60th):</b> a few blocks from the tram's Manhattan-side entrance. Reservation not required but strongly recommended — walk-ins do get turned away during busy windows. Open 10am-11pm Sundays.</p>
+      <p><b>Dinner, top pick: L'Industrie, Little Italy (197 Grand St)</b> — widely ranked one of the best pizza slices in the US, no reservations, first-come-first-served, they call your name. From here, the 6 train runs direct from Spring St to 59th St (~20 min, zero transfers) — same line covers the whole 9/11 Memorial → dinner → tram chain in one continuous shot, not the zigzag it looks like on a map.</p>
+      <table>
+        <tr><th>Dinner spot</th><th>Vibe</th><th>Reservation (party of 6)</th></tr>
+        <tr><td>L'Industrie (Little Italy)</td><td>Top pick — best slice in the US per multiple rankings</td><td>Not accepted, walk-up</td></tr>
+        <tr><td>Ceres</td><td>Portnoy gave it a 9.2 — his highest score since 2023. But: $40/pie, and lines have run 3+ hours since it went viral. Basically next door to L'Industrie if you want to try both.</td><td>Not accepted — expect a real wait</td></tr>
+        <tr><td>Fraunces Tavern</td><td>Backup — historic 1762 tavern, hearty pub food, near Battery Park</td><td>Recommended, call ahead</td></tr>
+        <tr><td>Adrienne's Pizzabar</td><td>Backup — NY thin-crust, cobblestone Stone Street, near Battery Park</td><td>Not required, call ahead</td></tr>
+      </table>
+      <div class="joke">Step count by 6pm: illegal in several states. Nobody is complaining about it out loud yet — everyone's asleep by 8:15, including one of the adults.</div>
+    </div>
+  </details>
+</section>
+
+<div class="divider">— NEXT STOP —</div>
+
+<section class="day" id="day3">
+  <div class="dayHead">
+    <div class="bignum" style="background:var(--subway-green)">3</div>
+    <div>
+      <h2>MONDAY: DINOSAURS &amp; BRIGHT LIGHTS</h2>
+      <div class="dsub">Aug 3 · Natural History Museum → YOU Pick the Afternoon → Times Square</div>
+    </div>
+  </div>
+
+  <div class="kidCard">
+    <h3>🦴 The Museum With the Giant Whale</h3>
+    <p>A 94-foot blue whale hangs from the ceiling. There's a real dinosaur skeleton taller than your house. This is the museum that inspired half the video games you play — go find out what a real Titanosaurus actually looked like.</p>
+    <div class="tag">Gilder Center</div><div class="tag">Dinosaurs</div><div class="tag">Butterfly Vivarium</div>
+  </div>
+
+  <div class="stub"><div class="punch"></div><div><b><a href="https://www.amnh.org/" target="_blank">🦕 American Museum of Natural History</a></b><span>Get there at open — dinosaur halls and the new Gilder Center wing.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍽️ Lunch</b><span>TBD — deciding on the best nearby option.</span></div></div>
+
+  <div class="voteBox">🗳️ KIDS: IT'S YOUR CALL — PICK ONE FOR THE AFTERNOON (WE'LL SWITCH IF NEEDED)</div>
+
+  <div class="fork">
+    <div class="opt">
+      <h4>🌳 Central Park</h4>
+      <div class="tag">Playground</div><div class="tag">Carousel</div><div class="tag">Castle</div>
+      <p style="font-size:14px;margin:8px 0 0">Right outside the museum. A carousel that's over 100 years old, a real castle (Belvedere Castle) you can climb, and a playground just for burning energy. Least walking of the three.</p>
+    </div>
+    <div class="opt">
+      <h4>⛴️ Governors Island</h4>
+      <div class="tag">57-ft Slide</div><div class="tag">Splash Pad</div><div class="tag">Hammocks</div>
+      <p style="font-size:14px;margin:8px 0 0">A whole island with no cars, reachable only by ferry. Home to the longest slide in NYC and a splash fountain with 90 water jets — pack swimsuits if you pick this one.</p>
+    </div>
+    <div class="opt">
+      <h4>🚇 The High Line</h4>
+      <div class="tag">Elevated Park</div><div class="tag">Hudson Yards</div><div class="tag">Vessel</div><div class="tag">Little Island</div>
+      <p style="font-size:14px;margin:8px 0 0">A park built on old train tracks, floating above the streets. Ends near Hudson Yards, where you can climb the honeycomb-shaped Vessel if there's still gas in the tank. At the other end (south), there's an even weirder one: Little Island, a park floating on giant concrete "tulips" over the Hudson River — people say it feels like walking into Alice in Wonderland.</p>
+    </div>
+  </div>
+
+  <div class="stub" style="margin-top:16px"><div class="punch"></div><div><b>🍦 Snack</b><span>Wherever the afternoon activity leaves you — a break is built in.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍝 Dinner</b><span>TBD — still figuring out the spot.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🌃 Times Square at Night</b><span>This is when it's actually worth seeing — all the lights, all at once.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🍰 Late Dessert</b><span>One more sweet stop before heading back — open late, a block or two from all the lights.</span></div></div>
+
+  <details class="adult">
+    <summary>🧾 GROWN-UP INTEL — DAY 3</summary>
+    <div class="adultBody">
+      <p><b>Timing:</b> Museum 10am-12:30pm, lunch 12:30-1:15pm (street food doesn't need 90 minutes — keep it quick), afternoon activity block 1:15pm-7/8pm (pick one, treat a second as a bonus not an expectation), dinner ~8pm, Times Square ~9-10pm.</p>
+      <div class="tbd"><b>Lunch:</b> Gray's Papaya (~9-10 min from AMNH) or NY Hot Dog King (~13 min from AMNH, across the park by The Met) — both street food, both fast, either works.</div>
+      <p><b>The three afternoon options, compared:</b></p>
+      <table>
+        <tr><th>Option</th><th>Cost</th><th>Getting there</th><th>Real logistics</th></tr>
+        <tr><td>Central Park</td><td>Free (carousel ~$3-5/ride)</td><td>Zero — you're already there</td><td>No ferry, no subway, no last-return time pressure. Lowest-effort of the three.</td></tr>
+        <tr><td>Governors Island</td><td>$5 round-trip/adult, kids 12 &amp; under FREE</td><td>Subway to Battery Maritime Bldg, ~30-40 min from AMNH each way</td><td>Extended summer hours this year — open till 10-11pm, last ferry back 10pm Sun-Thu/11pm Fri-Sat, so no rush. But ~1-1.5hrs round-trip just in transit eats into your afternoon block.</td></tr>
+        <tr><td>High Line</td><td>Free (Vessel climb optional, $10-15/person)</td><td>Subway to Hudson Yards, ~30-40 min from AMNH each way</td><td>Same transit cost as Governors Island, but flows directly into Times Square afterward instead of doubling back.</td></tr>
+      </table>
+      <div class="note"><b>Heads up on Times Square at night:</b> it does not get less crowded after dark — the opposite, actually, since that's peak billboard-viewing time. Go for the experience, not for quiet. Quiet left this neighborhood decades ago.</div>
+      <div class="tbd"><b>Dinner: map-layer only.</b> Depends entirely on which afternoon activity you land on, so the actual options live in the Google Map, not here — check that when you're deciding in the moment.</div>
+      <p><b>Late dessert, both within a block or two of Times Square, both open past 10pm:</b></p>
+      <table>
+        <tr><th>Spot</th><th>Address</th><th>Hours</th></tr>
+        <tr><td>Mia's Bakery</td><td>716 7th Ave</td><td>Till midnight Sun-Thu, 1am Fri-Sat</td></tr>
+        <tr><td>NY Bakery &amp; Desserts</td><td>1580 Broadway</td><td>Open 24 hours</td></tr>
+      </table>
+      <div class="joke">"Which one is more iconic, Mom or Dad?" is not a question either of you should answer out loud in a crowd of 460,000 tourists.</div>
+    </div>
+  </details>
+</section>
+
+<div class="divider">— LAST STOP —</div>
+
+<section class="day" id="day4">
+  <div class="dayHead">
+    <div class="bignum" style="background:var(--subway-red)">4</div>
+    <div>
+      <h2>TUESDAY: SLOW MORNING &amp; GOODBYE</h2>
+      <div class="dsub">Aug 4 · Low-Key Morning → Home by 6pm</div>
+    </div>
+  </div>
+
+  <div class="kidCard">
+    <h3>🥯 The Slow Morning</h3>
+    <p>No museums, no lines, no schedule. Grab whatever for breakfast, wander a bit, then a long train ride home to tell everyone what you saw.</p>
+  </div>
+
+  <div class="stub"><div class="punch"></div><div><b>🍽️ Breakfast — Whatever, Whenever</b><span>Bagels, donuts, or the protein bars from home — no plan needed here.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>📚 NYPL + Bryant Park (Dani &amp; Brian)</b><span>Lions, a peek at the Reading Room, maybe the carousel.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🚉 Head to the Station</b><span>Real travel time, not "we'll figure it out" time.</span></div></div>
+  <div class="stub"><div class="punch"></div><div><b>🚆 Train Home — ~2pm</b><span>Home by 6pm. Trip complete.</span></div></div>
+
+  <details class="adult">
+    <summary>🧾 GROWN-UP INTEL — DAY 4</summary>
+    <div class="adultBody">
+      <div class="note"><b>Train confirmed for ~2pm.</b> Hotel confirmed: Residence Inn Manhattan/Midtown East, 148 E 48th St. From here: NYPL/Bryant Park ~10-11 min walk, Grand Central/Whispering Gallery ~6 min, Penn Station ~25 min walk (or a quick subway/cab).</div>
+      <div class="tbd"><b>Complimentary hot breakfast is included at the hotel</b> — worth knowing even though the plan is to keep this loose. It's there if anyone wants it, no reservation, no cost, zero planning required either way.</div>
+      <div class="note"><b>Rose Reading Room, no tour needed:</b> open for a visiting hour 10-11am (last entry 10:50am) — just walk in. Get there before 10:50am if you want to see it.</div>
+      <div class="note"><b>Back pocket, not a plan:</b> the Empire State Building (34th/5th) and Macy's (34th/Broadway) both sit directly on the walk from Bryant Park to Penn Station — no detour required. Point out the ESB in passing, duck into Macy's for two minutes if the kids are into it. Neither needs to be announced as a "thing we're doing."</div>
+      <div class="note"><b>Filler option if the kids are losing it:</b> Grand Central Terminal's Whispering Gallery, near the Oyster Bar, two blocks past Bryant Park. Free, no ticket, no line. Stand in diagonal corners of the arched ceiling and you can hear each other whisper from clear across the room — genuinely startles kids the first time. Also has the celestial-ceiling Main Concourse and a market for a snack. Good five-minutes-of-magic reset button, not a planned stop.</div>
+      <div class="tbd"><b>Breakfast is genuinely unplanned</b> — don't build the morning around it. Grab bagels/donuts en route, use the hotel's included breakfast, or eat the protein bars from home and get real food at lunch. The only actual deadline is the 10:50am Reading Room cutoff if that's happening.</div>
+      <div class="note"><b>Red Cap service on departure:</b> this direction is easier — go straight to the Red Cap desk in the Amtrak waiting room (or the street-level kiosk at 33rd & 8th), tell them your train number and bag count. They'll tag everything, cart it, and take you down by elevator instead of stairs/escalators with 6 people and bags — plus they'll help you find seats together. Tip $5-10/bag or $10-20/person.</div>
+      <div class="note">A standard Uber seats 4, not 6 — with a 25-min walk to Penn Station, a car is probably worth it this time — plan for an XL or two vehicles, not a last-minute scramble at checkout.</div>
+      <div class="joke">Grown-up victory lap: four kids, four days, zero lost shoes. Nobody will believe you. Take the receipts.</div>
+    </div>
+  </details>
+</section>
+
+<footer>
+  <span class="big">SEE YOU NEXT TIME, NEW YORK</span>
+  This itinerary was assembled with the structural integrity of the Brooklyn Bridge and roughly the same number of engineering compromises.<br>
+  Brought to you by the 1 train, four tired kids, questionable ferry math, and two parents who are — statistically — going to need a vacation from this vacation.
+
+  <div class="brianbox">
+    <b style="color:var(--cream)">Note to Brian:</b> yes, it's a lot. Yes, you'll survive. Yes, there is a "Grown-Up Intel" panel under every single day — click it, that's where the reservations and timing live. You've got this. Mostly.
+  </div>
+</footer>
+
+</body>
+</html>

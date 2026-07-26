@@ -8,6 +8,7 @@
     { "src": "/warriors-gn", "dest": "/warriors-gn.html" },
     { "src": "/warriors-guide", "dest": "/warriors-guide.html" },
     { "src": "/warriors-fun", "dest": "/warriors-fun.html" },
+    { "src": "/nyc-trip", "dest": "/nyc-trip.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
